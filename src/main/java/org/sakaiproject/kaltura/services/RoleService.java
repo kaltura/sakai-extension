@@ -22,8 +22,9 @@ import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.Role;
 import org.sakaiproject.kaltura.models.errors.ErrorRole;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
+import org.sakaiproject.kaltura.utils.common.RestUtil;
 
-public class RoleService extends BaseService {
+public class RoleService {
 
     public ActionReturn get(String roleId) {
         if (StringUtils.isBlank(roleId)) {
@@ -35,7 +36,7 @@ public class RoleService extends BaseService {
 
         Role role = new Role();
 
-        return processActionReturn(errorRole, JsonUtil.parseToJson(role));
+        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(role));
     }
 
     public ActionReturn getAllRoles() {
@@ -44,7 +45,7 @@ public class RoleService extends BaseService {
         List<Role> roles = new ArrayList<Role>();
 
         //return processActionReturn(errorRole, JsonUtil.parseToJson(roles));
-        return processActionReturn(errorRole, "{\"role\": \"No roles defined (yet)\"}");
+        return RestUtil.processActionReturn(errorRole, "{\"role\": \"No roles defined (yet)\"}");
     }
 
 }

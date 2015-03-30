@@ -28,7 +28,8 @@ import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
-import org.sakaiproject.kaltura.services.BaseService;
+import org.sakaiproject.kaltura.services.RoleService;
+import org.sakaiproject.kaltura.services.UserService;
 import org.sakaiproject.kaltura.utils.common.SecurityUtil;
 
 /**
@@ -40,9 +41,14 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
     private final Log log = LogFactory.getLog(KalturaProvider.class);
 
-    private BaseService baseService;
-    public void setBaseService(BaseService baseService) {
-        this.baseService = baseService;
+    private RoleService roleService;
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
+    private UserService userService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public void init() {
@@ -87,7 +93,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
         } else if (StringUtils.equalsIgnoreCase(EntityView.Method.GET.name(), view.getMethod())) {
             // GET
             String roleId = view.getPathSegment(2);
-            actionReturn = baseService.getRoleService().get(roleId);
+            actionReturn = roleService.get(roleId);
         } else {
             throw new IllegalArgumentException("Method not allowed on kaltura/role: " + view.getMethod());
         }
@@ -108,7 +114,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
         // GET
         String userId = view.getPathSegment(2);
-        actionReturn = baseService.getUserService().get(userId);
+        actionReturn = userService.get(userId);
 
         return actionReturn;
     }

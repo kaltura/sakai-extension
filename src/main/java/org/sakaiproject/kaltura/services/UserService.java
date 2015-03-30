@@ -21,6 +21,8 @@ import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.errors.ErrorUser;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
+import org.sakaiproject.kaltura.utils.common.RestUtil;
+import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 
 /**
@@ -28,9 +30,17 @@ import org.sakaiproject.user.api.UserNotDefinedException;
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public class UserService extends BaseService {
+public class UserService {
 
     private final Log log = LogFactory.getLog(UserService.class);
+
+    /**
+     * {@link UserDirectoryService}
+     */
+    protected UserDirectoryService userDirectoryService;
+    public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
+        this.userDirectoryService = userDirectoryService;
+    }
 
     public ActionReturn get(String userId) {
         User user = null;
@@ -47,7 +57,7 @@ public class UserService extends BaseService {
             }
         }
 
-        return processActionReturn(errorUser, JsonUtil.parseToJson(user));
+        return RestUtil.processActionReturn(errorUser, JsonUtil.parseToJson(user));
     }
 
 }
