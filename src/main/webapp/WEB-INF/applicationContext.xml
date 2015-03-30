@@ -19,25 +19,24 @@
 
     <!-- services -->
 
-    <bean id="baseService" class="org.sakaiproject.kaltura.services.BaseService">
-        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
-        <property name="roleService" ref="roleService" />
-        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
-        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
-        <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
+    <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService">
+    </bean>
+
+    <bean id="userService" class="org.sakaiproject.kaltura.services.UserService">
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
-        <property name="userService" ref="userService" />
-    </bean>
-
-    <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService" parent="baseService">
-    </bean>
-
-    <bean id="userService" class="org.sakaiproject.kaltura.services.UserService" parent="baseService">
     </bean>
 
     <!-- entity provider -->
+
     <bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider" class="org.sakaiproject.kaltura.providers.KalturaProvider">
-        <property name="baseService" ref="baseService" />
+        <property name="roleService" ref="roleService" />
+        <property name="userService" ref="userService" />
+    </bean>
+
+    <!-- DAO -->
+
+    <bean id="database" class="org.sakaiproject.kaltura.dao.Database">
+        <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
     </bean>
 
 </beans>

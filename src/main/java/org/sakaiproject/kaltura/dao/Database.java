@@ -20,8 +20,7 @@ import java.sql.ResultSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.kaltura.services.BaseService;
-
+import org.sakaiproject.db.api.SqlService;
 
 /**
  * General database operations
@@ -29,9 +28,17 @@ import org.sakaiproject.kaltura.services.BaseService;
  * 
  * @author Robert E. Long (rlong @ unicon.net)
  */
-public class Database extends BaseService {
+public class Database {
 
     private final Log log = LogFactory.getLog(Database.class);
+
+    /**
+     * {@link SqlService}
+     */
+    protected SqlService sqlService;
+    public void setSqlService(SqlService sqlService) {
+        this.sqlService = sqlService;
+    }
 
     /**
      * Borrows a connection from the pool

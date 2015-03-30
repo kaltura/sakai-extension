@@ -36,4 +36,9 @@ public class Constants {
     public static final String MEMBERSHIP_PROJECT_ROLE_STUDENT = "access";
     public static final String MEMBERSHIP_PROJECT_ROLE_INSTRUCTOR = "maintain";
 
+    /*
+     * REST configuration
+     */
+    public static final String REST_DEFAULT_ENCODING = "UTF-8";
+
 }
