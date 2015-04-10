@@ -23,12 +23,30 @@ $(document).ready(function(){
         $("#user-data-eid").append(data.eid);
         $("#user-data-email").append(data.email);
         $("#user-data-type").append(data.type);
+
+        $.each(data.userSiteRoles, function(index, userSiteRole) {
+            $("#user-role-table").append(
+                "<tr>" +
+                    "<td>" + userSiteRole.siteId + "</td>" +
+                    "<td>" + userSiteRole.siteRole + "</td>" +
+                    "<td>" + userSiteRole.ltiRole + "</td>" + 
+                "</tr>"
+            );
+        });
     });
 
     /* GET request for role data */
     doGet(roleUrl, function(success, data) {
         $("#role-data-json").append(JSON.stringify(data));
-    	$("#role-data-role").append(data.role);
+
+        $.each(data, function(index, roleMapping) {
+            $("#role-table").append(
+                "<tr>" +
+                    "<td>" + roleMapping.sakaiRoleId + "</td>" +
+                    "<td>" + roleMapping.ltiRoleId + "</td>" + 
+                "</tr>"
+            );
+        });
     });
 
     /* POST ajax request */

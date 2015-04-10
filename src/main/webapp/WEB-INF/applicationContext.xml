@@ -19,10 +19,13 @@
 
     <!-- services -->
 
-    <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService">
+    <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService" init-method="init">
     </bean>
 
     <bean id="userService" class="org.sakaiproject.kaltura.services.UserService">
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
+        <property name="entityManager" ref="org.sakaiproject.entity.api.EntityManager" />
+        <property name="roleService" ref="roleService" />
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     </bean>
 

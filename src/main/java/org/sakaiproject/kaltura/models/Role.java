@@ -14,10 +14,36 @@
  */
 package org.sakaiproject.kaltura.models;
 
+import com.google.gson.annotations.Expose;
+
 public class Role {
 
-    private org.sakaiproject.authz.api.Role sakaiRole;
+    @Expose
+    private String sakaiRoleId;
+    @Expose
+    private String ltiRoleId;
 
     public Role(){}
+
+    public Role(String sakaiRoleId, String ltiRoleId) {
+        this.sakaiRoleId = sakaiRoleId;
+        this.ltiRoleId = ltiRoleId;
+    }
+
+    public String getSakaiRoleId() {
+        return sakaiRoleId;
+    }
+
+    public void setSakaiRoleId(String sakaiRoleId) {
+        this.sakaiRoleId = sakaiRoleId;
+    }
+
+    public String getLtiRoleId() {
+        return ltiRoleId;
+    }
+
+    public void setLtiRoleId(String ltiRoleId) {
+        this.ltiRoleId = ltiRoleId;
+    }
 
 }

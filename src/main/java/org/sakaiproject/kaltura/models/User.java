@@ -60,6 +60,46 @@ public class User {
         }
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getEid() {
+        return eid;
+    }
+
+    public void setEid(String eid) {
+        this.eid = eid;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public org.sakaiproject.user.api.User getSakaiUser() {
         return sakaiUser;
     }
@@ -76,4 +116,11 @@ public class User {
         this.userSiteRoles = userSiteRoles;
     }
 
+    public void addUserSiteRole(UserSiteRole userSiteRole) {
+        if (userSiteRoles == null) {
+            userSiteRoles = new ArrayList<UserSiteRole>();
+        }
+
+        userSiteRoles.add(userSiteRole);
+    }
 }

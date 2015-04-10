@@ -14,13 +14,28 @@
  */
 package org.sakaiproject.kaltura.models;
 
+import com.google.gson.annotations.Expose;
+
 public class UserSiteRole {
 
+    @Expose
     private String siteId;
-    private String role;
+    @Expose
+    private String siteRole;
+    @Expose
     private String ltiRole;
 
     public UserSiteRole(){}
+
+    public UserSiteRole(String siteId) {
+        this(siteId, null, null);
+    }
+
+    public UserSiteRole(String siteId, String siteRole, String ltiRole) {
+        this.siteId = siteId;
+        this.siteRole = siteRole;
+        this.ltiRole = ltiRole;
+    }
 
     public String getSiteId() {
         return siteId;
@@ -30,12 +45,12 @@ public class UserSiteRole {
         this.siteId = siteId;
     }
 
-    public String getRole() {
-        return role;
+    public String getSiteRole() {
+        return siteRole;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setSiteRole(String siteRole) {
+        this.siteRole = siteRole;
     }
 
     public String getLtiRole() {

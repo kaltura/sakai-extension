@@ -14,14 +14,23 @@
  */
 package org.sakaiproject.kaltura.services;
 
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.authz.api.AuthzGroup;
+import org.sakaiproject.authz.api.AuthzGroupService;
+import org.sakaiproject.authz.api.Role;
+import org.sakaiproject.entity.api.EntityManager;
+import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.User;
+import org.sakaiproject.kaltura.models.UserSiteRole;
 import org.sakaiproject.kaltura.models.errors.ErrorUser;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
 import org.sakaiproject.kaltura.utils.common.RestUtil;
+import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 
@@ -35,13 +44,42 @@ public class UserService {
     private final Log log = LogFactory.getLog(UserService.class);
 
     /**
+     * {@link AuthzGroupService}
+     */
+    private AuthzGroupService authzGroupService;
+    public void setAuthzGroupService(AuthzGroupService authzGroupService) {
+        this.authzGroupService = authzGroupService;
+    }
+
+    /**
+     * {@link EntityManager}
+     */
+    private EntityManager entityManager;
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    /**
+     * {@link RoleService}
+     */
+    private RoleService roleService;
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
+    /**
      * {@link UserDirectoryService}
      */
-    protected UserDirectoryService userDirectoryService;
+    private UserDirectoryService userDirectoryService;
     public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
         this.userDirectoryService = userDirectoryService;
     }
 
+    /**
+     * Gets the user's site and role data
+     * 
+     * @param userId the user's ID, if not given, get the currently logged-in user's data
+     */
     public ActionReturn get(String userId) {
         User user = null;
         ErrorUser errorUser = new ErrorUser();
@@ -57,7 +95,43 @@ public class UserService {
             }
         }
 
+        populateUserData(user);
+
         return RestUtil.processActionReturn(errorUser, JsonUtil.parseToJson(user));
+    }
+
+    /**
+     * Populate the user's sites and role data
+     * 
+     * @param user the {@link User} object
+     */
+    private void populateUserData(User user) {
+        Set<String> userAuthzGroupIds = authzGroupService.getAuthzGroupsIsAllowed(user.getId(), "site.visit", null);
+
+        for (String userAuthzGroupId : userAuthzGroupIds) {
+            try {
+                Reference reference = entityManager.newReference(userAuthzGroupId);
+                if(reference.isKnownType()) {
+                   if(StringUtils.equalsIgnoreCase(reference.getType(), SiteService.APPLICATION_ID)) {
+                       String siteId = reference.getId();
+                       if (StringUtils.isNotBlank(siteId)) {
+                           UserSiteRole userSiteRole = new UserSiteRole(siteId);
+
+                           AuthzGroup authzGroup = authzGroupService.getAuthzGroup(userAuthzGroupId);
+                           Role role = authzGroup.getUserRole(user.getId());
+                           userSiteRole.setSiteRole(role.getId());
+
+                           String ltiRole = roleService.calculateLtiRole(role.getId());
+                           userSiteRole.setLtiRole(ltiRole);
+
+                           user.addUserSiteRole(userSiteRole);
+                       }
+                   }
+                }
+            } catch (Exception e) {
+                log.error("Error retrieving AuthzGroup: " + userAuthzGroupId + " for user: " + user.getSakaiUser().getId(), e);
+            }
+        }
     }
 
 }

@@ -15,7 +15,9 @@
 package org.sakaiproject.kaltura.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
@@ -26,8 +28,20 @@ import org.sakaiproject.kaltura.utils.common.RestUtil;
 
 public class RoleService {
 
-    public ActionReturn get(String roleId) {
-        if (StringUtils.isBlank(roleId)) {
+    private List<Role> roleMapping;
+
+    public void init() {
+        initRoleMapping();
+    }
+
+    /**
+     * Gets the role data for the given Sakai Role ID
+     * If no ID is given, get all LTI role data
+     * 
+     * @param sakaiRoleId the Sakai role ID
+     */
+    public ActionReturn get(String sakaiRoleId) {
+        if (StringUtils.isBlank(sakaiRoleId)) {
             // no roleId specified, get all roles instead
             return getAllRoles();
         }
@@ -35,17 +49,66 @@ public class RoleService {
         ErrorRole errorRole = new ErrorRole();
 
         Role role = new Role();
+        for (Role roleMap : roleMapping) {
+            if (StringUtils.equalsIgnoreCase(roleMap.getSakaiRoleId(), sakaiRoleId)) {
+                role = new Role(roleMap.getSakaiRoleId(), roleMap.getLtiRoleId());
+            }
+        }
 
         return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(role));
     }
 
+    /**
+     * Gets all Sakai role : LTI role mapping data
+     * 
+     * @return
+     */
     public ActionReturn getAllRoles() {
         ErrorRole errorRole = new ErrorRole();
 
-        List<Role> roles = new ArrayList<Role>();
+        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(roleMapping));
+    }
 
-        //return processActionReturn(errorRole, JsonUtil.parseToJson(roles));
-        return RestUtil.processActionReturn(errorRole, "{\"role\": \"No roles defined (yet)\"}");
+    /**
+     * Creates the initial role mapping and stores it in a cache
+     */
+    public void initRoleMapping() {
+        roleMapping = new ArrayList<Role>();
+
+        // TODO create a non-expiring cache for this
+        // TODO persist in db
+        // TODO this is TEMPORARY
+        Map<String, String> roles = new HashMap<String, String>();
+        roles.put("Instructor", "Instructor");
+        roles.put("maintain", "Instructor");
+        roles.put("Student", "Learner");
+        roles.put("access", "Learner");
+
+        for (String sakaiRole : roles.keySet()) {
+            roleMapping.add(new Role(sakaiRole, roles.get(sakaiRole)));
+        }
+    }
+
+    /**
+     * Calculates the LTI role based on the Sakai site role
+     * 
+     * @param siteRoleId the Sakai site role ID
+     * @return the corresponding LTI role (default: Learner)
+     */
+    public String calculateLtiRole(String siteRoleId) {
+        // default to "Learner"
+        String ltiRole = "Learner";
+
+        if (roleMapping != null) {
+            for (Role roleMap : roleMapping) {
+                if (StringUtils.equalsIgnoreCase(roleMap.getSakaiRoleId(), siteRoleId)) {
+                    ltiRole = roleMap.getLtiRoleId();
+                    break;
+                }
+            }
+        }
+
+        return ltiRole;
     }
 
 }

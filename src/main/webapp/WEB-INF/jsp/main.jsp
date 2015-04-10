@@ -26,21 +26,45 @@
     <div class="panel panel-default">
         <div class="panel-heading">User</div>
         <div class="panel-body">
-            <table class="table">
-                <tr><td>Name:</td><td><span id="user-data-name"></span></td></tr>
-                <tr><td>User ID:</td><td><span id="user-data-id"></span></td></tr>
-                <tr><td>User EID:</td><td><span id="user-data-eid"></span></td></tr>
-                <tr><td>Email:</td><td><span id="user-data-email"></span></td></tr>
-                <tr><td>Type:</td><td><span id="user-data-type"></span></td></tr>
+            <table id="user-table" class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>ID</th>
+                    <th>EID</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                </tr>
+                <tr>
+                    <td><span id="user-data-name"></span></td>
+                    <td><span id="user-data-id"></span></td>
+                    <td><span id="user-data-eid"></span></td>
+                    <td><span id="user-data-email"></span></td>
+                    <td><span id="user-data-type"></span></td>
+                </tr>
             </table>
             <div>JSON: <span id="user-data-json"></span></div>
         </div>
     </div>
     <div class="panel panel-default">
-        <div class="panel-heading">Role</div>
+        <div class="panel-heading">User's Roles</div>
         <div class="panel-body">
-            <table class="table">
-                <tr><td>Role:</td><td><span id="role-data-role"></span></td></tr>
+            <table id="user-role-table" class="table">
+                <tr>
+                    <th>Sakai site</th>
+                    <th>Sakai site role</th>
+                    <th>LTI role</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Role Maps</div>
+        <div class="panel-body">
+            <table id="role-table" class="table">
+                <tr>
+                    <th>Sakai role</th>
+                    <th>LTI role</th>
+                </tr>
             </table>
             <div>JSON: <span id="role-data-json"></span></div>
         </div>
