@@ -14,98 +14,103 @@
  */
 package org.sakaiproject.kaltura.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
-import org.sakaiproject.kaltura.models.Role;
-import org.sakaiproject.kaltura.models.errors.ErrorRole;
-import org.sakaiproject.kaltura.utils.common.JsonUtil;
-import org.sakaiproject.kaltura.utils.common.RestUtil;
+import org.sakaiproject.kaltura.Constants;
+import org.sakaiproject.kaltura.dao.KalturaLtiRoleDao;
+import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 
+/**
+ * A helper class for getting and calculating role objects
+ * 
+ * @author Robert Long (rlong @ unicon.net)
+ */
 public class RoleService {
 
-    private List<Role> roleMapping;
-
-    public void init() {
-        initRoleMapping();
+    private KalturaLtiRoleDao kalturaLtiRoleDao;
+    public void setKalturaLtiRoleDao(KalturaLtiRoleDao kalturaLtiRoleDao) {
+        this.kalturaLtiRoleDao = kalturaLtiRoleDao;
     }
 
     /**
-     * Gets the role data for the given Sakai Role ID
-     * If no ID is given, get all LTI role data
+     * Get the role mapping associated with the given Sakai role
      * 
-     * @param sakaiRoleId the Sakai role ID
+     * @param sakaiRole the Sakai role ID
+     * @return the {@link KalturaLtiRole} object
      */
-    public ActionReturn get(String sakaiRoleId) {
-        if (StringUtils.isBlank(sakaiRoleId)) {
-            // no roleId specified, get all roles instead
-            return getAllRoles();
+    public KalturaLtiRole getSakaiRoleMapping(String sakaiRole) {
+        if (StringUtils.isBlank(sakaiRole)) {
+            throw new IllegalArgumentException("Sakai role cannot be blank.");
         }
 
-        ErrorRole errorRole = new ErrorRole();
+        KalturaLtiRole kalturaLtiRole = kalturaLtiRoleDao.getSakaiRoleMapping(sakaiRole);
 
-        Role role = new Role();
-        for (Role roleMap : roleMapping) {
-            if (StringUtils.equalsIgnoreCase(roleMap.getSakaiRoleId(), sakaiRoleId)) {
-                role = new Role(roleMap.getSakaiRoleId(), roleMap.getLtiRoleId());
-            }
-        }
-
-        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(role));
+        return kalturaLtiRole;
     }
 
     /**
-     * Gets all Sakai role : LTI role mapping data
+     * Get the role mapping associated with the given LTI role
      * 
-     * @return
+     * @param ltiRole the LTI role ID
+     * @return the {@link KalturaLtiRole} object
      */
-    public ActionReturn getAllRoles() {
-        ErrorRole errorRole = new ErrorRole();
+    public KalturaLtiRole getLtiRoleMapping(String ltiRole) {
+        if (StringUtils.isBlank(ltiRole)) {
+            throw new IllegalArgumentException("LTI role cannot be blank.");
+        }
 
-        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(roleMapping));
+        KalturaLtiRole kalturaLtiRole = kalturaLtiRoleDao.getLtiRoleMapping(ltiRole);
+
+        return kalturaLtiRole;
     }
 
     /**
-     * Creates the initial role mapping and stores it in a cache
+     * Get the entire list of role mappings
+     * 
+     * @return a list of the {@link KalturaLtiRole} objects
      */
-    public void initRoleMapping() {
-        roleMapping = new ArrayList<Role>();
+    public List<KalturaLtiRole> getAllRoleMappings() {
+        List<KalturaLtiRole> allRoleMappings = kalturaLtiRoleDao.getAllRoleMappings();
 
-        // TODO create a non-expiring cache for this
-        // TODO persist in db
-        // TODO this is TEMPORARY
-        Map<String, String> roles = new HashMap<String, String>();
-        roles.put("Instructor", "Instructor");
-        roles.put("maintain", "Instructor");
-        roles.put("Student", "Learner");
-        roles.put("access", "Learner");
+        return allRoleMappings;
+    }
 
-        for (String sakaiRole : roles.keySet()) {
-            roleMapping.add(new Role(sakaiRole, roles.get(sakaiRole)));
-        }
+    /**
+     * Get the list of active role mappings
+     * 
+     * @return a list of the {@link KalturaLtiRole} objects
+     */
+    public List<KalturaLtiRole> getActiveRoleMappings() {
+        List<KalturaLtiRole> activeRoleMappings = kalturaLtiRoleDao.getActiveRoleMappings();
+
+        return activeRoleMappings;
+    }
+
+    /**
+     * Get the list of inactive role mappings
+     * 
+     * @return a list of the {@link KalturaLtiRole} objects
+     */
+    public List<KalturaLtiRole> getInactiveRoleMappings() {
+        List<KalturaLtiRole> inactiveRoleMappings = kalturaLtiRoleDao.getInactiveRoleMappings();
+
+        return inactiveRoleMappings;
     }
 
     /**
      * Calculates the LTI role based on the Sakai site role
      * 
-     * @param siteRoleId the Sakai site role ID
+     * @param sakaiRole the Sakai site role ID
      * @return the corresponding LTI role (default: Learner)
      */
-    public String calculateLtiRole(String siteRoleId) {
-        // default to "Learner"
-        String ltiRole = "Learner";
+    public String calculateLtiRole(String sakaiRole) {
+        String ltiRole = Constants.DEFAULT_LTI_ROLE;
 
-        if (roleMapping != null) {
-            for (Role roleMap : roleMapping) {
-                if (StringUtils.equalsIgnoreCase(roleMap.getSakaiRoleId(), siteRoleId)) {
-                    ltiRole = roleMap.getLtiRoleId();
-                    break;
-                }
-            }
+        KalturaLtiRole kalturaLtiRole = kalturaLtiRoleDao.getSakaiRoleMapping(sakaiRole);
+
+        if (kalturaLtiRole != null) {
+            ltiRole = kalturaLtiRole.getLtiRole();
         }
 
         return ltiRole;

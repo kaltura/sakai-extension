@@ -19,7 +19,8 @@
 
     <!-- services -->
 
-    <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService" init-method="init">
+    <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService">
+        <property name="kalturaLtiRoleDao" ref="org.sakaiproject.kaltura.dao.KalturaDaoTarget" />
     </bean>
 
     <bean id="userService" class="org.sakaiproject.kaltura.services.UserService">
@@ -29,17 +30,26 @@
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     </bean>
 
-    <!-- entity provider -->
-
-    <bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider" class="org.sakaiproject.kaltura.providers.KalturaProvider">
+    <!-- provider services -->
+    
+    <bean id="roleProviderService" class="org.sakaiproject.kaltura.services.RoleProviderService">
         <property name="roleService" ref="roleService" />
+    </bean>
+
+    <bean id="userProviderService" class="org.sakaiproject.kaltura.services.UserProviderService">
         <property name="userService" ref="userService" />
     </bean>
 
-    <!-- DAO -->
+    <!-- entity provider -->
 
-    <bean id="database" class="org.sakaiproject.kaltura.dao.Database">
-        <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
+    <bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider" class="org.sakaiproject.kaltura.providers.KalturaProvider">
+        <property name="roleProviderService" ref="roleProviderService" />
+        <property name="userProviderService" ref="userProviderService" />
     </bean>
+
+    <!-- hibernate imports -->
+
+    <import resource="sakai-hibernate.xml" />
+    <import resource="spring-hibernate.xml" />
 
 </beans>

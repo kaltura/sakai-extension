@@ -41,4 +41,9 @@ public class Constants {
      */
     public static final String REST_DEFAULT_ENCODING = "UTF-8";
 
+    /*
+     * Role configuration
+     */
+    public final static String DEFAULT_LTI_ROLE = "Learner";
+
 }

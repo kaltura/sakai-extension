@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010 Unicon (R) Licensed under the
+    Educational Community License, Version 2.0 (the "License"); you may
+    not use this file except in compliance with the License. You may
+    obtain a copy of the License at
+
+    http://www.osedu.org/licenses/ECL-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an "AS IS"
+    BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+    or implied. See the License for the specific language governing
+    permissions and limitations under the License.
+
+-->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- define the list of HBM mapping files -->
+    <bean id="org.sakaiproject.kaltura.HBMMappingList" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <value>org/sakaiproject/kaltura/dao/hbm/KalturaLtiRole.hbm.xml</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- create a DAO bean, use the hibernate implementation -->
+    <bean id="org.sakaiproject.kaltura.dao.KalturaDaoTarget"
+            class="org.sakaiproject.kaltura.dao.KalturaLtiRoleDaoImpl"
+            init-method="init">
+        <property name="sessionFactory" ref="org.sakaiproject.kaltura.hibernate.SessionFactory" />
+        <property name="persistentClasses">
+            <list>
+                <value>org.sakaiproject.kaltura.models.db.KalturaLtiRole</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- This wraps our DAO so that the transactions are managed -->
+    <bean id="org.sakaiproject.kaltura.dao.KalturaLtiRoleDao"
+            class="org.sakaiproject.genericdao.springutil.CurrentClassLoaderTxProxyFactoryBean">
+        <property name="transactionManager" ref="org.sakaiproject.kaltura.hibernate.TransactionManager" />
+        <property name="target" ref="org.sakaiproject.kaltura.dao.KalturaDaoTarget" />
+        <property name="transactionAttributes">
+            <props>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="count*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- create a data preloading bean that has transaction protection -->
+    <bean id="org.sakaiproject.kaltura.dao.PreloadLtiRoleData"
+            class="org.sakaiproject.kaltura.dao.PreloadLtiRoleDataImpl"
+            init-method="init">
+        <property name="kalturaLtiRoleDao" ref="org.sakaiproject.kaltura.dao.KalturaDaoTarget" />
+    </bean>
+
+</beans>

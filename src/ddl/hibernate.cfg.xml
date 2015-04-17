@@ -15,14 +15,9 @@
     permissions and limitations under the License.
 
 -->
-<!DOCTYPE hibernate-configuration PUBLIC
-        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <!-- these mapping resource paths must point to your hibernate template files (.hbm.xml),
-            this should be the classpath location (typically after the src directory) -->
-        <mapping resource="org/sakaiproject/kaltura/dao/hbm/MediaCollection.hbm.xml" />
-        <mapping resource="org/sakaiproject/kaltura/dao/hbm/MediaItem.hbm.xml" />
+        <mapping resource="org/sakaiproject/kaltura/dao/hbm/KalturaLtiRole.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

@@ -28,8 +28,8 @@ import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
-import org.sakaiproject.kaltura.services.RoleService;
-import org.sakaiproject.kaltura.services.UserService;
+import org.sakaiproject.kaltura.services.RoleProviderService;
+import org.sakaiproject.kaltura.services.UserProviderService;
 import org.sakaiproject.kaltura.utils.common.SecurityUtil;
 
 /**
@@ -41,14 +41,14 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
     private final Log log = LogFactory.getLog(KalturaProvider.class);
 
-    private RoleService roleService;
-    public void setRoleService(RoleService roleService) {
-        this.roleService = roleService;
+    private RoleProviderService roleProviderService;
+    public void setRoleProviderService(RoleProviderService roleProviderService) {
+        this.roleProviderService = roleProviderService;
     }
 
-    private UserService userService;
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    private UserProviderService userProviderService;
+    public void setUserProviderService(UserProviderService userProviderService) {
+        this.userProviderService = userProviderService;
     }
 
     public void init() {
@@ -93,7 +93,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
         } else if (StringUtils.equalsIgnoreCase(EntityView.Method.GET.name(), view.getMethod())) {
             // GET
             String roleId = view.getPathSegment(2);
-            actionReturn = roleService.get(roleId);
+            actionReturn = roleProviderService.get(roleId);
         } else {
             throw new IllegalArgumentException("Method not allowed on kaltura/role: " + view.getMethod());
         }
@@ -114,7 +114,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
         // GET
         String userId = view.getPathSegment(2);
-        actionReturn = userService.get(userId);
+        actionReturn = userProviderService.get(userId);
 
         return actionReturn;
     }

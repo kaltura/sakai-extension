@@ -24,21 +24,12 @@ import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.UserSiteRole;
-import org.sakaiproject.kaltura.models.errors.ErrorUser;
-import org.sakaiproject.kaltura.utils.common.JsonUtil;
-import org.sakaiproject.kaltura.utils.common.RestUtil;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 
-/**
- * Service layer to support the auto-roster/user entities
- * 
- * @author Robert Long (rlong @ unicon.net)
- */
 public class UserService {
 
     private final Log log = LogFactory.getLog(UserService.class);
@@ -76,28 +67,23 @@ public class UserService {
     }
 
     /**
-     * Gets the user's site and role data
+     * Get the {@link User} object associated with the given user ID
      * 
-     * @param userId the user's ID, if not given, get the currently logged-in user's data
+     * @param userId the Sakai internal user ID
+     * @return the {@link User} object
+     * @throws Exception
      */
-    public ActionReturn get(String userId) {
-        User user = null;
-        ErrorUser errorUser = new ErrorUser();
+    public User getUser(String userId) throws Exception {
+        return new User(userDirectoryService.getUser(userId));
+    }
 
-        if (StringUtils.isBlank(userId)) {
-            user = new User(userDirectoryService.getCurrentUser());
-        } else {
-            try {
-                user = new User(userDirectoryService.getUser(userId));
-            } catch (UserNotDefinedException e) {
-                errorUser.updateErrorList(e.getLocalizedMessage(), "getting user by user ID", userId);
-                log.error("Error getting user by user ID: " + e, e);
-            }
-        }
-
-        populateUserData(user);
-
-        return RestUtil.processActionReturn(errorUser, JsonUtil.parseToJson(user));
+    /**
+     * Get the {@link User} object associated with the currently logged-in user
+     * 
+     * @return the {@link User} object
+     */
+    public User getCurrentUser() {
+        return new User(userDirectoryService.getCurrentUser());
     }
 
     /**
@@ -105,7 +91,7 @@ public class UserService {
      * 
      * @param user the {@link User} object
      */
-    private void populateUserData(User user) {
+    public void populateUserData(User user) {
         Set<String> userAuthzGroupIds = authzGroupService.getAuthzGroupsIsAllowed(user.getId(), "site.visit", null);
 
         for (String userAuthzGroupId : userAuthzGroupIds) {

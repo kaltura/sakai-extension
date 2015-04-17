@@ -12,43 +12,89 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.dao;
+package org.sakaiproject.kaltura.models.db;
 
 import java.io.Serializable;
 import java.util.Date;
 
+import org.sakaiproject.kaltura.Constants;
+import org.sakaiproject.kaltura.utils.common.JsonUtil;
+
+import com.google.gson.annotations.Expose;
+
 /**
- * This is a Kaltura Sakai role to LTI role mapping, it represents a mapping object
+ * This is a Kaltura Sakai role to LTI role mapping, it represents a mapping object from the database
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public class KalturaLtiRoleDB implements Serializable {
+public class KalturaLtiRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final static String DEFAULT_LTI_ROLE = "Learner";
-
+    @Expose
     private Long id;
+    @Expose
     private String sakaiRole;
+    @Expose
     private String ltiRole;
+    @Expose
     private Boolean active;
+    @Expose
     private Date dateCreated;
-    private Date lastModified;
+    @Expose
+    private Date dateModified;
 
-    public KalturaLtiRoleDB(Long id, String sakaiRole) {
-        this(id, sakaiRole, DEFAULT_LTI_ROLE);
+    /**
+     * Default constructor
+     */
+    public KalturaLtiRole(){};
+
+    /**
+     * Constructor using the Sakai role ID
+     * 
+     * @param sakaiRole the Sakai role ID
+     */
+    public KalturaLtiRole(String sakaiRole) {
+        this(sakaiRole, Constants.DEFAULT_LTI_ROLE);
     }
 
-    public KalturaLtiRoleDB(Long id, String sakaiRole, String ltiRole) {
-        this(id, sakaiRole, ltiRole, true);
+    /**
+     * Constructor using the Sakai role Id and the LTI role ID
+     * 
+     * @param sakaiRole the Sakai role ID
+     * @param ltiRole the LTI role ID
+     */
+    public KalturaLtiRole(String sakaiRole, String ltiRole) {
+        this(sakaiRole, ltiRole, true);
     }
 
-    public KalturaLtiRoleDB(Long id, String sakaiRole, String ltiRole, Boolean active) {
+    /**
+     * Constructor using the Sakai role Id, the LTI role ID, and active mapping
+     * 
+     * @param sakaiRole the Sakai role ID
+     * @param ltiRole the LTI role ID
+     * @param active is this mapping active?
+     */
+    public KalturaLtiRole(String sakaiRole, String ltiRole, Boolean active) {
+        this(sakaiRole, ltiRole, active, new Date(), new Date());
+    }
+
+    /**
+     * Full constructor
+     * 
+     * @param sakaiRole the Sakai role ID
+     * @param ltiRole the LTI role ID
+     * @param active is this mapping active?
+     * @param dateCreated the date of creation
+     * @param dateModified the date of last modification
+     */
+    public KalturaLtiRole(String sakaiRole, String ltiRole, Boolean active, Date dateCreated, Date dateModified) {
         super();
-        this.id = id;
         this.sakaiRole = sakaiRole;
         this.ltiRole = ltiRole;
         this.active = active;
+        this.dateCreated = dateCreated;
+        this.dateModified = dateModified;
     }
 
     public Long getId() {
@@ -86,26 +132,19 @@ public class KalturaLtiRoleDB implements Serializable {
         this.dateCreated = dateCreated;
     }
 
-    public Date getLastModified() {
-        return lastModified;
+    public Date getDateModified() {
+        return dateModified;
     }
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
     }
 
     /**
-     * {@inheritDoc}
+     * Override to show this model as a JSON string
      */
     @Override
     public String toString() {
-        return "{KalturaLtiRole:"
-                + ":id=" + id
-                + ":sakai_role:=" + sakaiRole
-                + ":lti_role=" + ltiRole
-                + ":active=" + active
-                + ":date_created=" + dateCreated
-                + ":last_modified_date=" + lastModified
-                + "}";
+        return JsonUtil.parseToJson(this);
     }
 
     /**
@@ -119,7 +158,7 @@ public class KalturaLtiRoleDB implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        KalturaLtiRoleDB other = (KalturaLtiRoleDB) obj;
+        KalturaLtiRole other = (KalturaLtiRole) obj;
         if (id == null || other.id == null)  {
             return false;
         } else {
