@@ -62,6 +62,7 @@
     <!-- create a data preloading bean that has transaction protection -->
     <bean id="preloadLtiRoleData" class="org.sakaiproject.kaltura.dao.PreloadLtiRoleDataImpl" init-method="init">
         <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDao" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
     </bean>
 
 </beans>

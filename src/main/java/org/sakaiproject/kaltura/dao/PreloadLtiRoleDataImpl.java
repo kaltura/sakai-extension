@@ -16,8 +16,10 @@ package org.sakaiproject.kaltura.dao;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 
 public class PreloadLtiRoleDataImpl {
@@ -29,34 +31,50 @@ public class PreloadLtiRoleDataImpl {
         this.kalturaLtiRoleDao = kalturaLtiRoleDao;
     }
 
+    private ServerConfigurationService serverConfigurationService;
+    public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
+        this.serverConfigurationService = serverConfigurationService;
+    }
+
     public void init() {
-        preloadItems();
+        preloadDefaultRoles();
     }
 
     /**
      * Preload the default role mappings into the database
      */
-    public void preloadItems() {
-        try {
-            List<KalturaLtiRole> existingRoles = kalturaLtiRoleDao.getAllRoleMappings();
+    public void preloadDefaultRoles() {
+        boolean doPreload = serverConfigurationService.getBoolean("kaltura.lti.roles.preload", true);
 
-            // preload default roles if none exist
-            if (existingRoles.isEmpty()) {
-                KalturaLtiRole instructor = new KalturaLtiRole("Instructor", "Instructor", true);
-                kalturaLtiRoleDao.save(instructor);
-                KalturaLtiRole maintain = new KalturaLtiRole("maintain", "Instructor", true);
-                kalturaLtiRoleDao.save(maintain);
-                KalturaLtiRole student = new KalturaLtiRole("Student", "Learner", true);
-                kalturaLtiRoleDao.save(student);
-                KalturaLtiRole access = new KalturaLtiRole("access", "Learner", true);
-                kalturaLtiRoleDao.save(access);
-                KalturaLtiRole ta = new KalturaLtiRole("Teaching Assistant", "Instructor", true);
-                kalturaLtiRoleDao.save(ta);
-
-                log.info("Kaltura :: Preloaded default role mappings.");
+        if (doPreload) {
+            try {
+                List<KalturaLtiRole> existingRoles = kalturaLtiRoleDao.getAllRoleMappings();
+    
+                // preload default roles if none exist
+                if (existingRoles.isEmpty()) {
+                    String[] defaultRoleMapping = serverConfigurationService.getStrings("kaltura.lti.roles");
+                    for (String roleMapping : defaultRoleMapping) {
+                        String[] roleMap = roleMapping.split(":");
+                        String sakaiRole = roleMap[0];
+                        String ltiRole = roleMap[1];
+    
+                        if (StringUtils.isNotBlank(sakaiRole) && StringUtils.isNotBlank(ltiRole)) {
+                            KalturaLtiRole role = new KalturaLtiRole(sakaiRole, ltiRole, true);
+                            kalturaLtiRoleDao.save(role);
+    
+                            log.info("Kaltura :: Created default role mapping of Sakai role: " + sakaiRole + " --> " + "LTI role: " + ltiRole);
+                        }
+                    }
+    
+                    log.info("Kaltura :: Preloaded default role mappings.");
+                } else {
+                    log.info("Kaltura :: Role mappings exist. Skipping pre-loading.");
+                }
+            } catch (Exception e) {
+                log.error("Kaltura :: there was an error updating the default roles. " + e, e);
             }
-        } catch (Exception e) {
-            log.error("Kaltura :: there was an error updating the default roles. " + e, e);
+        } else {
+            log.info("Kaltura :: Pre-loading of default roles set to false. Nothing to do.");
         }
     }
 }
