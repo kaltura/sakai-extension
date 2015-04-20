@@ -32,6 +32,8 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
     public List<KalturaLtiRole> getAllRoleMappings() {
         List<KalturaLtiRole> allRoleMappings = new ArrayList<KalturaLtiRole>();
 
+        allRoleMappings = findAll(KalturaLtiRole.class);
+
         return allRoleMappings;
     }
 

@@ -20,7 +20,7 @@
     <!-- services -->
 
     <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService">
-        <property name="kalturaLtiRoleDao" ref="org.sakaiproject.kaltura.dao.KalturaDaoTarget" />
+        <property name="kalturaLtiRoleDao" ref="kalturaDaoTarget" />
     </bean>
 
     <bean id="userService" class="org.sakaiproject.kaltura.services.UserService">
@@ -49,7 +49,6 @@
 
     <!-- hibernate imports -->
 
-    <import resource="sakai-hibernate.xml" />
     <import resource="spring-hibernate.xml" />
 
 </beans>

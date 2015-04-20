@@ -14,6 +14,8 @@
  */
 package org.sakaiproject.kaltura.dao;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
@@ -35,29 +37,26 @@ public class PreloadLtiRoleDataImpl {
      * Preload the default role mappings into the database
      */
     public void preloadItems() {
-        long count = 0;
         try {
-            count = kalturaLtiRoleDao.countAll(KalturaLtiRole.class);
-        } catch (Exception e) {}
+            List<KalturaLtiRole> existingRoles = kalturaLtiRoleDao.getAllRoleMappings();
 
-        if (log.isDebugEnabled()) {
-            log.debug("Check for existing role mappings: " + count);
-        }
+            // preload default roles if none exist
+            if (existingRoles.isEmpty()) {
+                KalturaLtiRole instructor = new KalturaLtiRole("Instructor", "Instructor", true);
+                kalturaLtiRoleDao.save(instructor);
+                KalturaLtiRole maintain = new KalturaLtiRole("maintain", "Instructor", true);
+                kalturaLtiRoleDao.save(maintain);
+                KalturaLtiRole student = new KalturaLtiRole("Student", "Learner", true);
+                kalturaLtiRoleDao.save(student);
+                KalturaLtiRole access = new KalturaLtiRole("access", "Learner", true);
+                kalturaLtiRoleDao.save(access);
+                KalturaLtiRole ta = new KalturaLtiRole("Teaching Assistant", "Instructor", true);
+                kalturaLtiRoleDao.save(ta);
 
-        // preload default roles if none exist
-        if (count == 0) {
-            KalturaLtiRole instructor = new KalturaLtiRole("Instructor", "Instructor", true);
-            kalturaLtiRoleDao.save(instructor);
-            KalturaLtiRole maintain = new KalturaLtiRole("maintain", "Instructor", true);
-            kalturaLtiRoleDao.save(maintain);
-            KalturaLtiRole student = new KalturaLtiRole("Student", "Learner", true);
-            kalturaLtiRoleDao.save(student);
-            KalturaLtiRole access = new KalturaLtiRole("access", "Learner", true);
-            kalturaLtiRoleDao.save(access);
-            KalturaLtiRole ta = new KalturaLtiRole("Teaching Assistant", "Instructor", true);
-            kalturaLtiRoleDao.save(ta);
-
-            log.info("Preloaded " + kalturaLtiRoleDao.countAll(KalturaLtiRole.class) + " role mappings.");
+                log.info("Kaltura :: Preloaded default role mappings.");
+            }
+        } catch (Exception e) {
+            log.error("Kaltura :: there was an error updating the default roles. " + e, e);
         }
     }
 }
