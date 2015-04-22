@@ -31,13 +31,13 @@ public class ErrorRole extends BaseError {
      * @param eid the user's eid (may be null)
      */
     @Override
-    public void updateErrorList(String error, String site, String eid) {
+    public void updateErrorList(String error, String action, String roleId) {
         String value = "Error: " + error;
-        if (StringUtils.isNotBlank(site)) {
-            value += ", site: " + site;
+        if (StringUtils.isNotBlank(action)) {
+            value += ", action: " + action;
         }
-        if (StringUtils.isNotBlank(eid)) {
-            value += ", user: " + eid;
+        if (StringUtils.isNotBlank(roleId)) {
+            value += ", roleId: " + roleId;
         }
 
         update(errors, value);

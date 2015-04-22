@@ -80,6 +80,18 @@ public class KalturaLtiRole implements Serializable {
     }
 
     /**
+     * Constructor using the Sakai role Id, the LTI role ID, and active mapping
+     * 
+     * @param sakaiRole the Sakai role ID
+     * @param ltiRole the LTI role ID
+     * @param active is this mapping active?
+     * @param dateCreated the date of creation
+     */
+    public KalturaLtiRole(String sakaiRole, String ltiRole, Boolean active, Date dateCreated) {
+        this(sakaiRole, ltiRole, active, dateCreated, new Date());
+    }
+
+    /**
      * Full constructor
      * 
      * @param sakaiRole the Sakai role ID

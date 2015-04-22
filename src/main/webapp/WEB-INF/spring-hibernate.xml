@@ -19,25 +19,24 @@
 
 <beans>
 
-    <!-- define the list of HBM mapping files -->
-    <bean id="kalturaHBMMappingList" class="java.util.ArrayList">
-        <constructor-arg>
+    <bean id="kalturaSessionFactory" parent="org.sakaiproject.springframework.orm.hibernate.SessionFactoryBase">
+        <property name="mappingResources">
             <list>
                 <value>org/sakaiproject/kaltura/dao/hbm/KalturaLtiRole.hbm.xml</value>
             </list>
-        </constructor-arg>
+        </property>
     </bean>
 
-    <!-- Create a sessionFactory from the Sakai base definition, give this your HBM files
-        so the session factory can use them, creates a tool specific bean rather than
-        using the shared session factory -->
-    <bean id="kalturaSessionFactory" parent="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory">
-        <property name="mappingResources" ref="kalturaHBMMappingList" />
+    <bean id="kalturaTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+            <ref bean="kalturaSessionFactory" />
+        </property>
     </bean>
 
-    <!-- create a DAO bean, use the hibernate implementation -->
-    <bean id="kalturaDaoTarget" class="org.sakaiproject.kaltura.dao.KalturaLtiRoleDaoImpl" init-method="init">
-        <property name="sessionFactory" ref="kalturaSessionFactory" />
+    <bean id="kalturaDaoTarget" class="org.sakaiproject.kaltura.dao.KalturaLtiRoleDaoImpl" init-method="init" singleton="true">
+        <property name="sessionFactory">
+            <ref bean="kalturaSessionFactory" />
+        </property>
         <property name="persistentClasses">
             <list>
                 <value>org.sakaiproject.kaltura.models.db.KalturaLtiRole</value>
@@ -45,15 +44,15 @@
         </property>
     </bean>
 
-    <!-- This wraps our DAO so that the transactions are managed -->
-    <bean id="kalturaLtiRoleDao" class="org.sakaiproject.genericdao.springutil.CurrentClassLoaderTxProxyFactoryBean">
-        <property name="transactionManager" ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
-        <property name="target" ref="kalturaDaoTarget" />
+    <bean id="kalturaLtiRoleDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="kalturaTransactionManager" />
+        </property>
+        <property name="target">
+            <ref bean="kalturaDaoTarget" />
+        </property>
         <property name="transactionAttributes">
             <props>
-                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
-                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
-                <prop key="count*">PROPAGATION_REQUIRED,readOnly</prop>
                 <prop key="*">PROPAGATION_REQUIRED</prop>
             </props>
         </property>

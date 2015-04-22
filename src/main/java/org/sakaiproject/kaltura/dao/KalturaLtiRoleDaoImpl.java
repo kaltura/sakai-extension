@@ -14,15 +14,22 @@
  */
 package org.sakaiproject.kaltura.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 
 public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements KalturaLtiRoleDao {
 
+    private final Log log = LogFactory.getLog(KalturaLtiRoleDaoImpl.class);
+
     public void init() {
+    }
+
+    public void destroy(){
     }
 
     /**
@@ -30,9 +37,7 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
      */
     @Override
     public List<KalturaLtiRole> getAllRoleMappings() {
-        List<KalturaLtiRole> allRoleMappings = new ArrayList<KalturaLtiRole>();
-
-        allRoleMappings = findAll(KalturaLtiRole.class);
+        List<KalturaLtiRole> allRoleMappings = findAll(KalturaLtiRole.class);
 
         return allRoleMappings;
     }
@@ -42,7 +47,9 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
      */
     @Override
     public List<KalturaLtiRole> getActiveRoleMappings() {
-        List<KalturaLtiRole> activeRoleMappings = new ArrayList<KalturaLtiRole>();
+        Search search = new Search("active", true);
+
+        List<KalturaLtiRole> activeRoleMappings = findBySearch(KalturaLtiRole.class, search);
 
         return activeRoleMappings;
     }
@@ -52,7 +59,9 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
      */
     @Override
     public List<KalturaLtiRole> getInactiveRoleMappings() {
-        List<KalturaLtiRole> inactiveRoleMappings = new ArrayList<KalturaLtiRole>();
+        Search search = new Search("active", false);
+
+        List<KalturaLtiRole> inactiveRoleMappings = findBySearch(KalturaLtiRole.class, search);
 
         return inactiveRoleMappings;
     }
@@ -61,9 +70,32 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
      * {@inheritDoc}
      */
     @Override
+    public KalturaLtiRole getRoleMapping(long roleMappingId) {
+        Search search = new Search("id", roleMappingId);
+
+        KalturaLtiRole kalturaLtiRole = findOneBySearch(KalturaLtiRole.class, search);
+
+        return kalturaLtiRole;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KalturaLtiRole getRoleMapping(String roleMappingId) {
+        long id = Long.parseLong(roleMappingId);
+
+        return getRoleMapping(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public KalturaLtiRole getSakaiRoleMapping(String sakaiRole) {
-        KalturaLtiRole kalturaLtiRole = new KalturaLtiRole();
-        kalturaLtiRole.setSakaiRole(sakaiRole);
+        Search search = new Search("sakaiRole", sakaiRole);
+
+        KalturaLtiRole kalturaLtiRole = findOneBySearch(KalturaLtiRole.class, search);
 
         return kalturaLtiRole;
     }
@@ -72,35 +104,38 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
      * {@inheritDoc}
      */
     @Override
-    public KalturaLtiRole getLtiRoleMapping(String ltiRole) {
-        KalturaLtiRole kalturaLtiRole = new KalturaLtiRole();
-        kalturaLtiRole.setLtiRole(ltiRole);
+    public List<KalturaLtiRole> getLtiRoleMappings(String ltiRole) {
+        Search search = new Search("ltiRole", ltiRole);
 
-        return kalturaLtiRole;
+        List<KalturaLtiRole> ltiRoleMappings = findBySearch(KalturaLtiRole.class, search);
+
+        return ltiRoleMappings;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public KalturaLtiRole addRoleMapping(KalturaLtiRole kalturaLtiRole) {
-        return kalturaLtiRole;
-    }
+    public boolean persistRoleMapping(KalturaLtiRole kalturaLtiRole) {
+        try {
+            save(kalturaLtiRole);
+        } catch ( Exception e) {
+            log.error("Kaltura :: addRoleMapping : An error occurred persisting the role mapping: " + kalturaLtiRole.toString() + ", error: " + e, e);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KalturaLtiRole updateRoleMapping(KalturaLtiRole kalturaLtiRole) {
-        return kalturaLtiRole;
-    }
+            return false;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean deleteRoleMapping(KalturaLtiRole kalturaLtiRoleDB) {
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean deleteRoleMapping(KalturaLtiRole kalturaLtiRole) {
+        kalturaLtiRole.setActive(false);
+
+        return persistRoleMapping(kalturaLtiRole);
     }
 
     /**

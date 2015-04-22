@@ -84,16 +84,31 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
         ActionReturn actionReturn = null;
 
+        String id = view.getPathSegment(2);
+
         if (StringUtils.equalsIgnoreCase(EntityView.Method.POST.name(), view.getMethod()) ||
                 StringUtils.equalsIgnoreCase(EntityView.Method.PUT.name(), view.getMethod())) {
             // POST or PUT
             if (params.get("data") == null) {
                 throw new IllegalArgumentException("No data object defined in input");
             }
+
+            if (StringUtils.isNotBlank(id)) {
+                // no ID given, add new role mapping
+                roleProviderService.updateRoleMapping((String) params.get("data"));
+            } else {
+                // ID given, update role mapping
+                roleProviderService.addRoleMapping((String) params.get("data"));
+            }
         } else if (StringUtils.equalsIgnoreCase(EntityView.Method.GET.name(), view.getMethod())) {
             // GET
-            String roleId = view.getPathSegment(2);
-            actionReturn = roleProviderService.get(roleId);
+            if (StringUtils.equalsIgnoreCase(id, "active")) {
+                actionReturn = roleProviderService.getActiveRoles();
+            } else if (StringUtils.equalsIgnoreCase(id, "inactive")) {
+                actionReturn = roleProviderService.getInactiveRoles();
+            } else {
+                actionReturn = roleProviderService.get(id);
+            }
         } else {
             throw new IllegalArgumentException("Method not allowed on kaltura/role: " + view.getMethod());
         }

@@ -14,6 +14,8 @@
  */
 package org.sakaiproject.kaltura.models;
 
+import org.sakaiproject.kaltura.utils.common.JsonUtil;
+
 import com.google.gson.annotations.Expose;
 
 public class UserSiteRole {
@@ -21,19 +23,16 @@ public class UserSiteRole {
     @Expose
     private String siteId;
     @Expose
-    private String siteRole;
-    @Expose
     private String ltiRole;
 
     public UserSiteRole(){}
 
     public UserSiteRole(String siteId) {
-        this(siteId, null, null);
+        this(siteId, null);
     }
 
-    public UserSiteRole(String siteId, String siteRole, String ltiRole) {
+    public UserSiteRole(String siteId, String ltiRole) {
         this.siteId = siteId;
-        this.siteRole = siteRole;
         this.ltiRole = ltiRole;
     }
 
@@ -45,20 +44,20 @@ public class UserSiteRole {
         this.siteId = siteId;
     }
 
-    public String getSiteRole() {
-        return siteRole;
-    }
-
-    public void setSiteRole(String siteRole) {
-        this.siteRole = siteRole;
-    }
-
     public String getLtiRole() {
         return ltiRole;
     }
 
     public void setLtiRole(String ltiRole) {
         this.ltiRole = ltiRole;
+    }
+
+    /**
+     * Override to show this model as a JSON string
+     */
+    @Override
+    public String toString() {
+        return JsonUtil.parseToJson(this);
     }
 
 }

@@ -17,6 +17,9 @@ package org.sakaiproject.kaltura.services;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Saveable;
 import org.sakaiproject.kaltura.Constants;
 import org.sakaiproject.kaltura.dao.KalturaLtiRoleDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
@@ -28,9 +31,27 @@ import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
  */
 public class RoleService {
 
+    private final Log log = LogFactory.getLog(RoleService.class);
+
     private KalturaLtiRoleDao kalturaLtiRoleDao;
     public void setKalturaLtiRoleDao(KalturaLtiRoleDao kalturaLtiRoleDao) {
         this.kalturaLtiRoleDao = kalturaLtiRoleDao;
+    }
+
+    /**
+     * Get the role mapping associated with the given Sakai role
+     * 
+     * @param roleId the role mapping ID
+     * @return the {@link KalturaLtiRole} object
+     */
+    public KalturaLtiRole getRoleMapping(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new IllegalArgumentException("Role ID cannot be blank.");
+        }
+
+        KalturaLtiRole kalturaLtiRole = kalturaLtiRoleDao.getRoleMapping(roleId);
+
+        return kalturaLtiRole;
     }
 
     /**
@@ -50,19 +71,19 @@ public class RoleService {
     }
 
     /**
-     * Get the role mapping associated with the given LTI role
+     * Get the role mappings associated with the given LTI role
      * 
      * @param ltiRole the LTI role ID
-     * @return the {@link KalturaLtiRole} object
+     * @return the list of {@link KalturaLtiRole} objects
      */
-    public KalturaLtiRole getLtiRoleMapping(String ltiRole) {
+    public List<KalturaLtiRole> getLtiRoleMapping(String ltiRole) {
         if (StringUtils.isBlank(ltiRole)) {
             throw new IllegalArgumentException("LTI role cannot be blank.");
         }
 
-        KalturaLtiRole kalturaLtiRole = kalturaLtiRoleDao.getLtiRoleMapping(ltiRole);
+        List<KalturaLtiRole> kalturaLtiRoles = kalturaLtiRoleDao.getLtiRoleMappings(ltiRole);
 
-        return kalturaLtiRole;
+        return kalturaLtiRoles;
     }
 
     /**
@@ -96,6 +117,122 @@ public class RoleService {
         List<KalturaLtiRole> inactiveRoleMappings = kalturaLtiRoleDao.getInactiveRoleMappings();
 
         return inactiveRoleMappings;
+    }
+
+    /**
+     * Adds a new role mapping from individual parameters
+     * 
+     * @param sakaiRole the Sakai role ID
+     * @param ltiRole the LTI role ID
+     * @param active is this an active mapping?
+     * @return the new {@link KalturaLtiRole} object
+     */
+    public KalturaLtiRole addRoleMapping(String sakaiRole, String ltiRole, Boolean active) {
+        if (StringUtils.isBlank(sakaiRole)) {
+            throw new IllegalArgumentException("Sakai role cannot be blank.");
+        }
+        if (StringUtils.isBlank(ltiRole)) {
+            throw new IllegalArgumentException("LTI role cannot be blank.");
+        }
+        if (active == null) {
+            active = Constants.DEFAULT_ROLE_MAPPING_ACTIVE;
+        }
+
+        KalturaLtiRole kalturaLtiRole = new KalturaLtiRole(sakaiRole, ltiRole, active);
+
+        return addRoleMapping(kalturaLtiRole);
+    }
+
+    /**
+     * Adds a new role mapping from a {@link KalturaLtiRole} object
+     * 
+     * @param kalturaLtiRole the {@link KalturaLtiRole} object
+     * @return the new {@link KalturaLtiRole} object
+     */
+    public KalturaLtiRole addRoleMapping(KalturaLtiRole kalturaLtiRole) {
+        if (kalturaLtiRole == null) {
+            throw new IllegalArgumentException("KalturaLtiRole cannot be null.");
+        }
+
+        kalturaLtiRoleDao.save(kalturaLtiRole);
+
+        return kalturaLtiRole;
+    }
+
+    /**
+     * Updates an role mapping, if a mapping with the given ID is not found, it adds it instead
+     * 
+     * @param sakaiRole the Sakai role ID
+     * @param ltiRole the LTI role ID
+     * @param active is this an active mapping?
+     * @return the new {@link KalturaLtiRole} object
+     */
+    public KalturaLtiRole updateRoleMapping(String id, String sakaiRole, String ltiRole, Boolean active) {
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException("Role mapping ID cannot be blank.");
+        }
+
+        KalturaLtiRole kalturaLtiRole = kalturaLtiRoleDao.getRoleMapping(id);
+
+        if (kalturaLtiRole == null) {
+            return addRoleMapping(sakaiRole, ltiRole, active);
+        }
+
+        if (StringUtils.isNotBlank(sakaiRole)) {
+            kalturaLtiRole.setSakaiRole(sakaiRole);
+        }
+        if (StringUtils.isNotBlank(ltiRole)) {
+            kalturaLtiRole.setLtiRole(ltiRole);
+        }
+        if (active != null) {
+            kalturaLtiRole.setActive(active);
+        }
+
+        return updateRoleMapping(kalturaLtiRole);
+    }
+
+    /**
+     * Updates a role mapping from a {@link KalturaLtiRole} object
+     * 
+     * @param kalturaLtiRole the {@link KalturaLtiRole} object
+     * @return the new {@link KalturaLtiRole} object
+     */
+    public KalturaLtiRole updateRoleMapping(KalturaLtiRole kalturaLtiRole) {
+        if (kalturaLtiRole == null) {
+            throw new IllegalArgumentException("KalturaLtiRole cannot be null.");
+        }
+
+        if (checkRoleMappingExists(kalturaLtiRole.getId())) {
+            kalturaLtiRoleDao.save(kalturaLtiRole);
+        } else {
+            throw new IllegalArgumentException("No role mapping exists with the given ID: " + kalturaLtiRole.getId());
+        }
+
+        return kalturaLtiRole;
+    }
+
+    /**
+     * Checks whether or not a role mapping exists with the given ID
+     * 
+     * @param id the ID of the role mapping
+     * @return true, if it exists
+     */
+    public boolean checkRoleMappingExists(String id) {
+        KalturaLtiRole existingKalturaLtiRole = kalturaLtiRoleDao.getRoleMapping(id);
+
+        return existingKalturaLtiRole != null;
+    }
+
+    /**
+     * Checks whether or not a role mapping exists with the given ID
+     * 
+     * @param id the ID of the role mapping
+     * @return true, if it exists
+     */
+    public boolean checkRoleMappingExists(long id) {
+        KalturaLtiRole existingKalturaLtiRole = kalturaLtiRoleDao.getRoleMapping(id);
+
+        return existingKalturaLtiRole != null;
     }
 
     /**

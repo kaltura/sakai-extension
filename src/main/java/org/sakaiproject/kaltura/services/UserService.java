@@ -28,7 +28,6 @@ import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.UserSiteRole;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.user.api.UserDirectoryService;
-import org.sakaiproject.user.api.UserNotDefinedException;
 
 public class UserService {
 
@@ -105,8 +104,6 @@ public class UserService {
 
                            AuthzGroup authzGroup = authzGroupService.getAuthzGroup(userAuthzGroupId);
                            Role role = authzGroup.getUserRole(user.getId());
-                           userSiteRole.setSiteRole(role.getId());
-
                            String ltiRole = roleService.calculateLtiRole(role.getId());
                            userSiteRole.setLtiRole(ltiRole);
 

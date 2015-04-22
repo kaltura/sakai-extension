@@ -49,6 +49,20 @@ public interface KalturaLtiRoleDao extends GeneralGenericDao {
     public List<KalturaLtiRole> getInactiveRoleMappings();
 
     /**
+     * Get the role mapping associated with the role mapping ID
+     * 
+     * @return the {@link KalturaLtiRole} object
+     */
+    public KalturaLtiRole getRoleMapping(long roleMappingId);
+
+    /**
+     * Get the role mapping associated with the role mapping ID
+     * 
+     * @return the {@link KalturaLtiRole} object
+     */
+    public KalturaLtiRole getRoleMapping(String roleMappingId);
+
+    /**
      * Get the role mapping associated with the given Sakai role
      * 
      * @return the {@link KalturaLtiRole} object
@@ -56,39 +70,30 @@ public interface KalturaLtiRoleDao extends GeneralGenericDao {
     public KalturaLtiRole getSakaiRoleMapping(String sakaiRole);
 
     /**
-     * Get the role mapping associated with the given LTI role
+     * Get the role mappings associated with the given LTI role
      * 
-     * @return the {@link KalturaLtiRole} object
+     * @return the list of {@link KalturaLtiRole} objects
      */
-    public KalturaLtiRole getLtiRoleMapping(String ltiRole);
+    public List<KalturaLtiRole> getLtiRoleMappings(String ltiRole);
 
     /**
-     * Add a new role mapping
+     * Add/update a new role mapping
      * 
-     * @param kalturaLtiRoleDB the {@link KalturaLtiRole} object to add
+     * @param kalturaLtiRole the {@link KalturaLtiRole} object to add
      * 
-     * @return the added {@link KalturaLtiRole}
+     * @return true, if added/updated successfully
      */
-    public KalturaLtiRole addRoleMapping(KalturaLtiRole kalturaLtiRoleDB);
-
-    /**
-     * Update a role mapping
-     * 
-     * @param kalturaLtiRoleDB the {@link KalturaLtiRole} object to update
-     * 
-     * @return the updated {@link KalturaLtiRole}
-     */
-    public KalturaLtiRole updateRoleMapping(KalturaLtiRole kalturaLtiRoleDB);
+    public boolean persistRoleMapping(KalturaLtiRole kalturaLtiRole);
 
     /**
      * Delete a role mapping
      * Note: this is a soft delete, only marks the "active" column as false
      * 
-     * @param kalturaLtiRoleDB the {@link KalturaLtiRole} object to mark as inactive
+     * @param kalturaLtiRole the {@link KalturaLtiRole} object to mark as inactive
      * 
-     * @return true, if marked deleted
+     * @return true, if marked inactive
      */
-    public boolean deleteRoleMapping(KalturaLtiRole kalturaLtiRoleDB);
+    public boolean deleteRoleMapping(KalturaLtiRole kalturaLtiRole);
 
     public void commit();
 

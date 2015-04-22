@@ -5,5 +5,6 @@ create table KALTURA_LTI_ROLE (
     active bit not null default true,
     created_on datetime not null,
     last_modified datetime not null,
-    primary key (id)
+    primary key (id),
+    unique (sakai_role)
 ) ENGINE=InnoDB;

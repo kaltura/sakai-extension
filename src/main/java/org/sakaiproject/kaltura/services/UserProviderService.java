@@ -22,6 +22,7 @@ import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.errors.ErrorUser;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
 import org.sakaiproject.kaltura.utils.common.RestUtil;
+import org.sakaiproject.kaltura.utils.common.SecurityUtil;
 
 /**
  * Service layer to support the kaltura/user entities
@@ -40,13 +41,13 @@ public class UserProviderService {
     /**
      * Gets the user's site and role data
      * 
-     * @param userId the user's ID, if not given, get the currently logged-in user's data
+     * @param userId the user's ID, if not given and user is admin, get the currently logged-in user's data
      */
     public ActionReturn get(String userId) {
         User user = null;
         ErrorUser errorUser = new ErrorUser();
 
-        if (StringUtils.isBlank(userId)) {
+        if (StringUtils.isBlank(userId) || !SecurityUtil.isAdmin()) {
             user = userService.getCurrentUser();
         } else {
             try {

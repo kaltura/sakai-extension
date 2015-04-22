@@ -45,5 +45,6 @@ public class Constants {
      * Role configuration
      */
     public final static String DEFAULT_LTI_ROLE = "Learner";
+    public final static boolean DEFAULT_ROLE_MAPPING_ACTIVE = true;
 
 }

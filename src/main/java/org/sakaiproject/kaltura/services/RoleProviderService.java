@@ -17,13 +17,18 @@ package org.sakaiproject.kaltura.services;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 import org.sakaiproject.kaltura.models.errors.ErrorRole;
+import org.sakaiproject.kaltura.models.errors.Error;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
 import org.sakaiproject.kaltura.utils.common.RestUtil;
 
 public class RoleProviderService {
+
+    private final Log log = LogFactory.getLog(RoleProviderService.class);
 
     private RoleService roleService;
     public void setRoleService(RoleService roleService) {
@@ -37,25 +42,23 @@ public class RoleProviderService {
      * Gets the role data for the given Sakai Role ID
      * If no ID is given, get all LTI role data
      * 
-     * @param sakaiRole the Sakai role ID
+     * @param roleId the role mapping ID
      */
-    public ActionReturn get(String sakaiRole) {
-        if (StringUtils.isBlank(sakaiRole)) {
-            // no Sakai role specified, get all roles instead
+    public ActionReturn get(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            // no role ID specified, get all roles instead
             return getAllRoles();
         }
 
         ErrorRole errorRole = new ErrorRole();
 
-        KalturaLtiRole kalturaLtiRole = roleService.getSakaiRoleMapping(sakaiRole);
+        KalturaLtiRole kalturaLtiRole = roleService.getRoleMapping(roleId);
 
         return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(kalturaLtiRole));
     }
 
     /**
      * Gets all Sakai role : LTI role mapping data
-     * 
-     * @return
      */
     public ActionReturn getAllRoles() {
         ErrorRole errorRole = new ErrorRole();
@@ -63,6 +66,83 @@ public class RoleProviderService {
         List<KalturaLtiRole> allKalturaLtiRoleMappings = roleService.getAllRoleMappings();
 
         return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(allKalturaLtiRoleMappings));
+    }
+
+    /**
+     * Gets all Sakai role : LTI role mapping data
+     */
+    public ActionReturn getActiveRoles() {
+        ErrorRole errorRole = new ErrorRole();
+
+        List<KalturaLtiRole> activeKalturaLtiRoleMappings = roleService.getActiveRoleMappings();
+
+        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(activeKalturaLtiRoleMappings));
+    }
+
+    /**
+     * Gets all Sakai role : LTI role mapping data
+     */
+    public ActionReturn getInactiveRoles() {
+        ErrorRole errorRole = new ErrorRole();
+
+        List<KalturaLtiRole> inactiveKalturaLtiRoleMappings = roleService.getInactiveRoleMappings();
+
+        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(inactiveKalturaLtiRoleMappings));
+    }
+
+    /**
+     * Adds a new role mapping
+     * 
+     * @param data the JSON string containing the data for the new mapping
+     */
+    public ActionReturn addRoleMapping(String data) {
+        ErrorRole errorRole = new ErrorRole();
+
+        List<Object> kalturaLtiRoles = JsonUtil.parseFromJson(data, KalturaLtiRole.class);
+
+        for (Object k : kalturaLtiRoles) {
+            if (!(k instanceof KalturaLtiRole)) {
+                continue;
+            }
+
+            KalturaLtiRole kalturaLtiRole = (KalturaLtiRole) k;
+
+            try {
+                roleService.addRoleMapping(kalturaLtiRole);
+            } catch (Exception e) {
+                errorRole.updateErrorList(e.toString(), "add", kalturaLtiRole.toString());
+            }
+
+        }
+
+        return RestUtil.processActionReturn(errorRole);
+    }
+
+    /**
+     * Updates a role mapping
+     * 
+     * @param data the JSON string containing the data for the mapping
+     */
+    public ActionReturn updateRoleMapping(String data) {
+        ErrorRole errorRole = new ErrorRole();
+
+        List<Object> kalturaLtiRoles = JsonUtil.parseFromJson(data, KalturaLtiRole.class);
+
+        for (Object k : kalturaLtiRoles) {
+            if (!(k instanceof KalturaLtiRole)) {
+                continue;
+            }
+
+            KalturaLtiRole kalturaLtiRole = (KalturaLtiRole) k;
+
+            try {
+                roleService.updateRoleMapping(kalturaLtiRole);
+            } catch (Exception e) {
+                errorRole.updateErrorList(e.toString(), "update", kalturaLtiRole.toString());
+            }
+        }
+
+        return RestUtil.processActionReturn(errorRole);
     }
 
 }
