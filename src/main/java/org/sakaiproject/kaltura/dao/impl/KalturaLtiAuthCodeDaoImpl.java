@@ -53,10 +53,12 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public KalturaLtiAuthCode getAuthCode(String id) {
-        long authId = Long.parseLong(id);
+    public KalturaLtiAuthCode getAuthCode(String authCode) {
+        Search search = new Search("authCode", authCode);
 
-        return getAuthCode(authId);
+        KalturaLtiAuthCode kalturaLtiAuthCode = findOneBySearch(KalturaLtiAuthCode.class, search);
+
+        return kalturaLtiAuthCode;
     }
 
     /**

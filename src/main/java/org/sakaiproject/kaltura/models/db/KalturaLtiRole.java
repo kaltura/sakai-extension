@@ -101,7 +101,6 @@ public class KalturaLtiRole implements Serializable {
      * @param dateModified the date of last modification
      */
     public KalturaLtiRole(String sakaiRole, String ltiRole, Boolean active, Date dateCreated, Date dateModified) {
-        super();
         this.sakaiRole = sakaiRole;
         this.ltiRole = ltiRole;
         this.active = active;

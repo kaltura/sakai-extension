@@ -16,6 +16,7 @@ package org.sakaiproject.kaltura.models.db;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.utils.common.AuthCodeUtil;
 
 import com.google.gson.annotations.Expose;
@@ -34,7 +35,7 @@ public class KalturaLtiAuthCode {
     @Expose
     private String authCode;
     @Expose
-    private boolean inactivated;
+    private Boolean inactivated;
     @Expose
     private Date dateCreated;
     @Expose
@@ -55,13 +56,59 @@ public class KalturaLtiAuthCode {
         this(null, userId, authCode, inactivated, dateCreated, dateExpires);
     }
 
-    public KalturaLtiAuthCode(Long id, String userId, String authCode, boolean inactivated, Date dateCreated, Date dateExpires) {
+    /**
+     * Convenience constructor for partially-created {@link KalturaLtiAuthCode} objects
+     * 
+     * @param kalturaLtiAuthCode the partial {@link KalturaLtiAuthCode} object
+     */
+    public KalturaLtiAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) {
+        this(
+            kalturaLtiAuthCode.getId(),
+            kalturaLtiAuthCode.getUserId(),
+            kalturaLtiAuthCode.getAuthCode(),
+            kalturaLtiAuthCode.isInactivated(),
+            kalturaLtiAuthCode.getDateCreated(),
+            kalturaLtiAuthCode.getDateExpires()
+        );
+    }
+
+    /**
+     * Full constructor
+     * 
+     * @param id
+     * @param userId
+     * @param authCode
+     * @param inactivated
+     * @param dateCreated
+     * @param dateExpires
+     */
+    public KalturaLtiAuthCode(Long id, String userId, String authCode, Boolean inactivated, Date dateCreated, Date dateExpires) {
         this.id = id;
         this.userId = userId;
-        this.authCode = authCode;
-        this.inactivated = inactivated;
-        this.dateCreated = dateCreated;
-        this.dateExpires = dateExpires;
+
+        if (StringUtils.isBlank(authCode)) {
+            this.authCode = AuthCodeUtil.createNewAuthorizationCode();
+        } else {
+            this.authCode = authCode;
+        }
+
+        if (inactivated == null) {
+            this.inactivated = false;
+        } else {
+            this.inactivated = inactivated;
+        }
+
+        if (dateCreated == null) {
+            this.dateCreated = new Date();
+        } else {
+            this.dateCreated = dateCreated;
+        }
+
+        if (dateExpires == null) {
+            this.dateExpires = AuthCodeUtil.calculateExpirationDate(this.dateCreated);
+        } else {
+            this.dateExpires = dateExpires;
+        }
     }
 
     public Long getId() {
@@ -85,10 +132,10 @@ public class KalturaLtiAuthCode {
         this.authCode = authCode;
     }
 
-    public boolean isInactivated() {
+    public Boolean isInactivated() {
         return inactivated;
     }
-    public void setInactivated(boolean inactivated) {
+    public void setInactivated(Boolean inactivated) {
         this.inactivated = inactivated;
     }
 
@@ -110,4 +157,28 @@ public class KalturaLtiAuthCode {
         return this.dateExpires.before(new Date());
     }
 
+    /**
+     * Checks that all fields have a value
+     * 
+     * @return true if all required fields contain a value
+     */
+    public boolean isValid() {
+        if (StringUtils.isBlank(userId)) {
+            return false;
+        }
+        if (StringUtils.isBlank(authCode)) {
+            return false;
+        }
+        if (inactivated == null) {
+            return false;
+        }
+        if (dateCreated == null) {
+            return false;
+        }
+        if (dateExpires == null) {
+            return false;
+        }
+
+        return true;
+    }
 }

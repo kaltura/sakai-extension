@@ -65,11 +65,15 @@ public class AuthCodeProviderService {
             }
 
             KalturaLtiAuthCode kalturaLtiAuthCode = (KalturaLtiAuthCode) k;
+            if (!kalturaLtiAuthCode.isValid()) {
+                // current object is invalid, create fully constructed object
+                kalturaLtiAuthCode = new KalturaLtiAuthCode(kalturaLtiAuthCode);
+            }
 
             try {
                 authCodeService.createAuthCode(kalturaLtiAuthCode);
             } catch (Exception e) {
-                errorAuthCode.updateErrorList(e.toString(), "create", kalturaLtiAuthCode.toString());
+                errorAuthCode.updateErrorList(e.toString(), kalturaLtiAuthCode.getAuthCode(), kalturaLtiAuthCode.getUserId());
             }
 
         }
