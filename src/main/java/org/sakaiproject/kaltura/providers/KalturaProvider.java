@@ -28,6 +28,7 @@ import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
+import org.sakaiproject.kaltura.services.AuthCodeProviderService;
 import org.sakaiproject.kaltura.services.RoleProviderService;
 import org.sakaiproject.kaltura.services.UserProviderService;
 import org.sakaiproject.kaltura.utils.common.SecurityUtil;
@@ -40,6 +41,12 @@ import org.sakaiproject.kaltura.utils.common.SecurityUtil;
 public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
     private final Log log = LogFactory.getLog(KalturaProvider.class);
+
+    private AuthCodeProviderService authCodeProviderService;
+    public void setAuthCodeProviderService(
+            AuthCodeProviderService authCodeProviderService) {
+        this.authCodeProviderService = authCodeProviderService;
+    }
 
     private RoleProviderService roleProviderService;
     public void setRoleProviderService(RoleProviderService roleProviderService) {
@@ -75,8 +82,10 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     /**
      * The role API
      *
-     * kaltura/role
-     * kaltura/role/{roleId}
+     * GET/POST kaltura/role
+     * GET/PUT kaltura/role/{roleId}
+     * GET kaltura/role/active
+     * GET kaltura/role/inactive
      */
     @EntityCustomAction(action="role", viewKey="")
     public ActionReturn role(EntityView view, Map<String, Object> params) {
@@ -94,11 +103,11 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
             }
 
             if (StringUtils.isNotBlank(id)) {
-                // no ID given, add new role mapping
-                roleProviderService.updateRoleMapping((String) params.get("data"));
-            } else {
                 // ID given, update role mapping
-                roleProviderService.addRoleMapping((String) params.get("data"));
+                actionReturn = roleProviderService.updateRoleMapping((String) params.get("data"));
+            } else {
+                // no ID given, add new role mapping
+                actionReturn = roleProviderService.addRoleMapping((String) params.get("data"));
             }
         } else if (StringUtils.equalsIgnoreCase(EntityView.Method.GET.name(), view.getMethod())) {
             // GET
@@ -130,6 +139,61 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
         // GET
         String userId = view.getPathSegment(2);
         actionReturn = userProviderService.get(userId);
+
+        return actionReturn;
+    }
+
+    /**
+     * The role API
+     *
+     * POST kaltura/auth
+     * GET kaltura/auth/{authCode}
+     * POST/PUT kaltura/auth/inactivate/{authCode}
+     */
+    @EntityCustomAction(action="auth", viewKey="")
+    public ActionReturn auth(EntityView view, Map<String, Object> params) {
+        SecurityUtil.securityCheck((String) params.get("shared_secret"));
+
+        ActionReturn actionReturn = null;
+
+        String code = view.getPathSegment(2);
+
+        if (StringUtils.equalsIgnoreCase(EntityView.Method.POST.name(), view.getMethod()) ||
+                StringUtils.equalsIgnoreCase(EntityView.Method.PUT.name(), view.getMethod())) {
+            // POST or PUT
+            if (StringUtils.equalsIgnoreCase("inactivate", code)) {
+                // inactivate code
+                code = view.getPathSegment(3);
+                if (StringUtils.isBlank(code)) {
+                    throw new IllegalArgumentException("No auth code given kaltura/auth/inactivate: " + view.getMethod());
+                }
+                actionReturn = authCodeProviderService.inactivateAuthCode(code);
+            } else {
+                
+                if (params.get("data") == null) {
+                    throw new IllegalArgumentException("No data object defined in input");
+                }
+
+                if (StringUtils.isNotBlank(code)) {
+                    // INVALID
+                    throw new IllegalArgumentException("INVALID USAGE: Auth code given on kaltura/auth: " + view.getMethod());
+                } else {
+                    // no ID given, add new auth code
+                    actionReturn = authCodeProviderService.createAuthCode((String) params.get("data"));
+                }
+            }
+        } else if (StringUtils.equalsIgnoreCase(EntityView.Method.GET.name(), view.getMethod())) {
+            // GET
+            if (StringUtils.isBlank(code)) {
+                // INVALID
+                throw new IllegalArgumentException("INVALID USAGE: No auth code given on kaltura/auth: " + view.getMethod());
+            } else {
+                // code given, get the auth code
+                actionReturn = authCodeProviderService.getAuthCode(code);
+            }
+        } else {
+            throw new IllegalArgumentException("Method not allowed on kaltura/auth: " + view.getMethod());
+        }
 
         return actionReturn;
     }

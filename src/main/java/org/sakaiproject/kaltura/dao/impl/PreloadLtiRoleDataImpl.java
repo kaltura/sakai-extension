@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.dao;
+package org.sakaiproject.kaltura.dao.impl;
 
 import java.util.List;
 
@@ -20,6 +20,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.kaltura.Constants;
+import org.sakaiproject.kaltura.dao.KalturaLtiRoleDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 
 public class PreloadLtiRoleDataImpl {
@@ -53,6 +55,11 @@ public class PreloadLtiRoleDataImpl {
                 // preload default roles if none exist
                 if (existingRoles.isEmpty()) {
                     String[] defaultRoleMapping = serverConfigurationService.getStrings("kaltura.lti.roles");
+                    if (defaultRoleMapping.length == 0) {
+                        // none configuraed in sakai.properties, use hard-coded defaults
+                        defaultRoleMapping = Constants.DEFAULT_ROLE_MAPPING;
+                    }
+
                     for (String roleMapping : defaultRoleMapping) {
                         String[] roleMap = roleMapping.split(":");
                         String sakaiRole = roleMap[0];

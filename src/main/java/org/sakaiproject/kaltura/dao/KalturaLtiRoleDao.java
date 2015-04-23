@@ -20,8 +20,7 @@ import org.sakaiproject.genericdao.api.GeneralGenericDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 
 /**
- * This is a specialized DAO that allows the developer to extend
- * the functionality of the generic dao package
+ * DAO Interface for Kaltura custom role mappings
  * 
  * @author Robert Long (rlong @ unicon.net)
  */

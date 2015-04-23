@@ -8,3 +8,13 @@ create table KALTURA_LTI_ROLE (
     primary key (id),
     unique (sakai_role)
 ) ENGINE=InnoDB;
+
+create table KALTURA_LTI_AUTH_CODE (
+    id bigint not null auto_increment,
+    user_id varchar(255) not null,
+    auth_code varchar(255) not null,
+    inactivated bit not null default false,
+    created_on datetime not null,
+    exipiration_date datetime not null,
+    primary key (id),
+) ENGINE=InnoDB;
