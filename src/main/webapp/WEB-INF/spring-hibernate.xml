@@ -96,4 +96,9 @@
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
     </bean>
 
+    <!-- an authorization code flushing bean that has transaction protection -->
+    <bean id="flushLtiAuthorizationCodeDataImpl" class="org.sakaiproject.kaltura.dao.impl.FlushLtiAuthorizationCodeDataImpl" init-method="init">
+        <property name="kalturaLtiAuthCodeDao" ref="kalturaLtiAuthCodeDao" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
 </beans>

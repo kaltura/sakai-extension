@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.services;
+package org.sakaiproject.kaltura.services.provider;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.errors.ErrorUser;
+import org.sakaiproject.kaltura.services.UserService;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
 import org.sakaiproject.kaltura.utils.common.RestUtil;
 import org.sakaiproject.kaltura.utils.common.SecurityUtil;

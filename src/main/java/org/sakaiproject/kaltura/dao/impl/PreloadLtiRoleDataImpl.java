@@ -24,6 +24,12 @@ import org.sakaiproject.kaltura.Constants;
 import org.sakaiproject.kaltura.dao.KalturaLtiRoleDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 
+/**
+ * Service to pre-load role mappings on first boot, if configured
+ * 
+ * @author Robert Long (rlong @ unicon.net)
+ *
+ */
 public class PreloadLtiRoleDataImpl {
 
     private static Log log = LogFactory.getLog(PreloadLtiRoleDataImpl.class);
@@ -55,8 +61,8 @@ public class PreloadLtiRoleDataImpl {
                 // preload default roles if none exist
                 if (existingRoles.isEmpty()) {
                     String[] defaultRoleMapping = serverConfigurationService.getStrings("kaltura.lti.roles");
-                    if (defaultRoleMapping.length == 0) {
-                        // none configuraed in sakai.properties, use hard-coded defaults
+                    if (defaultRoleMapping == null) {
+                        // none configured in sakai.properties, use hard-coded defaults
                         defaultRoleMapping = Constants.DEFAULT_ROLE_MAPPING;
                     }
 
@@ -84,4 +90,5 @@ public class PreloadLtiRoleDataImpl {
             log.info("Kaltura :: Pre-loading of default roles set to false. Nothing to do.");
         }
     }
+
 }

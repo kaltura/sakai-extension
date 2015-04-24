@@ -35,15 +35,15 @@
     </bean>
 
     <!-- provider services -->
-    <bean id="authCodeProviderService" class="org.sakaiproject.kaltura.services.AuthCodeProviderService">
+    <bean id="authCodeProviderService" class="org.sakaiproject.kaltura.services.provider.AuthCodeProviderService">
         <property name="authCodeService" ref="authCodeService" />
     </bean>
 
-    <bean id="roleProviderService" class="org.sakaiproject.kaltura.services.RoleProviderService">
+    <bean id="roleProviderService" class="org.sakaiproject.kaltura.services.provider.RoleProviderService">
         <property name="roleService" ref="roleService" />
     </bean>
 
-    <bean id="userProviderService" class="org.sakaiproject.kaltura.services.UserProviderService">
+    <bean id="userProviderService" class="org.sakaiproject.kaltura.services.provider.UserProviderService">
         <property name="userService" ref="userService" />
     </bean>
 

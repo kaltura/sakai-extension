@@ -17,6 +17,7 @@ package org.sakaiproject.kaltura.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.sakaiproject.genericdao.api.GeneralGenericDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
 
 /**
@@ -24,7 +25,7 @@ import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public interface KalturaLtiAuthCodeDao {
+public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
 
     /**
      * Gets a {@link KalturaLtiAuthCode} object that is associated with the given auth code ID

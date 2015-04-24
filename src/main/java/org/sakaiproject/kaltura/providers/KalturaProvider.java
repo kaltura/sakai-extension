@@ -28,9 +28,9 @@ import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
-import org.sakaiproject.kaltura.services.AuthCodeProviderService;
-import org.sakaiproject.kaltura.services.RoleProviderService;
-import org.sakaiproject.kaltura.services.UserProviderService;
+import org.sakaiproject.kaltura.services.provider.AuthCodeProviderService;
+import org.sakaiproject.kaltura.services.provider.RoleProviderService;
+import org.sakaiproject.kaltura.services.provider.UserProviderService;
 import org.sakaiproject.kaltura.utils.common.SecurityUtil;
 
 /**
