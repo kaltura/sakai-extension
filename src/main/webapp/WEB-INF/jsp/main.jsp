@@ -21,6 +21,7 @@
     <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
+    <a href="role.htm">Custom Roles</a>
     <h2>This is where the new Kaltura Sakai LTI tool shall reside... Stay tuned!</h2>
 
     <div class="panel panel-default">

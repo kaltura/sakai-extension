@@ -26,12 +26,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
 /**
- * Controller to handle the main.jsp view
+ * Controller to handle the role.jsp view
  * 
  * @author Robert Long (rlong @ unicon.net)
  *
  */
-public class MainController extends AbstractController {
+public class RoleController extends AbstractController {
 
     final protected Log log = LogFactory.getLog(getClass());
 
@@ -41,7 +41,7 @@ public class MainController extends AbstractController {
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String,Object> model = new HashMap<String,Object>();
 
-        return new ModelAndView("main", model);
+        return new ModelAndView("role", model);
     }
 
 }
