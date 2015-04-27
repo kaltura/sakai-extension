@@ -104,7 +104,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
             if (StringUtils.isNotBlank(id)) {
                 // ID given, update role mapping
-                actionReturn = roleProviderService.updateRoleMapping((String) params.get("data"));
+                actionReturn = roleProviderService.updateRoleMapping(id, (String) params.get("data"));
             } else {
                 // no ID given, add new role mapping
                 actionReturn = roleProviderService.addRoleMapping((String) params.get("data"));
@@ -115,6 +115,8 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
                 actionReturn = roleProviderService.getActiveRoles();
             } else if (StringUtils.equalsIgnoreCase(id, "inactive")) {
                 actionReturn = roleProviderService.getInactiveRoles();
+            } else if (StringUtils.equalsIgnoreCase(id, "sakai")) {
+                actionReturn = roleProviderService.getAllSakaiRoles();
             } else {
                 actionReturn = roleProviderService.get(id);
             }

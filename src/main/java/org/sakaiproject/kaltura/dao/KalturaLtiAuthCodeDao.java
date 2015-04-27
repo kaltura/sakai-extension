@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.sakaiproject.genericdao.api.GeneralGenericDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 
 /**
  * DAO Interface for authorization codes allowing access to RESTful APIs
@@ -57,16 +58,18 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
      * 
      * @param kalturaLtiAuthCode the {@link KalturaLtiAuthCode} object
      * @return the {@link KalturaLtiAuthCode} object
+     * @throws Exception 
      */
-    public KalturaLtiAuthCode createAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode);
+    public KalturaLtiAuthCode createAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception;
 
     /**
      * Creates an auth code
      * 
      * @param userId the Sakai internal user ID
      * @return the {@link KalturaLtiAuthCode} object
+     * @throws Exception 
      */
-    public KalturaLtiAuthCode createAuthCode(String userId);
+    public KalturaLtiAuthCode createAuthCode(String userId) throws Exception;
 
     /**
      * Creates an auth code
@@ -74,8 +77,9 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
      * @param userId the Sakai internal user ID
      * @param authCode the auth code
      * @return the {@link KalturaLtiAuthCode} object
+     * @throws Exception 
      */
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode);
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode) throws Exception;
 
     /**
      * Creates an auth code
@@ -84,8 +88,9 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
      * @param authCode the auth code
      * @param codeUsed should the code be marked as used?
      * @return the {@link KalturaLtiAuthCode} object
+     * @throws Exception 
      */
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, boolean codeUsed);
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, boolean codeUsed) throws Exception;
 
     /**
      * Creates an auth code
@@ -94,8 +99,9 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
      * @param authCode the auth code
      * @param dateCreated the date of creation
      * @return the {@link KalturaLtiAuthCode} object
+     * @throws Exception 
      */
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated);
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated) throws Exception;
 
     /**
      * Creates an auth code
@@ -105,24 +111,27 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
      * @param codeUsed should the code be marked as used?
      * @param dateCreated the date of creation
      * @return the {@link KalturaLtiAuthCode} object
+     * @throws Exception 
      */
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, boolean codeUsed, Date dateCreated);
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, boolean codeUsed, Date dateCreated) throws Exception;
 
     /**
      * Inactivates a code
      * 
      * @param id the id of the {@link KalturaLtiAuthCode} object
      * @return true, if marked "used"
+     * @throws Exception 
      */
-    public boolean inactivateAuthCode(long id);
+    public boolean inactivateAuthCode(long id) throws Exception;
 
     /**
      * Inactivates a code
      * 
      * @param authCode the auth code of the {@link KalturaLtiAuthCode} object
      * @return true, if marked "used"
+     * @throws Exception 
      */
-    public boolean inactivateAuthCode(String authCode);
+    public boolean inactivateAuthCode(String authCode) throws Exception;
 
     /**
      * Inactivates a code
@@ -130,15 +139,27 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
      * @param userId the Sakai internal user id of the {@link KalturaLtiAuthCode} object
      * @param authCode the auth code of the {@link KalturaLtiAuthCode} object
      * @return true, if marked "used"
+     * @throws Exception 
      */
-    public boolean inactivateAuthCode(String userId, String authCode);
+    public boolean inactivateAuthCode(String userId, String authCode) throws Exception;
 
     /**
      * Inactivates a code
      * 
      * @param kalturaLtiAuthCode the {@link KalturaLtiAuthCode} object
      * @return true, if marked "used"
+     * @throws Exception 
      */
-    public boolean inactivateAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode);
+    public boolean inactivateAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception;
+
+    /**
+     * Add/update an authorization code
+     * 
+     * @param kalturaLtiAuthCode the {@link KalturaLtiAuthCode} object
+     * 
+     * @return true, if added/updated successfully
+     * @throws Exception 
+     */
+    boolean save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception;
 
 }

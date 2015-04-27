@@ -14,6 +14,7 @@
  */
 package org.sakaiproject.kaltura.services.provider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +23,6 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 import org.sakaiproject.kaltura.models.errors.ErrorRole;
-import org.sakaiproject.kaltura.models.errors.Error;
 import org.sakaiproject.kaltura.services.RoleService;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
 import org.sakaiproject.kaltura.utils.common.RestUtil;
@@ -53,7 +53,14 @@ public class RoleProviderService {
 
         ErrorRole errorRole = new ErrorRole();
 
-        KalturaLtiRole kalturaLtiRole = roleService.getRoleMapping(roleId);
+        KalturaLtiRole kalturaLtiRole = null;
+
+        try {
+            kalturaLtiRole = roleService.getRoleMapping(roleId);
+        } catch (Exception e) {
+            errorRole.updateErrorList(e.toString(), "get", kalturaLtiRole.toString());
+            log.error(e.toString(), e);
+        }
 
         return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(kalturaLtiRole));
     }
@@ -64,7 +71,14 @@ public class RoleProviderService {
     public ActionReturn getAllRoles() {
         ErrorRole errorRole = new ErrorRole();
 
-        List<KalturaLtiRole> allKalturaLtiRoleMappings = roleService.getAllRoleMappings();
+        List<KalturaLtiRole> allKalturaLtiRoleMappings = new ArrayList<KalturaLtiRole>();
+
+        try {
+            allKalturaLtiRoleMappings = roleService.getAllRoleMappings();
+        } catch (Exception e) {
+            errorRole.updateErrorList(e.toString(), "get", null);
+            log.error(e.toString(), e);
+        }
 
         return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(allKalturaLtiRoleMappings));
     }
@@ -75,7 +89,14 @@ public class RoleProviderService {
     public ActionReturn getActiveRoles() {
         ErrorRole errorRole = new ErrorRole();
 
-        List<KalturaLtiRole> activeKalturaLtiRoleMappings = roleService.getActiveRoleMappings();
+        List<KalturaLtiRole> activeKalturaLtiRoleMappings = new ArrayList<KalturaLtiRole>();
+
+        try {
+            activeKalturaLtiRoleMappings = roleService.getActiveRoleMappings();
+        } catch (Exception e) {
+            errorRole.updateErrorList(e.toString(), "get", null);
+            log.error(e.toString(), e);
+        }
 
         return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(activeKalturaLtiRoleMappings));
     }
@@ -86,8 +107,14 @@ public class RoleProviderService {
     public ActionReturn getInactiveRoles() {
         ErrorRole errorRole = new ErrorRole();
 
-        List<KalturaLtiRole> inactiveKalturaLtiRoleMappings = roleService.getInactiveRoleMappings();
+        List<KalturaLtiRole> inactiveKalturaLtiRoleMappings = new ArrayList<KalturaLtiRole>();
 
+        try {
+            inactiveKalturaLtiRoleMappings = roleService.getInactiveRoleMappings();
+        } catch (Exception e) {
+            errorRole.updateErrorList(e.toString(), "get", null);
+            log.error(e.toString(), e);
+        }
         return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(inactiveKalturaLtiRoleMappings));
     }
 
@@ -112,6 +139,7 @@ public class RoleProviderService {
                 roleService.addRoleMapping(kalturaLtiRole);
             } catch (Exception e) {
                 errorRole.updateErrorList(e.toString(), "add", kalturaLtiRole.toString());
+                log.error(e.toString(), e);
             }
 
         }
@@ -124,7 +152,7 @@ public class RoleProviderService {
      * 
      * @param data the JSON string containing the data for the mapping
      */
-    public ActionReturn updateRoleMapping(String data) {
+    public ActionReturn updateRoleMapping(String id, String data) {
         ErrorRole errorRole = new ErrorRole();
 
         List<Object> kalturaLtiRoles = JsonUtil.parseFromJson(data, KalturaLtiRole.class);
@@ -135,6 +163,7 @@ public class RoleProviderService {
             }
 
             KalturaLtiRole kalturaLtiRole = (KalturaLtiRole) k;
+            kalturaLtiRole.setId(Long.parseLong(id));
 
             try {
                 roleService.updateRoleMapping(kalturaLtiRole);
@@ -144,6 +173,24 @@ public class RoleProviderService {
         }
 
         return RestUtil.processActionReturn(errorRole);
+    }
+
+    /**
+     * Gets all Sakai roles defined
+     */
+    public ActionReturn getAllSakaiRoles() {
+        ErrorRole errorRole = new ErrorRole();
+
+        List<String> allSakaiRoles = new ArrayList<String>();
+
+        try {
+            allSakaiRoles = roleService.getAllSakaiRoles();
+        } catch (Exception e) {
+            errorRole.updateErrorList(e.toString(), "get", null);
+            log.error(e.toString(), e);
+        }
+
+        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(allSakaiRoles));
     }
 
 }

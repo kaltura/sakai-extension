@@ -18,8 +18,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.kaltura.dao.KalturaLtiAuthCodeDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
 
@@ -30,8 +28,6 @@ import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
  */
 public class AuthCodeService {
 
-    private final Log log = LogFactory.getLog(AuthCodeService.class);
-
     private KalturaLtiAuthCodeDao kalturaLtiAuthCodeDao;
     public void setKalturaLtiAuthCodeDao(KalturaLtiAuthCodeDao kalturaLtiAuthCodeDao) {
         this.kalturaLtiAuthCodeDao = kalturaLtiAuthCodeDao;
@@ -40,7 +36,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#getAuthCode(long)}
      */
-    public KalturaLtiAuthCode getAuthCode(Long id) {
+    public KalturaLtiAuthCode getAuthCode(Long id) throws Exception {
         if (id == null) {
             throw new IllegalArgumentException("AuthCodeService :: auth code ID cannot be null.");
         }
@@ -51,7 +47,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#getAuthCode(String)}
      */
-    public KalturaLtiAuthCode getAuthCode(String id) {
+    public KalturaLtiAuthCode getAuthCode(String id) throws Exception {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException("AuthCodeService :: auth code ID cannot be null.");
         }
@@ -62,7 +58,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#getUnusedAuthCodes(String, String)}
      */
-    public List<KalturaLtiAuthCode> getUnusedAuthCodes(String userId, String authCode) {
+    public List<KalturaLtiAuthCode> getUnusedAuthCodes(String userId, String authCode) throws Exception {
         if (StringUtils.isBlank(userId)) {
             throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
         }
@@ -76,7 +72,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#createAuthCode(String)}
      */
-    public KalturaLtiAuthCode createAuthCode(String userId) {
+    public KalturaLtiAuthCode createAuthCode(String userId) throws Exception {
         if (StringUtils.isBlank(userId)) {
             throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
         }
@@ -87,7 +83,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#createAuthCode(String, String)}
      */
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode) {
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode) throws Exception {
         if (StringUtils.isBlank(userId)) {
             throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
         }
@@ -101,7 +97,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#createAuthCode(String, String, boolean)}
      */
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Boolean codeUsed) {
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Boolean codeUsed) throws Exception {
         if (StringUtils.isBlank(userId)) {
             throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
         }
@@ -119,7 +115,7 @@ public class AuthCodeService {
      * {@link KalturaLtiAuthCodeDao#createAuthCode(String, String, Date)}
      */
 
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated) {
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated) throws Exception {
         if (StringUtils.isBlank(userId)) {
             throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
         }
@@ -136,7 +132,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#createAuthCode(String, String, boolean, Date)}
      */
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Boolean codeUsed, Date dateCreated) {
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Boolean codeUsed, Date dateCreated) throws Exception {
         if (StringUtils.isBlank(userId)) {
             throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
         }
@@ -156,7 +152,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#createAuthCode(KalturaLtiAuthCode)}
      */
-    public KalturaLtiAuthCode createAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) {
+    public KalturaLtiAuthCode createAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception {
         if (kalturaLtiAuthCode == null) {
             throw new IllegalArgumentException("AuthCodeService :: kalturaLtiAuthCode cannot be null.");
         }
@@ -167,7 +163,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#inactivateAuthCode(long)}
      */
-    public boolean inactivateAuthCode(Long id) {
+    public boolean inactivateAuthCode(Long id) throws Exception {
         if (id == null) {
             throw new IllegalArgumentException("AuthCodeService :: auth code ID cannot be null.");
         }
@@ -178,7 +174,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#inactivateAuthCode(String)}
      */
-    public boolean inactivateAuthCode(String authCode) {
+    public boolean inactivateAuthCode(String authCode) throws Exception {
         if (StringUtils.isBlank(authCode)) {
             throw new IllegalArgumentException("AuthCodeService :: auth code cannot be null.");
         }
@@ -189,7 +185,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#inactivateAuthCode(String, String)}
      */
-    public boolean inactivateAuthCode(String userId, String authCode) {
+    public boolean inactivateAuthCode(String userId, String authCode) throws Exception {
         if (StringUtils.isBlank(userId)) {
             throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
         }
@@ -203,7 +199,7 @@ public class AuthCodeService {
     /**
      * {@link KalturaLtiAuthCodeDao#inactivateAuthCode(KalturaLtiAuthCode)}
      */
-    public boolean inactivateAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) {
+    public boolean inactivateAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception {
         if (kalturaLtiAuthCode == null) {
             throw new IllegalArgumentException("Authorization code object cannot be null.");
         }

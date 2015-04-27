@@ -82,7 +82,7 @@ public interface KalturaLtiRoleDao extends GeneralGenericDao {
      * 
      * @return true, if added/updated successfully
      */
-    public boolean persistRoleMapping(KalturaLtiRole kalturaLtiRole);
+    public boolean save(KalturaLtiRole kalturaLtiRole);
 
     /**
      * Delete a role mapping

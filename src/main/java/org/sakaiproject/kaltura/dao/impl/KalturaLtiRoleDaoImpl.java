@@ -122,9 +122,13 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
      * {@inheritDoc}
      */
     @Override
-    public boolean persistRoleMapping(KalturaLtiRole kalturaLtiRole) {
+    public boolean save(KalturaLtiRole kalturaLtiRole) {
         try {
-            save(kalturaLtiRole);
+            if (!kalturaLtiRole.isValid()) {
+                kalturaLtiRole = new KalturaLtiRole(kalturaLtiRole);
+            }
+
+            super.save(kalturaLtiRole);
         } catch ( Exception e) {
             log.error("Kaltura :: addRoleMapping : An error occurred persisting the role mapping: " + kalturaLtiRole.toString() + ", error: " + e, e);
 
@@ -141,7 +145,11 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
     public boolean deleteRoleMapping(KalturaLtiRole kalturaLtiRole) {
         kalturaLtiRole.setActive(false);
 
-        return persistRoleMapping(kalturaLtiRole);
+        if (!kalturaLtiRole.isValid()) {
+            kalturaLtiRole = new KalturaLtiRole(kalturaLtiRole);
+        }
+
+        return save(kalturaLtiRole);
     }
 
     /**

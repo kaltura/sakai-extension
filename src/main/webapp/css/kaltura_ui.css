@@ -13,7 +13,7 @@ button:hover {
     background-color: #06b;
 }
 
-fieldset.form {
+.custom-role-form {
     width: 90%;
     margin: 20px auto;
     border: 3px solid #666;
@@ -28,14 +28,6 @@ legend {
 
 label {
     font-size: 1.2em;
-}
-
-legend.form {
-    border: none;
-    width: auto;
-    margin-bottom: 2px;
-    padding: 5px;
-    color: #09c;
 }
 
 td,

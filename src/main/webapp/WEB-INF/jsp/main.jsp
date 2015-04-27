@@ -15,60 +15,14 @@
     <link media="all" href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional CSS -->
-    <link media="all" href="<c:url value='/css/main.css'/>" rel="stylesheet" type="text/css" />
+    <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional JavaScript -->
     <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
+    <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
     <a href="role.htm">Custom Roles</a>
     <h2>This is where the new Kaltura Sakai LTI tool shall reside... Stay tuned!</h2>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">User</div>
-        <div class="panel-body">
-            <table id="user-table" class="table">
-                <tr>
-                    <th>Name</th>
-                    <th>ID</th>
-                    <th>EID</th>
-                    <th>Email</th>
-                    <th>Type</th>
-                </tr>
-                <tr>
-                    <td><span id="user-data-name"></span></td>
-                    <td><span id="user-data-id"></span></td>
-                    <td><span id="user-data-eid"></span></td>
-                    <td><span id="user-data-email"></span></td>
-                    <td><span id="user-data-type"></span></td>
-                </tr>
-            </table>
-            <div>JSON: <span id="user-data-json"></span></div>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">User's Roles</div>
-        <div class="panel-body">
-            <table id="user-role-table" class="table">
-                <tr>
-                    <th>Sakai site</th>
-                    <th>Sakai site role</th>
-                    <th>LTI role</th>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">Role Maps</div>
-        <div class="panel-body">
-            <table id="role-table" class="table">
-                <tr>
-                    <th>Sakai role</th>
-                    <th>LTI role</th>
-                </tr>
-            </table>
-            <div>JSON: <span id="role-data-json"></span></div>
-        </div>
-    </div>
 </body>
 </html>

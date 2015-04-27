@@ -25,6 +25,7 @@
 
     <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService">
         <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDaoTarget" />
+        <property name="roleData" ref="roleData" />
     </bean>
 
     <bean id="userService" class="org.sakaiproject.kaltura.services.UserService">
@@ -32,6 +33,13 @@
         <property name="entityManager" ref="org.sakaiproject.entity.api.EntityManager" />
         <property name="roleService" ref="roleService" />
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
+    </bean>
+
+    <bean id="jdbcDatabase" class="org.sakaiproject.kaltura.dao.jdbc.Database">
+        <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
+    </bean>
+
+    <bean id="roleData" class="org.sakaiproject.kaltura.dao.jdbc.data.RoleData" parent="jdbcDatabase">
     </bean>
 
     <!-- provider services -->

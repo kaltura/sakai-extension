@@ -23,6 +23,7 @@ import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.kaltura.dao.KalturaLtiAuthCodeDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 import org.sakaiproject.kaltura.utils.common.AuthCodeUtil;
 
 /**
@@ -87,7 +88,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public KalturaLtiAuthCode createAuthCode(String userId) {
+    public KalturaLtiAuthCode createAuthCode(String userId) throws Exception {
         String authorizationCode = AuthCodeUtil.createNewAuthorizationCode();
 
         return createAuthCode(userId, authorizationCode);
@@ -97,7 +98,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode) {
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode) throws Exception {
         return createAuthCode(userId, authCode, false);
     }
 
@@ -105,7 +106,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, boolean codeUsed) {
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, boolean codeUsed) throws Exception {
         return createAuthCode(userId, authCode, codeUsed, new Date());
     }
 
@@ -113,7 +114,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated) {
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated) throws Exception {
         return createAuthCode(userId, authCode, false, dateCreated);
     }
 
@@ -121,7 +122,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, boolean codeUsed, Date dateCreated) {
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, boolean codeUsed, Date dateCreated) throws Exception {
         KalturaLtiAuthCode kalturaLtiAuthCode = new KalturaLtiAuthCode(userId, authCode, codeUsed, dateCreated, AuthCodeUtil.calculateExpirationDate(dateCreated));
 
         return createAuthCode(kalturaLtiAuthCode);
@@ -131,8 +132,18 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public KalturaLtiAuthCode createAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) {
-        save(kalturaLtiAuthCode);
+    public KalturaLtiAuthCode createAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception {
+        if (!kalturaLtiAuthCode.isValid()) {
+            kalturaLtiAuthCode = new KalturaLtiAuthCode(kalturaLtiAuthCode);
+        }
+
+        try {
+            save(kalturaLtiAuthCode);
+        } catch (Exception e) {
+            String error = "Error inactivating authorization code. Error: " + e;
+            log.error(error, e);
+            throw new Exception(error, e);
+        }
 
         return kalturaLtiAuthCode;
     }
@@ -141,7 +152,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public boolean inactivateAuthCode(long id) {
+    public boolean inactivateAuthCode(long id) throws Exception {
         Search search = new Search("id", id);
 
         KalturaLtiAuthCode kalturaLtiAuthCode = findOneBySearch(KalturaLtiAuthCode.class, search);
@@ -153,7 +164,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public boolean inactivateAuthCode(String authCode) {
+    public boolean inactivateAuthCode(String authCode) throws Exception {
         Search search = new Search("authCode", authCode);
 
         KalturaLtiAuthCode kalturaLtiAuthCode = findOneBySearch(KalturaLtiAuthCode.class, search);
@@ -165,7 +176,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public boolean inactivateAuthCode(String userId, String authCode) {
+    public boolean inactivateAuthCode(String userId, String authCode) throws Exception {
         List<KalturaLtiAuthCode> unusedAuthCodes = getUnusedAuthCodes(userId, authCode);
 
         for (KalturaLtiAuthCode kalturaLtiAuthCode : unusedAuthCodes) {
@@ -179,22 +190,39 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public boolean inactivateAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) {
+    public boolean inactivateAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception {
         if (kalturaLtiAuthCode == null) {
             throw new IllegalArgumentException("Authorization code object cannot be null.");
         }
 
         kalturaLtiAuthCode.setInactivated(true);
 
-        try {
-            save(kalturaLtiAuthCode);
-        } catch (Exception e) {
-            log.error("Error inactivating authorization code. Error: " + e, e);
-
-            return false;
+        if (!kalturaLtiAuthCode.isValid()) {
+            kalturaLtiAuthCode = new KalturaLtiAuthCode(kalturaLtiAuthCode);
         }
+
+        save(kalturaLtiAuthCode);
 
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception {
+        try {
+            if (!kalturaLtiAuthCode.isValid()) {
+                kalturaLtiAuthCode = new KalturaLtiAuthCode(kalturaLtiAuthCode);
+            }
+
+            super.save(kalturaLtiAuthCode);
+        } catch (Exception e) {
+            String error = "Kaltura :: save : An error occurred persisting the authorization code: " + kalturaLtiAuthCode.toString() + ", error: " + e;
+            log.error(error, e);
+            throw new Exception(error, e);
+        }
+
+        return true;
+    }
 }

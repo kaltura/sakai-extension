@@ -17,6 +17,7 @@ package org.sakaiproject.kaltura.models.db;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.Constants;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
 
@@ -92,6 +93,21 @@ public class KalturaLtiRole implements Serializable {
     }
 
     /**
+     * Convenience constructor to ensure a valid {@link KalturaLtiRole} object exists
+     * 
+     * @param kalturaLtiRole the {@link KalturaLtiRole} object
+     */
+    public KalturaLtiRole(KalturaLtiRole kalturaLtiRole) {
+        this(
+            kalturaLtiRole.getSakaiRole(),
+            kalturaLtiRole.getLtiRole(),
+            kalturaLtiRole.isActive(),
+            kalturaLtiRole.getDateCreated(),
+            kalturaLtiRole.getDateModified()
+        );
+    }
+
+    /**
      * Full constructor
      * 
      * @param sakaiRole the Sakai role ID
@@ -102,10 +118,30 @@ public class KalturaLtiRole implements Serializable {
      */
     public KalturaLtiRole(String sakaiRole, String ltiRole, Boolean active, Date dateCreated, Date dateModified) {
         this.sakaiRole = sakaiRole;
-        this.ltiRole = ltiRole;
-        this.active = active;
-        this.dateCreated = dateCreated;
-        this.dateModified = dateModified;
+
+        if (StringUtils.isBlank(ltiRole)) {
+            this.ltiRole = Constants.DEFAULT_LTI_ROLE;
+        } else {
+            this.ltiRole = ltiRole;
+        }
+
+        if (active == null) {
+            this.active = true;
+        } else {
+            this.active = active;
+        }
+
+        if (dateCreated == null) {
+            this.dateCreated = new Date();
+        } else {
+            this.dateCreated = dateCreated;
+        }
+
+        if (dateModified == null) {
+            this.dateModified = new Date();
+        } else {
+            this.dateModified = dateModified;
+        }
     }
 
     public Long getId() {
@@ -174,6 +210,57 @@ public class KalturaLtiRole implements Serializable {
             return false;
         } else {
             return id.equals(other.id); // use id only if set
+        }
+    }
+
+    /**
+     * Is this a fully-constructed {@link KalturaLtiRole} object?
+     * 
+     * @return true, if all required fields are valid
+     */
+    public boolean isValid() {
+        if (StringUtils.isBlank(sakaiRole)) {
+            return false;
+        }
+        if (StringUtils.isBlank(ltiRole)) {
+            return false;
+        }
+        if (active == null) {
+            return false;
+        }
+        if (dateCreated == null) {
+            return false;
+        }
+        if (dateModified == null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Copies non-empty fields from another {@link KalturaLtiRole} object
+     * @param kalturaLtiRole
+     */
+    public void copy(KalturaLtiRole kalturaLtiRole) {
+        if (StringUtils.isNotBlank(kalturaLtiRole.getSakaiRole())) {
+            this.sakaiRole = kalturaLtiRole.getSakaiRole();
+        }
+
+        if (StringUtils.isNotBlank(kalturaLtiRole.getLtiRole())) {
+            this.ltiRole = kalturaLtiRole.getLtiRole();
+        }
+
+        if (kalturaLtiRole.isActive() != null) {
+            this.active = kalturaLtiRole.isActive();
+        }
+
+        if (kalturaLtiRole.getDateCreated() != null) {
+            this.dateCreated = kalturaLtiRole.getDateCreated();
+        }
+
+        if (dateModified == null) {
+            this.dateModified = new Date();
         }
     }
 

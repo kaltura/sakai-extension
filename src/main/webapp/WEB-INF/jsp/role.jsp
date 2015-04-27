@@ -15,7 +15,7 @@
     <link media="all" href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional CSS -->
-    <link media="all" href="<c:url value='/css/main.css'/>" rel="stylesheet" type="text/css" />
+    <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional JavaScript -->
     <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
@@ -56,10 +56,11 @@
                                 <option value="false">false</option>
                             </select>
                         </td>
-                        <td class="custom-role-edit">
-                            <button class="custom-role-edit">Edit</button>
-                            <button class="custom-role-save" hidden>Save</button>
-                            <button class="custom-role-cancel" hidden>Cancel</button>
+                        <td class="custom-role-button">
+                            <input type="hidden" class="custom-role-id" />
+                            <button class="custom-role-button-edit">Edit</button>
+                            <button class="custom-role-button-save" hidden>Save</button>
+                            <button class="custom-role-button-cancel" hidden>Cancel</button>
                         </td>
                     </tr>
                 </table>
