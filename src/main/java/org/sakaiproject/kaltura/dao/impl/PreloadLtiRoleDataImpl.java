@@ -72,7 +72,7 @@ public class PreloadLtiRoleDataImpl {
                         String ltiRole = roleMap[1];
     
                         if (StringUtils.isNotBlank(sakaiRole) && StringUtils.isNotBlank(ltiRole)) {
-                            KalturaLtiRole role = new KalturaLtiRole(sakaiRole, ltiRole, true);
+                            KalturaLtiRole role = new KalturaLtiRole(sakaiRole, ltiRole);
                             kalturaLtiRoleDao.save(role);
     
                             log.info("Kaltura :: Created default role mapping of Sakai role: " + sakaiRole + " --> " + "LTI role: " + ltiRole);

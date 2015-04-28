@@ -84,41 +84,6 @@ public class RoleProviderService {
     }
 
     /**
-     * Gets all Sakai role : LTI role mapping data
-     */
-    public ActionReturn getActiveRoles() {
-        ErrorRole errorRole = new ErrorRole();
-
-        List<KalturaLtiRole> activeKalturaLtiRoleMappings = new ArrayList<KalturaLtiRole>();
-
-        try {
-            activeKalturaLtiRoleMappings = roleService.getActiveRoleMappings();
-        } catch (Exception e) {
-            errorRole.updateErrorList(e.toString(), "get", null);
-            log.error(e.toString(), e);
-        }
-
-        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(activeKalturaLtiRoleMappings));
-    }
-
-    /**
-     * Gets all Sakai role : LTI role mapping data
-     */
-    public ActionReturn getInactiveRoles() {
-        ErrorRole errorRole = new ErrorRole();
-
-        List<KalturaLtiRole> inactiveKalturaLtiRoleMappings = new ArrayList<KalturaLtiRole>();
-
-        try {
-            inactiveKalturaLtiRoleMappings = roleService.getInactiveRoleMappings();
-        } catch (Exception e) {
-            errorRole.updateErrorList(e.toString(), "get", null);
-            log.error(e.toString(), e);
-        }
-        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(inactiveKalturaLtiRoleMappings));
-    }
-
-    /**
      * Adds a new role mapping
      * 
      * @param data the JSON string containing the data for the new mapping
@@ -191,6 +156,24 @@ public class RoleProviderService {
         }
 
         return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(allSakaiRoles));
+    }
+
+    /**
+     * Gets all Sakai roles defined
+     */
+    public ActionReturn getAllLtiRoles() {
+        ErrorRole errorRole = new ErrorRole();
+
+        List<String> allLtiRoles = new ArrayList<String>();
+
+        try {
+            allLtiRoles = roleService.getAllLtiRoles();
+        } catch (Exception e) {
+            errorRole.updateErrorList(e.toString(), "get", null);
+            log.error(e.toString(), e);
+        }
+
+        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(allLtiRoles));
     }
 
 }

@@ -14,6 +14,7 @@
  */
 package org.sakaiproject.kaltura.models.db;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,7 +27,9 @@ import com.google.gson.annotations.Expose;
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public class KalturaLtiAuthCode {
+public class KalturaLtiAuthCode implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Expose
     private Long id;
@@ -34,8 +37,6 @@ public class KalturaLtiAuthCode {
     private String userId;
     @Expose
     private String authCode;
-    @Expose
-    private Boolean inactivated;
     @Expose
     private Date dateCreated;
     @Expose
@@ -45,15 +46,11 @@ public class KalturaLtiAuthCode {
     }
 
     public KalturaLtiAuthCode(String userId, String authCode) {
-        this(userId, authCode, false);
+        this(userId, authCode, new Date(), AuthCodeUtil.calculateExpirationDate(new Date()));
     }
 
-    public KalturaLtiAuthCode(String userId, String authCode, boolean inactivated) {
-        this(userId, authCode, inactivated, new Date(), AuthCodeUtil.calculateExpirationDate(new Date()));
-    }
-
-    public KalturaLtiAuthCode(String userId, String authCode, boolean inactivated, Date dateCreated, Date dateExpires) {
-        this(null, userId, authCode, inactivated, dateCreated, dateExpires);
+    public KalturaLtiAuthCode(String userId, String authCode, Date dateCreated, Date dateExpires) {
+        this(null, userId, authCode, dateCreated, dateExpires);
     }
 
     /**
@@ -66,7 +63,6 @@ public class KalturaLtiAuthCode {
             kalturaLtiAuthCode.getId(),
             kalturaLtiAuthCode.getUserId(),
             kalturaLtiAuthCode.getAuthCode(),
-            kalturaLtiAuthCode.isInactivated(),
             kalturaLtiAuthCode.getDateCreated(),
             kalturaLtiAuthCode.getDateExpires()
         );
@@ -78,11 +74,10 @@ public class KalturaLtiAuthCode {
      * @param id
      * @param userId
      * @param authCode
-     * @param inactivated
      * @param dateCreated
      * @param dateExpires
      */
-    public KalturaLtiAuthCode(Long id, String userId, String authCode, Boolean inactivated, Date dateCreated, Date dateExpires) {
+    public KalturaLtiAuthCode(Long id, String userId, String authCode, Date dateCreated, Date dateExpires) {
         this.id = id;
         this.userId = userId;
 
@@ -90,12 +85,6 @@ public class KalturaLtiAuthCode {
             this.authCode = AuthCodeUtil.createNewAuthorizationCode();
         } else {
             this.authCode = authCode;
-        }
-
-        if (inactivated == null) {
-            this.inactivated = false;
-        } else {
-            this.inactivated = inactivated;
         }
 
         if (dateCreated == null) {
@@ -132,13 +121,6 @@ public class KalturaLtiAuthCode {
         this.authCode = authCode;
     }
 
-    public Boolean isInactivated() {
-        return inactivated;
-    }
-    public void setInactivated(Boolean inactivated) {
-        this.inactivated = inactivated;
-    }
-
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -169,9 +151,6 @@ public class KalturaLtiAuthCode {
         if (StringUtils.isBlank(authCode)) {
             return false;
         }
-        if (inactivated == null) {
-            return false;
-        }
         if (dateCreated == null) {
             return false;
         }
@@ -181,4 +160,5 @@ public class KalturaLtiAuthCode {
 
         return true;
     }
+
 }

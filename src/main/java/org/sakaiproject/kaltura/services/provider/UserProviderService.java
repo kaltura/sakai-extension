@@ -64,6 +64,4 @@ public class UserProviderService {
         return RestUtil.processActionReturn(errorUser, JsonUtil.parseToJson(user));
     }
 
-    
-
 }

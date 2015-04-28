@@ -34,7 +34,6 @@
                     <tr>
                         <th>Sakai Site Role</th>
                         <th>LTI Role</th>
-                        <th>Active</th>
                         <th></th>
                     </tr>
                     <tr class="custom-role-table-row">
@@ -44,17 +43,7 @@
                         </td>
                         <td class="custom-role-lti">
                             <span class="custom-role-lti-text"></span>
-                            <select class="custom-role-lti-select" hidden>
-                                <option value="Learner">Learner</option>
-                                <option value="Instructor">Instructor</option>
-                            </select>
-                        </td>
-                        <td class="custom-role-active">
-                            <span class="custom-role-active-text"></span>
-                            <select class="custom-role-active-select" hidden>
-                                <option value="true">true</option>
-                                <option value="false">false</option>
-                            </select>
+                            <select class="custom-role-lti-select" hidden></select>
                         </td>
                         <td class="custom-role-button">
                             <input type="hidden" class="custom-role-id" />

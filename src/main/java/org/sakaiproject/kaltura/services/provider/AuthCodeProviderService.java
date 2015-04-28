@@ -86,22 +86,4 @@ public class AuthCodeProviderService {
         return RestUtil.processActionReturn(errorAuthCode);
     }
 
-    /**
-     * Inactivates a {@link KalturaLtiAuthCode} object
-     * 
-     * @param authCode the auth code
-     */
-    public ActionReturn inactivateAuthCode(String authCode) {
-        ErrorAuthCode errorAuthCode = new ErrorAuthCode();
-
-        try {
-            authCodeService.inactivateAuthCode(authCode);
-        } catch (Exception e) {
-            errorAuthCode.updateErrorList(e.toString(), authCode, null);
-            log.error(e.toString(), e);
-        }
-
-        return RestUtil.processActionReturn(errorAuthCode);
-    }
-
 }

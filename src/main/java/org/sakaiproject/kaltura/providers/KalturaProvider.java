@@ -83,9 +83,9 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
      * The role API
      *
      * GET/POST kaltura/role
+     * GET kaltura/role/sakai
+     * GET kaltura/role/lti
      * GET/PUT kaltura/role/{roleId}
-     * GET kaltura/role/active
-     * GET kaltura/role/inactive
      */
     @EntityCustomAction(action="role", viewKey="")
     public ActionReturn role(EntityView view, Map<String, Object> params) {
@@ -111,12 +111,10 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
             }
         } else if (StringUtils.equalsIgnoreCase(EntityView.Method.GET.name(), view.getMethod())) {
             // GET
-            if (StringUtils.equalsIgnoreCase(id, "active")) {
-                actionReturn = roleProviderService.getActiveRoles();
-            } else if (StringUtils.equalsIgnoreCase(id, "inactive")) {
-                actionReturn = roleProviderService.getInactiveRoles();
-            } else if (StringUtils.equalsIgnoreCase(id, "sakai")) {
+            if (StringUtils.equalsIgnoreCase(id, "sakai")) {
                 actionReturn = roleProviderService.getAllSakaiRoles();
+            } else if (StringUtils.equalsIgnoreCase(id, "lti")) {
+                actionReturn = roleProviderService.getAllLtiRoles();
             } else {
                 actionReturn = roleProviderService.get(id);
             }
@@ -150,7 +148,6 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
      *
      * POST kaltura/auth
      * GET kaltura/auth/{authCode}
-     * POST/PUT kaltura/auth/inactivate/{authCode}
      */
     @EntityCustomAction(action="auth", viewKey="")
     public ActionReturn auth(EntityView view, Map<String, Object> params) {
@@ -163,26 +160,16 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
         if (StringUtils.equalsIgnoreCase(EntityView.Method.POST.name(), view.getMethod()) ||
                 StringUtils.equalsIgnoreCase(EntityView.Method.PUT.name(), view.getMethod())) {
             // POST or PUT
-            if (StringUtils.equalsIgnoreCase("inactivate", code)) {
-                // inactivate code
-                code = view.getPathSegment(3);
-                if (StringUtils.isBlank(code)) {
-                    throw new IllegalArgumentException("No auth code given kaltura/auth/inactivate: " + view.getMethod());
-                }
-                actionReturn = authCodeProviderService.inactivateAuthCode(code);
-            } else {
-                
-                if (params.get("data") == null) {
-                    throw new IllegalArgumentException("No data object defined in input");
-                }
+            if (params.get("data") == null) {
+                throw new IllegalArgumentException("No data object defined in input");
+            }
 
-                if (StringUtils.isNotBlank(code)) {
-                    // INVALID
-                    throw new IllegalArgumentException("INVALID USAGE: Auth code given on kaltura/auth: " + view.getMethod());
-                } else {
-                    // no ID given, add new auth code
-                    actionReturn = authCodeProviderService.createAuthCode((String) params.get("data"));
-                }
+            if (StringUtils.isNotBlank(code)) {
+                // INVALID
+                throw new IllegalArgumentException("INVALID USAGE: Auth code given on kaltura/auth: " + view.getMethod());
+            } else {
+                // no ID given, add new auth code
+                actionReturn = authCodeProviderService.createAuthCode((String) params.get("data"));
             }
         } else if (StringUtils.equalsIgnoreCase(EntityView.Method.GET.name(), view.getMethod())) {
             // GET

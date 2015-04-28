@@ -17,13 +17,29 @@ package org.sakaiproject.kaltura.models;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class UserSiteRole {
 
+    /**
+     * The ID of the site
+     */
     @Expose
+    @SerializedName("context_id")
     private String siteId;
+
+    /**
+     * The title of the site
+     */
     @Expose
-    private String ltiRole;
+    @SerializedName("context_title")
+    private String siteTitle;
+
+    /**
+     * A comma-separated string with the LTI roles
+     */
+    @Expose
+    private String ltiRoles;
 
     public UserSiteRole(){}
 
@@ -31,9 +47,9 @@ public class UserSiteRole {
         this(siteId, null);
     }
 
-    public UserSiteRole(String siteId, String ltiRole) {
+    public UserSiteRole(String siteId, String ltiRoles) {
         this.siteId = siteId;
-        this.ltiRole = ltiRole;
+        this.ltiRoles = ltiRoles;
     }
 
     public String getSiteId() {
@@ -44,12 +60,21 @@ public class UserSiteRole {
         this.siteId = siteId;
     }
 
-    public String getLtiRole() {
-        return ltiRole;
+    public String getLtiRoles() {
+        return ltiRoles;
     }
 
-    public void setLtiRole(String ltiRole) {
-        this.ltiRole = ltiRole;
+    public void setLtiRoles(String ltiRoles) {
+        this.ltiRoles = ltiRoles;
+    }
+
+    /**
+     * Add an LTI role to the comma-delimited string
+     * 
+     * @param ltiRole the LTI role to add
+     */
+    public void addLtiRole(String ltiRole) {
+        this.ltiRoles += "," + ltiRole;
     }
 
     /**

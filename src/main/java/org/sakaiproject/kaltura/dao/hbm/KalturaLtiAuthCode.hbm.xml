@@ -31,9 +31,6 @@
         <property name="authCode" type="string" length="255" not-null="true">
             <column name="auth_code" not-null="true" />
         </property>
-        <property name="inactivated" type="java.lang.Boolean" not-null="true">
-            <column name="inactivated" not-null="true" />
-        </property>
         <property name="dateCreated" type="java.util.Date">
             <column name="created_on" not-null="true" />
         </property>

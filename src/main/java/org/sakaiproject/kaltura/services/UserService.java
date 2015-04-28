@@ -104,8 +104,8 @@ public class UserService {
 
                            AuthzGroup authzGroup = authzGroupService.getAuthzGroup(userAuthzGroupId);
                            Role role = authzGroup.getUserRole(user.getId());
-                           String ltiRole = roleService.calculateLtiRole(role.getId());
-                           userSiteRole.setLtiRole(ltiRole);
+                           String ltiRole = roleService.calculateLtiRoles(role.getId());
+                           userSiteRole.setLtiRoles(ltiRole);
 
                            user.addUserSiteRole(userSiteRole);
                        }

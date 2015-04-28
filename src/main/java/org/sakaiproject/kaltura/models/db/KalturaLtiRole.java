@@ -39,8 +39,6 @@ public class KalturaLtiRole implements Serializable {
     @Expose
     private String ltiRole;
     @Expose
-    private Boolean active;
-    @Expose
     private Date dateCreated;
     @Expose
     private Date dateModified;
@@ -66,7 +64,7 @@ public class KalturaLtiRole implements Serializable {
      * @param ltiRole the LTI role ID
      */
     public KalturaLtiRole(String sakaiRole, String ltiRole) {
-        this(sakaiRole, ltiRole, true);
+        this(sakaiRole, ltiRole, new Date(), new Date());
     }
 
     /**
@@ -74,22 +72,10 @@ public class KalturaLtiRole implements Serializable {
      * 
      * @param sakaiRole the Sakai role ID
      * @param ltiRole the LTI role ID
-     * @param active is this mapping active?
-     */
-    public KalturaLtiRole(String sakaiRole, String ltiRole, Boolean active) {
-        this(sakaiRole, ltiRole, active, new Date(), new Date());
-    }
-
-    /**
-     * Constructor using the Sakai role Id, the LTI role ID, and active mapping
-     * 
-     * @param sakaiRole the Sakai role ID
-     * @param ltiRole the LTI role ID
-     * @param active is this mapping active?
      * @param dateCreated the date of creation
      */
-    public KalturaLtiRole(String sakaiRole, String ltiRole, Boolean active, Date dateCreated) {
-        this(sakaiRole, ltiRole, active, dateCreated, new Date());
+    public KalturaLtiRole(String sakaiRole, String ltiRole, Date dateCreated) {
+        this(sakaiRole, ltiRole, dateCreated, new Date());
     }
 
     /**
@@ -101,7 +87,6 @@ public class KalturaLtiRole implements Serializable {
         this(
             kalturaLtiRole.getSakaiRole(),
             kalturaLtiRole.getLtiRole(),
-            kalturaLtiRole.isActive(),
             kalturaLtiRole.getDateCreated(),
             kalturaLtiRole.getDateModified()
         );
@@ -112,23 +97,16 @@ public class KalturaLtiRole implements Serializable {
      * 
      * @param sakaiRole the Sakai role ID
      * @param ltiRole the LTI role ID
-     * @param active is this mapping active?
      * @param dateCreated the date of creation
      * @param dateModified the date of last modification
      */
-    public KalturaLtiRole(String sakaiRole, String ltiRole, Boolean active, Date dateCreated, Date dateModified) {
+    public KalturaLtiRole(String sakaiRole, String ltiRole, Date dateCreated, Date dateModified) {
         this.sakaiRole = sakaiRole;
 
         if (StringUtils.isBlank(ltiRole)) {
             this.ltiRole = Constants.DEFAULT_LTI_ROLE;
         } else {
             this.ltiRole = ltiRole;
-        }
-
-        if (active == null) {
-            this.active = true;
-        } else {
-            this.active = active;
         }
 
         if (dateCreated == null) {
@@ -163,13 +141,6 @@ public class KalturaLtiRole implements Serializable {
     }
     public void setLtiRole(String ltiRole) {
         this.ltiRole = ltiRole;
-    }
-
-    public Boolean isActive() {
-        return active;
-    }
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 
     public Date getDateCreated() {
@@ -225,9 +196,6 @@ public class KalturaLtiRole implements Serializable {
         if (StringUtils.isBlank(ltiRole)) {
             return false;
         }
-        if (active == null) {
-            return false;
-        }
         if (dateCreated == null) {
             return false;
         }
@@ -249,10 +217,6 @@ public class KalturaLtiRole implements Serializable {
 
         if (StringUtils.isNotBlank(kalturaLtiRole.getLtiRole())) {
             this.ltiRole = kalturaLtiRole.getLtiRole();
-        }
-
-        if (kalturaLtiRole.isActive() != null) {
-            this.active = kalturaLtiRole.isActive();
         }
 
         if (kalturaLtiRole.getDateCreated() != null) {

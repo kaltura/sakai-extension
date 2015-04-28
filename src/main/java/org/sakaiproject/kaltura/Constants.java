@@ -45,13 +45,20 @@ public class Constants {
      * Role configuration
      */
     public final static String DEFAULT_LTI_ROLE = "Learner";
-    public final static boolean DEFAULT_ROLE_MAPPING_ACTIVE = true;
     public final static String[] DEFAULT_ROLE_MAPPING = new String[] {
         "Instructor:Instructor",
         "Student:Learner",
         "maintain:Instructor",
         "access:Learner",
-        "Teaching Assistant:Learner"
+        "Teaching Assistant:TeachingAssistant"
+    };
+    public static final String[] DEFAULT_LTI_ROLES = new String[] {
+        "Learner",
+        "Instructor",
+        "Administrator",
+        "TeachingAssistant",
+        "ContentDeveloper",
+        "Mentor"
     };
 
     /*

@@ -23,7 +23,6 @@ import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.kaltura.dao.KalturaLtiAuthCodeDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
-import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 import org.sakaiproject.kaltura.utils.common.AuthCodeUtil;
 
 /**
@@ -99,15 +98,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      */
     @Override
     public KalturaLtiAuthCode createAuthCode(String userId, String authCode) throws Exception {
-        return createAuthCode(userId, authCode, false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, boolean codeUsed) throws Exception {
-        return createAuthCode(userId, authCode, codeUsed, new Date());
+        return createAuthCode(userId, authCode);
     }
 
     /**
@@ -115,15 +106,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      */
     @Override
     public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated) throws Exception {
-        return createAuthCode(userId, authCode, false, dateCreated);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, boolean codeUsed, Date dateCreated) throws Exception {
-        KalturaLtiAuthCode kalturaLtiAuthCode = new KalturaLtiAuthCode(userId, authCode, codeUsed, dateCreated, AuthCodeUtil.calculateExpirationDate(dateCreated));
+        KalturaLtiAuthCode kalturaLtiAuthCode = new KalturaLtiAuthCode(userId, authCode, dateCreated, AuthCodeUtil.calculateExpirationDate(dateCreated));
 
         return createAuthCode(kalturaLtiAuthCode);
     }
@@ -152,64 +135,6 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public boolean inactivateAuthCode(long id) throws Exception {
-        Search search = new Search("id", id);
-
-        KalturaLtiAuthCode kalturaLtiAuthCode = findOneBySearch(KalturaLtiAuthCode.class, search);
-
-        return inactivateAuthCode(kalturaLtiAuthCode);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean inactivateAuthCode(String authCode) throws Exception {
-        Search search = new Search("authCode", authCode);
-
-        KalturaLtiAuthCode kalturaLtiAuthCode = findOneBySearch(KalturaLtiAuthCode.class, search);
-
-        return inactivateAuthCode(kalturaLtiAuthCode);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean inactivateAuthCode(String userId, String authCode) throws Exception {
-        List<KalturaLtiAuthCode> unusedAuthCodes = getUnusedAuthCodes(userId, authCode);
-
-        for (KalturaLtiAuthCode kalturaLtiAuthCode : unusedAuthCodes) {
-            inactivateAuthCode(kalturaLtiAuthCode);
-        }
-
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean inactivateAuthCode(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception {
-        if (kalturaLtiAuthCode == null) {
-            throw new IllegalArgumentException("Authorization code object cannot be null.");
-        }
-
-        kalturaLtiAuthCode.setInactivated(true);
-
-        if (!kalturaLtiAuthCode.isValid()) {
-            kalturaLtiAuthCode = new KalturaLtiAuthCode(kalturaLtiAuthCode);
-        }
-
-        save(kalturaLtiAuthCode);
-
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public boolean save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception {
         try {
             if (!kalturaLtiAuthCode.isValid()) {
@@ -225,4 +150,5 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
 
         return true;
     }
+
 }
