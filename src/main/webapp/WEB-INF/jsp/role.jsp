@@ -39,17 +39,25 @@
                     <tr class="custom-role-table-row">
                         <td class="custom-role-sakai">
                             <span class="custom-role-sakai-text"></span>
-                            <select class="custom-role-sakai-select" hidden></select>
+                            <select class="custom-role-sakai-select form-control collapse"></select>
                         </td>
                         <td class="custom-role-lti">
                             <span class="custom-role-lti-text"></span>
-                            <select class="custom-role-lti-select" hidden></select>
+                            <select class="custom-role-lti-select form-control collapse"></select>
                         </td>
                         <td class="custom-role-button">
                             <input type="hidden" class="custom-role-id" />
-                            <button class="custom-role-button-edit">Edit</button>
-                            <button class="custom-role-button-save" hidden>Save</button>
-                            <button class="custom-role-button-cancel" hidden>Cancel</button>
+                            <button class="custom-role-button-edit btn btn-primary">Edit</button>
+                            <button class="custom-role-button-save btn btn-primary collapse">Save</button>
+                            <button class="custom-role-button-cancel btn btn-primary collapse">Cancel</button>
+                            <div class="custom-role-status-success alert alert-success collapse">
+                                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                Changes saved
+                            </div>
+                            <div class="custom-role-status-fail alert alert-error collapse">
+                                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                Error saving. Try again.
+                            </div>
                         </td>
                     </tr>
                 </table>
