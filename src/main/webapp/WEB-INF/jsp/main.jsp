@@ -11,8 +11,9 @@
     <script src="/library/js/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
 
     <!-- Twitter Bootstrap -->
-    <script src="<c:url value='/js/bootstrap.min.js'/>" type="text/javascript"></script>
-    <link media="all" href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet" type="text/css" />
+    <script src="<c:url value='/bootstrap/js/bootstrap.min.js'/>" type="text/javascript"></script>
+    <link media="all" href="<c:url value='/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet" type="text/css" />
+    <link media="all" href="<c:url value='/bootstrap/css/bootstrap-theme.min.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional CSS -->
     <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />

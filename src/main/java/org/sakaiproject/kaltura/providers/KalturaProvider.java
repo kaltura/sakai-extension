@@ -86,6 +86,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
      * GET kaltura/role/sakai
      * GET kaltura/role/lti
      * GET/PUT kaltura/role/{roleId}
+     * DELETE kaltura/role/{roleId}
      */
     @EntityCustomAction(action="role", viewKey="")
     public ActionReturn role(EntityView view, Map<String, Object> params) {
@@ -98,13 +99,24 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
         if (StringUtils.equalsIgnoreCase(EntityView.Method.POST.name(), view.getMethod()) ||
                 StringUtils.equalsIgnoreCase(EntityView.Method.PUT.name(), view.getMethod())) {
             // POST or PUT
-            if (params.get("data") == null) {
+            if (!StringUtils.equalsIgnoreCase(id, "delete") && params.get("data") == null) {
                 throw new IllegalArgumentException("No data object defined in input");
             }
 
             if (StringUtils.isNotBlank(id)) {
-                // ID given, update role mapping
-                actionReturn = roleProviderService.updateRoleMapping(id, (String) params.get("data"));
+                if (StringUtils.equalsIgnoreCase(id, "delete")) {
+                    // delete the role mapping
+                    id = view.getPathSegment(3);
+
+                    if (StringUtils.isBlank(id)) {
+                        throw new IllegalArgumentException("No ID specified for delete operation");
+                    }
+
+                    actionReturn = roleProviderService.deleteRoleMapping(id);
+                } else {
+                    // ID given, update role mapping
+                    actionReturn = roleProviderService.updateRoleMapping(id, (String) params.get("data"));
+                }
             } else {
                 // no ID given, add new role mapping
                 actionReturn = roleProviderService.addRoleMapping((String) params.get("data"));
@@ -196,27 +208,27 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     }
 
     public Object getSampleEntity() {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
     public void updateEntity(EntityReference ref, Object entity, Map<String, Object> params) {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
     public Object getEntity(EntityReference ref) {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
     public void deleteEntity(EntityReference ref, Map<String, Object> params) {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
     public List<?> getEntities(EntityReference ref, Search search) {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
     public boolean entityExists(String id) {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
 }

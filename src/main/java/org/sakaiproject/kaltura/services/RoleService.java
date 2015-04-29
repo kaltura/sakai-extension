@@ -232,4 +232,12 @@ public class RoleService {
         return allLtiRoles;
     }
 
+    /**
+     * Delete a custom role mapping
+     * 
+     * @param id the ID of the row mapping
+     */
+    public void deleteRoleMapping(String id) {
+        kalturaLtiRoleDao.delete(id);
+    }
 }

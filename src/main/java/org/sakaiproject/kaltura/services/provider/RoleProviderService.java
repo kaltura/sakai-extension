@@ -176,4 +176,22 @@ public class RoleProviderService {
         return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(allLtiRoles));
     }
 
+    /**
+     * Deletes a role mapping
+     * 
+     * @param id the ID of the role mapping
+     */
+    public ActionReturn deleteRoleMapping(String id) {
+        ErrorRole errorRole = new ErrorRole();
+
+        try {
+            roleService.deleteRoleMapping(id);
+        } catch (Exception e) {
+            errorRole.updateErrorList(e.toString(), "delete", null);
+            log.error(e.toString(), e);
+        }
+
+        return RestUtil.processActionReturn(errorRole);
+    }
+
 }

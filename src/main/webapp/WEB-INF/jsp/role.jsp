@@ -11,8 +11,9 @@
     <script src="/library/js/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
 
     <!-- Twitter Bootstrap -->
-    <script src="<c:url value='/js/bootstrap.min.js'/>" type="text/javascript"></script>
-    <link media="all" href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet" type="text/css" />
+    <script src="<c:url value='/bootstrap/js/bootstrap.min.js'/>" type="text/javascript"></script>
+    <link media="all" href="<c:url value='/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet" type="text/css" />
+    <link media="all" href="<c:url value='/bootstrap/css/bootstrap-theme.min.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional CSS -->
     <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
@@ -46,17 +47,22 @@
                             <select class="custom-role-lti-select form-control collapse"></select>
                         </td>
                         <td class="custom-role-button">
-                            <input type="hidden" class="custom-role-id" />
-                            <button class="custom-role-button-edit btn btn-primary">Edit</button>
-                            <button class="custom-role-button-save btn btn-primary collapse">Save</button>
-                            <button class="custom-role-button-cancel btn btn-primary collapse">Cancel</button>
-                            <div class="custom-role-status-success alert alert-success collapse">
-                                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                Changes saved
+                            <input type="hidden" class="custom-role-id" value="new" />
+                            <div>
+                                <button class="custom-role-button-edit btn btn-primary">
+                                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                                </button>
+                                <button class="custom-role-button-delete btn btn-danger collapse">
+                                    <span class="glyphicon glyphicon-remove"></span> Delete
+                                </button>
+                                <button class="custom-role-button-save btn btn-primary collapse">Save</button>
+                                <button class="custom-role-button-cancel btn btn-danger collapse">Cancel</button>
                             </div>
-                            <div class="custom-role-status-fail alert alert-error collapse">
-                                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                Error saving. Try again.
+                            <div class="custom-role-status-success alert alert-success">
+                                <a href="#" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-ok"></span></a>
+                            </div>
+                            <div class="custom-role-status-fail alert alert-error">
+                                <a href="#" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove"></span></a>
                             </div>
                         </td>
                     </tr>

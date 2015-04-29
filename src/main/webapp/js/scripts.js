@@ -68,6 +68,24 @@ kaltura = {
         request.fail(function(jqXHR, textStatus, errorThrown) {
             callback(false, errorThrown);
         });
+    },
+
+    /* GET ajax request */
+    doDelete: function (url, callback) {
+        var request = $.ajax({
+            type: "POST",
+            url:  url,
+            cache: false,
+            async: false
+        });
+
+        request.success(function(data, status, jqXHR) {
+            callback(true, data);
+        });
+
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+            callback(false, errorThrown);
+        });
     }
 
 }
