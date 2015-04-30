@@ -41,4 +41,29 @@ public class Constants {
      */
     public static final String REST_DEFAULT_ENCODING = "UTF-8";
 
+    /*
+     * Role configuration
+     */
+    public final static String DEFAULT_LTI_ROLE = "Learner";
+    public final static String[] DEFAULT_ROLE_MAPPING = new String[] {
+        "Instructor:Instructor",
+        "Student:Learner",
+        "maintain:Instructor",
+        "access:Learner",
+        "Teaching Assistant:TeachingAssistant"
+    };
+    public static final String[] DEFAULT_LTI_ROLES = new String[] {
+        "Learner",
+        "Instructor",
+        "Administrator",
+        "TeachingAssistant",
+        "ContentDeveloper",
+        "Mentor"
+    };
+
+    /*
+     * Authorization code configuration
+     */
+    public static final int DEFAULT_AUTHORIZATION_CODE_TTL = 60000; // 1 minute
+
 }

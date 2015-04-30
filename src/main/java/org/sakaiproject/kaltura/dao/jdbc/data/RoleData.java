@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.dao.data;
+package org.sakaiproject.kaltura.dao.jdbc.data;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,40 +21,45 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.kaltura.dao.Database;
-import org.sakaiproject.kaltura.dao.sql.TemplateSql;
+import org.sakaiproject.kaltura.dao.jdbc.Database;
+import org.sakaiproject.kaltura.dao.jdbc.sql.RoleSql;
 
 /**
+ * Processes app-specific role services dao needs
+ * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public class TemplateData extends Database {
+public class RoleData extends Database {
 
-    private final Log log = LogFactory.getLog(TemplateData.class);
+    private final Log log = LogFactory.getLog(RoleData.class);
 
-    public List<String> template() {
+    /**
+     * Gets all Sakai roles defined from the database
+     * 
+     * @return a list of the Sakai role IDs
+     */
+    public List<String> getSakaiRoles() {
+        List<String> sakaiRolesList = new ArrayList<String>();
+
         PreparedStatement preparedStatement = null;
-        List<String> rv = new ArrayList<String>();
 
         try {
-            // TODO get SQL statement
-            String query = TemplateSql.getTemplateSql();
+            String query = RoleSql.getSakaiRoles();
 
             preparedStatement = createPreparedStatement(preparedStatement, query);
-            // set vars
-            preparedStatement.setString(1, "");
 
             ResultSet resultSet = executeQueryPreparedStatement(preparedStatement);
 
-            while (resultSet.next()) {
-                rv.add(resultSet.getString(1));
+            while(resultSet.next()) {
+                sakaiRolesList.add(resultSet.getString("ROLE_NAME"));
             }
         } catch (Exception e) {
-            log.error("Error getting data: " + e, e);
+            log.error("Error getting Sakai roles data. Error: " + e, e);
         } finally {
             closePreparedStatement(preparedStatement);
         }
 
-        return rv;
+        return sakaiRolesList;
     }
 
 }

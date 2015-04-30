@@ -11,39 +11,19 @@
     <script src="/library/js/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
 
     <!-- Twitter Bootstrap -->
-    <script src="<c:url value='/js/bootstrap.min.js'/>" type="text/javascript"></script>
-    <link media="all" href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet" type="text/css" />
+    <script src="<c:url value='/bootstrap/js/bootstrap.min.js'/>" type="text/javascript"></script>
+    <link media="all" href="<c:url value='/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet" type="text/css" />
+    <link media="all" href="<c:url value='/bootstrap/css/bootstrap-theme.min.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional CSS -->
-    <link media="all" href="<c:url value='/css/main.css'/>" rel="stylesheet" type="text/css" />
+    <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional JavaScript -->
     <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
+    <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
+    <a href="role.htm">Custom Roles</a>
     <h2>This is where the new Kaltura Sakai LTI tool shall reside... Stay tuned!</h2>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">User</div>
-        <div class="panel-body">
-            <table class="table">
-                <tr><td>Name:</td><td><span id="user-data-name"></span></td></tr>
-                <tr><td>User ID:</td><td><span id="user-data-id"></span></td></tr>
-                <tr><td>User EID:</td><td><span id="user-data-eid"></span></td></tr>
-                <tr><td>Email:</td><td><span id="user-data-email"></span></td></tr>
-                <tr><td>Type:</td><td><span id="user-data-type"></span></td></tr>
-            </table>
-            <div>JSON: <span id="user-data-json"></span></div>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">Role</div>
-        <div class="panel-body">
-            <table class="table">
-                <tr><td>Role:</td><td><span id="role-data-role"></span></td></tr>
-            </table>
-            <div>JSON: <span id="role-data-json"></span></div>
-        </div>
-    </div>
 </body>
 </html>

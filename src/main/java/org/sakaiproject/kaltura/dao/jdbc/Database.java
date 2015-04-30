@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.dao;
+package org.sakaiproject.kaltura.dao.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,10 +32,7 @@ public class Database {
 
     private final Log log = LogFactory.getLog(Database.class);
 
-    /**
-     * {@link SqlService}
-     */
-    protected SqlService sqlService;
+    private SqlService sqlService;
     public void setSqlService(SqlService sqlService) {
         this.sqlService = sqlService;
     }

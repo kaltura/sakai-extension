@@ -28,8 +28,9 @@ import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
-import org.sakaiproject.kaltura.services.RoleService;
-import org.sakaiproject.kaltura.services.UserService;
+import org.sakaiproject.kaltura.services.provider.AuthCodeProviderService;
+import org.sakaiproject.kaltura.services.provider.RoleProviderService;
+import org.sakaiproject.kaltura.services.provider.UserProviderService;
 import org.sakaiproject.kaltura.utils.common.SecurityUtil;
 
 /**
@@ -41,14 +42,20 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
     private final Log log = LogFactory.getLog(KalturaProvider.class);
 
-    private RoleService roleService;
-    public void setRoleService(RoleService roleService) {
-        this.roleService = roleService;
+    private AuthCodeProviderService authCodeProviderService;
+    public void setAuthCodeProviderService(
+            AuthCodeProviderService authCodeProviderService) {
+        this.authCodeProviderService = authCodeProviderService;
     }
 
-    private UserService userService;
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    private RoleProviderService roleProviderService;
+    public void setRoleProviderService(RoleProviderService roleProviderService) {
+        this.roleProviderService = roleProviderService;
+    }
+
+    private UserProviderService userProviderService;
+    public void setUserProviderService(UserProviderService userProviderService) {
+        this.userProviderService = userProviderService;
     }
 
     public void init() {
@@ -75,8 +82,11 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     /**
      * The role API
      *
-     * kaltura/role
-     * kaltura/role/{roleId}
+     * GET/POST kaltura/role
+     * GET kaltura/role/sakai
+     * GET kaltura/role/lti
+     * GET/PUT kaltura/role/{roleId}
+     * DELETE kaltura/role/{roleId}
      */
     @EntityCustomAction(action="role", viewKey="")
     public ActionReturn role(EntityView view, Map<String, Object> params) {
@@ -84,16 +94,42 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
         ActionReturn actionReturn = null;
 
+        String id = view.getPathSegment(2);
+
         if (StringUtils.equalsIgnoreCase(EntityView.Method.POST.name(), view.getMethod()) ||
                 StringUtils.equalsIgnoreCase(EntityView.Method.PUT.name(), view.getMethod())) {
             // POST or PUT
-            if (params.get("data") == null) {
+            if (!StringUtils.equalsIgnoreCase(id, "delete") && params.get("data") == null) {
                 throw new IllegalArgumentException("No data object defined in input");
+            }
+
+            if (StringUtils.isNotBlank(id)) {
+                if (StringUtils.equalsIgnoreCase(id, "delete")) {
+                    // delete the role mapping
+                    id = view.getPathSegment(3);
+
+                    if (StringUtils.isBlank(id)) {
+                        throw new IllegalArgumentException("No ID specified for delete operation");
+                    }
+
+                    actionReturn = roleProviderService.deleteRoleMapping(id);
+                } else {
+                    // ID given, update role mapping
+                    actionReturn = roleProviderService.updateRoleMapping(id, (String) params.get("data"));
+                }
+            } else {
+                // no ID given, add new role mapping
+                actionReturn = roleProviderService.addRoleMapping((String) params.get("data"));
             }
         } else if (StringUtils.equalsIgnoreCase(EntityView.Method.GET.name(), view.getMethod())) {
             // GET
-            String roleId = view.getPathSegment(2);
-            actionReturn = roleService.get(roleId);
+            if (StringUtils.equalsIgnoreCase(id, "sakai")) {
+                actionReturn = roleProviderService.getAllSakaiRoles();
+            } else if (StringUtils.equalsIgnoreCase(id, "lti")) {
+                actionReturn = roleProviderService.getAllLtiRoles();
+            } else {
+                actionReturn = roleProviderService.get(id);
+            }
         } else {
             throw new IllegalArgumentException("Method not allowed on kaltura/role: " + view.getMethod());
         }
@@ -114,7 +150,51 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
         // GET
         String userId = view.getPathSegment(2);
-        actionReturn = userService.get(userId);
+        actionReturn = userProviderService.get(userId);
+
+        return actionReturn;
+    }
+
+    /**
+     * The role API
+     *
+     * POST kaltura/auth
+     * GET kaltura/auth/{authCode}
+     */
+    @EntityCustomAction(action="auth", viewKey="")
+    public ActionReturn auth(EntityView view, Map<String, Object> params) {
+        SecurityUtil.securityCheck((String) params.get("shared_secret"));
+
+        ActionReturn actionReturn = null;
+
+        String code = view.getPathSegment(2);
+
+        if (StringUtils.equalsIgnoreCase(EntityView.Method.POST.name(), view.getMethod()) ||
+                StringUtils.equalsIgnoreCase(EntityView.Method.PUT.name(), view.getMethod())) {
+            // POST or PUT
+            if (params.get("data") == null) {
+                throw new IllegalArgumentException("No data object defined in input");
+            }
+
+            if (StringUtils.isNotBlank(code)) {
+                // INVALID
+                throw new IllegalArgumentException("INVALID USAGE: Auth code given on kaltura/auth: " + view.getMethod());
+            } else {
+                // no ID given, add new auth code
+                actionReturn = authCodeProviderService.createAuthCode((String) params.get("data"));
+            }
+        } else if (StringUtils.equalsIgnoreCase(EntityView.Method.GET.name(), view.getMethod())) {
+            // GET
+            if (StringUtils.isBlank(code)) {
+                // INVALID
+                throw new IllegalArgumentException("INVALID USAGE: No auth code given on kaltura/auth: " + view.getMethod());
+            } else {
+                // code given, get the auth code
+                actionReturn = authCodeProviderService.getAuthCode(code);
+            }
+        } else {
+            throw new IllegalArgumentException("Method not allowed on kaltura/auth: " + view.getMethod());
+        }
 
         return actionReturn;
     }
@@ -128,27 +208,27 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     }
 
     public Object getSampleEntity() {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
     public void updateEntity(EntityReference ref, Object entity, Map<String, Object> params) {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
     public Object getEntity(EntityReference ref) {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
     public void deleteEntity(EntityReference ref, Map<String, Object> params) {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
     public List<?> getEntities(EntityReference ref, Search search) {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
     public boolean entityExists(String id) {
-        throw new IllegalArgumentException("Method not allowed on auto-roster.");
+        throw new IllegalArgumentException("Method not allowed on kaltura.");
     }
 
 }

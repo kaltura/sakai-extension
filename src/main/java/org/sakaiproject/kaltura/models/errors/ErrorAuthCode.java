@@ -17,27 +17,27 @@ package org.sakaiproject.kaltura.models.errors;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * The model for errors during role processing
+ * The model for errors during auth code processing
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public class ErrorRole extends BaseError {
+public class ErrorAuthCode extends BaseError {
 
     /**
-     * Update the role errors listing with an error
+     * Update the auth code errors listing with an error
      * 
      * @param error the error message
-     * @param site the site id (may be null)
-     * @param eid the user's eid (may be null)
+     * @param authId the auth code id (may be null)
+     * @param userId the Sakai internal user id (may be null)
      */
     @Override
-    public void updateErrorList(String error, String action, String roleId) {
+    public void updateErrorList(String error, String authId, String userId) {
         String value = "Error: " + error;
-        if (StringUtils.isNotBlank(action)) {
-            value += ", action: " + action;
+        if (StringUtils.isNotBlank(authId)) {
+            value += ", auth code id: " + authId;
         }
-        if (StringUtils.isNotBlank(roleId)) {
-            value += ", object: " + roleId;
+        if (StringUtils.isNotBlank(userId)) {
+            value += ", user id: " + userId;
         }
 
         update(errors, value);

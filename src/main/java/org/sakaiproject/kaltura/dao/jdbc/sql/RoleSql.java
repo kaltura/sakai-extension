@@ -12,15 +12,30 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.dao.sql;
+package org.sakaiproject.kaltura.dao.jdbc.sql;
 
 /**
+ * Supplies the SQL strings for role service queries
+ * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public class TemplateSql {
+public class RoleSql {
 
-    public static String getTemplateSql() {
-        String sql = "SELECT * FROM TABLE";
+
+    /**
+     * SQL statement to retrieve all roles
+     * 
+     * @return the SQL string
+     */
+    public static String getSakaiRoles() {
+        String sql = "SELECT " +
+                        "ROLE_NAME " +
+                     "FROM " +
+                        "SAKAI_REALM_ROLE " +
+                     "WHERE " +
+                        "ROLE_NAME NOT IN ('.anon', '.auth') " +
+                     "ORDER BY " +
+                        "ROLE_NAME ASC";
 
         return sql;
     }

@@ -22,11 +22,15 @@
     <bean id="mainController" class="org.sakaiproject.kaltura.controllers.MainController">
     </bean>
 
+    <bean id="roleController" class="org.sakaiproject.kaltura.controllers.RoleController">
+    </bean>
+
     <!-- Spring controller mappings -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
                 <prop key="/main.htm">mainController</prop>
+                <prop key="/role.htm">roleController</prop>
             </props>
         </property>
     </bean>
