@@ -5,6 +5,7 @@
 $(document).ready(function() {
     var allSakaiRoles = [];
     var allLtiRoles = [];
+    var sakaiLtiRoleMap = []; // ["sakaiRole:ltiRole", ...]
     var customRoleTableRow = $("#custom-role-table > tbody > .custom-role-table-row");
     toggleStatus(customRoleTableRow, null);
     $("#custom-role-table > tbody > .custom-role-table-row").remove();
@@ -28,11 +29,13 @@ $(document).ready(function() {
 
         var sakaiRoleTextElement = $(editRow).find("[class*='custom-role-sakai-text']");
         var sakaiRole = $(sakaiRoleTextElement).text();
-        
+        var sakaiRoleSelectElement = $(editRow).find("[class*='custom-role-sakai-select']");
+        populateDropdown(sakaiRoleSelectElement, allSakaiRoles, sakaiRole);
+
         var ltiRoleElement = $(editRow).find("[class*='custom-role-lti-text']");
         var ltiRole = $(ltiRoleElement).text();
         var ltiRoleSelectElement = $(editRow).find("[class*='custom-role-lti-select']");
-        populateDropdown(ltiRoleSelectElement, allLtiRoles);
+        populateDropdown(ltiRoleSelectElement, allLtiRoles, ltiRole);
         $.each($(ltiRoleSelectElement).find("option"), function(index, option) {
             if (this.text == ltiRole) {
                 this.setAttribute('selected','selected');
@@ -58,7 +61,8 @@ $(document).ready(function() {
         }
 
         var sakaiRoleTextElement = $(saveRow).find("[class*='custom-role-sakai-text']");
-        var sakaiRole = $(sakaiRoleTextElement).text();
+        var sakaiRoleSelectElement = $(saveRow).find("[class*='custom-role-sakai-select']");
+        var sakaiRole = $(sakaiRoleSelectElement).val();
         
         var ltiRoleSelectElement = $(saveRow).find("[class*='custom-role-lti-select']");
         var ltiRoleTextElement = $(saveRow).find("[class*='custom-role-lti-text']");
@@ -74,7 +78,10 @@ $(document).ready(function() {
         // save the data row
         kaltura.doPost(data, kaltura.roleUrl + "/" + id, function(success, rv) {
             if (success) {
+                var roleMapping = rv[0];
+                $(saveRow).find(".custom-role-id").val(roleMapping.id);
                 $(ltiRoleTextElement).text(ltiRole);
+                $(sakaiRoleTextElement).text(sakaiRole);
                 toggleDataRowComponents(saveRow, false);
             }
 
@@ -84,7 +91,7 @@ $(document).ready(function() {
         toggleDataRowComponents(saveRow, false);
 
         // this is a new mapping, create another new row
-        if (id == "new") {
+        if (id == "") {
             addNewMappingRow();
         }
 
@@ -100,8 +107,10 @@ $(document).ready(function() {
         var id = getRowMappingId(cancelRow);
 
         if (id == "new") {
-            $(cancelRow).remove();
-            addNewMappingRow();
+            var sakaiRoleSelectElement = $(cancelRow).find("[class*='custom-role-sakai-select']");
+            var ltiRoleSelectElement = $(cancelRow).find("[class*='custom-role-lti-select']");
+            populateDropdown(sakaiRoleSelectElement, allSakaiRoles, null);
+            populateDropdown(ltiRoleSelectElement, allLtiRoles, null);
         } else {
             toggleStatus(cancelRow, null);
             toggleDataRowComponents(cancelRow, false);
@@ -185,6 +194,8 @@ $(document).ready(function() {
                 $(newCustomRoleTableRow).find(".custom-role-id").val(roleMapping.id);
 
                 appendRow(newCustomRoleTableRow);
+
+                sakaiLtiRoleMap.push(roleMapping.sakaiRole + ":" + roleMapping.ltiRole);
             });
 
             addNewMappingRow();
@@ -197,11 +208,15 @@ $(document).ready(function() {
 
     /* Show/hide a data row's components */
     function toggleDataRowComponents(dataRow, editable) {
+        var sakaiRoleSelectElement = $(dataRow).find("[class*='custom-role-sakai-select']");
+        var sakaiRoleTextElement = $(dataRow).find("[class*='custom-role-sakai-text']");
         var ltiRoleSelectElement = $(dataRow).find("[class*='custom-role-lti-select']");
         var ltiRoleTextElement = $(dataRow).find("[class*='custom-role-lti-text']");
         var id = getRowMappingId(dataRow);
 
         if (editable) {
+            $(sakaiRoleTextElement).hide();
+            $(sakaiRoleSelectElement).show();
             $(ltiRoleTextElement).hide();
             $(ltiRoleSelectElement).show();
 
@@ -210,12 +225,15 @@ $(document).ready(function() {
             $(dataRow).find("[class*='custom-role-button-cancel']").show();
             $(dataRow).find("[class*='custom-role-button-delete']").show();
         } else {
+            $(sakaiRoleTextElement).show();
+            $(sakaiRoleSelectElement).hide();
             $(ltiRoleTextElement).show();
             $(ltiRoleSelectElement).hide();
 
             $(dataRow).find("[class*='custom-role-button-edit']").show();
             $(dataRow).find("[class*='custom-role-button-save']").hide();
             $(dataRow).find("[class*='custom-role-button-cancel']").hide();
+            $(dataRow).find("[class*='custom-role-button-delete']").hide();
         }
 
         if (id == "new") {
@@ -242,21 +260,26 @@ $(document).ready(function() {
         var sakaiRoleTextElement = $(newCustomRoleTableRow).find("[class*='custom-role-sakai-text']");
         $(sakaiRoleTextElement).hide();
 
-        populateDropdown(sakaiRoleSelectElement, allSakaiRoles);
+        populateDropdown(sakaiRoleSelectElement, allSakaiRoles, null);
 
         var ltiRoleSelectElement = $(newCustomRoleTableRow).find("[class*='custom-role-lti-select']");
 
-        populateDropdown(ltiRoleSelectElement, allLtiRoles);
+        populateDropdown(ltiRoleSelectElement, allLtiRoles, null);
         toggleStatus(newCustomRoleTableRow, null);
         appendRow(newCustomRoleTableRow);
     }
 
     /* Populates a select dropdown, where the value and text are the same */
-    function populateDropdown(selectElement, dataArray) {
+    function populateDropdown(selectElement, dataArray, defaultValue) {
         $(selectElement).html("");
         $(selectElement).append($("<option/>", {value: null, text: "-- Select --"}));
         $.each(dataArray, function(index, data) {
             $(selectElement).append($("<option/>", {value: data, text: data}));
+        });
+        $.each($(selectElement).find("option"), function(index, option) {
+            if (this.value == defaultValue) {
+                this.setAttribute('selected','selected');
+            }
         });
     }
 

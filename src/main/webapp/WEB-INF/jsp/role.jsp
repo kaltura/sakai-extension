@@ -52,11 +52,11 @@
                                 <button class="custom-role-button-edit btn btn-primary">
                                     <span class="glyphicon glyphicon-pencil"></span> Edit
                                 </button>
+                                <button class="custom-role-button-save btn btn-primary collapse">Save</button>
+                                <button class="custom-role-button-cancel btn btn-danger collapse">Cancel</button>
                                 <button class="custom-role-button-delete btn btn-danger collapse">
                                     <span class="glyphicon glyphicon-remove"></span> Delete
                                 </button>
-                                <button class="custom-role-button-save btn btn-primary collapse">Save</button>
-                                <button class="custom-role-button-cancel btn btn-danger collapse">Cancel</button>
                             </div>
                             <div class="custom-role-status-success alert alert-success">
                                 <a href="#" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-ok"></span></a>

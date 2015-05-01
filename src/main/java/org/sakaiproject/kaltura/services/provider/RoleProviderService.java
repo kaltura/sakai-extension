@@ -92,6 +92,7 @@ public class RoleProviderService {
         ErrorRole errorRole = new ErrorRole();
 
         List<Object> kalturaLtiRoles = JsonUtil.parseFromJson(data, KalturaLtiRole.class);
+        List<KalturaLtiRole> added = new ArrayList<KalturaLtiRole>(kalturaLtiRoles.size());
 
         for (Object k : kalturaLtiRoles) {
             if (!(k instanceof KalturaLtiRole)) {
@@ -101,7 +102,8 @@ public class RoleProviderService {
             KalturaLtiRole kalturaLtiRole = (KalturaLtiRole) k;
 
             try {
-                roleService.addRoleMapping(kalturaLtiRole);
+                kalturaLtiRole = roleService.addRoleMapping(kalturaLtiRole);
+                added.add(kalturaLtiRole);
             } catch (Exception e) {
                 errorRole.updateErrorList(e.toString(), "add", kalturaLtiRole.toString());
                 log.error(e.toString(), e);
@@ -109,7 +111,7 @@ public class RoleProviderService {
 
         }
 
-        return RestUtil.processActionReturn(errorRole);
+        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(added));
     }
 
     /**
@@ -121,6 +123,7 @@ public class RoleProviderService {
         ErrorRole errorRole = new ErrorRole();
 
         List<Object> kalturaLtiRoles = JsonUtil.parseFromJson(data, KalturaLtiRole.class);
+        List<KalturaLtiRole> updated = new ArrayList<KalturaLtiRole>(kalturaLtiRoles.size());
 
         for (Object k : kalturaLtiRoles) {
             if (!(k instanceof KalturaLtiRole)) {
@@ -131,13 +134,14 @@ public class RoleProviderService {
             kalturaLtiRole.setId(Long.parseLong(id));
 
             try {
-                roleService.updateRoleMapping(kalturaLtiRole);
+                kalturaLtiRole = roleService.updateRoleMapping(kalturaLtiRole);
+                updated.add(kalturaLtiRole);
             } catch (Exception e) {
                 errorRole.updateErrorList(e.toString(), "update", kalturaLtiRole.toString());
             }
         }
 
-        return RestUtil.processActionReturn(errorRole);
+        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(updated));
     }
 
     /**
