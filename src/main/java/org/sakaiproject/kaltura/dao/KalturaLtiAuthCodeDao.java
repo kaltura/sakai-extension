@@ -99,6 +99,8 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
      * @return true, if added/updated successfully
      * @throws Exception 
      */
-    boolean save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception;
+    public boolean save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception;
+
+    public void commit();
 
 }

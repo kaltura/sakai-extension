@@ -89,6 +89,26 @@ public class RoleService {
     }
 
     /**
+     * Get the role mapping associated with the given Sakai role
+     * 
+     * @param sakaiRole the Sakai role ID
+     * @param ltiRole the LTI role ID
+     * @return the {@link KalturaLtiRole} object
+     */
+    public KalturaLtiRole getRoleMapping(String sakaiRole, String ltiRole) throws Exception {
+        if (StringUtils.isBlank(sakaiRole)) {
+            throw new IllegalArgumentException("Sakai role cannot be blank.");
+        }
+        if (StringUtils.isBlank(ltiRole)) {
+            throw new IllegalArgumentException("Lti role cannot be blank.");
+        }
+
+        KalturaLtiRole kalturaLtiRole = kalturaLtiRoleDao.getRoleMapping(sakaiRole, ltiRole);
+
+        return kalturaLtiRole;
+    }
+
+    /**
      * Get the entire list of role mappings
      * 
      * @return a list of the {@link KalturaLtiRole} objects
@@ -131,6 +151,9 @@ public class RoleService {
         }
 
         kalturaLtiRoleDao.save(kalturaLtiRole);
+
+        // get the new role mapping, with the ID
+        kalturaLtiRole = getRoleMapping(kalturaLtiRole.getSakaiRole(), kalturaLtiRole.getLtiRole());
 
         return kalturaLtiRole;
     }
@@ -176,10 +199,10 @@ public class RoleService {
             kalturaLtiRoleDao.save(toUpdate);
         } else {
             // no object exists, add it instead
-            addRoleMapping(kalturaLtiRole);
+            toUpdate = addRoleMapping(kalturaLtiRole);
         }
 
-        return kalturaLtiRole;
+        return toUpdate;
     }
 
     /**

@@ -14,6 +14,7 @@
  */
 package org.sakaiproject.kaltura.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -98,13 +99,30 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
      * {@inheritDoc}
      */
     @Override
+    public KalturaLtiRole getRoleMapping(String sakaiRole, String ltiRole) {
+        String[] properties = new String[] {"sakaiRole", "ltiRole"};
+        String[] values = new String[] {sakaiRole, ltiRole};
+        Search search = new Search(properties, values);
+
+        KalturaLtiRole kalturaLtiRole = findOneBySearch(KalturaLtiRole.class, search);
+
+        return kalturaLtiRole;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void save(KalturaLtiRole kalturaLtiRole) {
         try {
             if (!kalturaLtiRole.isValid()) {
                 kalturaLtiRole = new KalturaLtiRole(kalturaLtiRole);
             }
 
+            kalturaLtiRole.setDateModified(new Date());
+
             super.save(kalturaLtiRole);
+            commit();
         } catch ( Exception e) {
             log.error("Kaltura :: addRoleMapping : An error occurred persisting the role mapping: " + kalturaLtiRole.toString() + ", error: " + e, e);
         }
