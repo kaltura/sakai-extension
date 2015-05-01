@@ -17,8 +17,8 @@
 -->
 <registration>
     <tool id="kaltura.lti"
-        title="Media Gallery LTI"
-        description="Kaltura Media Gallery LTI">
+        title="My Media"
+        description="Kaltura My Media LTI">
         <category name="course" />
         <category name="project" />
         <category name="myworkspace" />
