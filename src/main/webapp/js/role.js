@@ -7,7 +7,7 @@ $(document).ready(function() {
     var allLtiRoles = [];
     var sakaiLtiRoleMap = []; // ["sakaiRole:ltiRole", ...]
     var customRoleTableRow = $("#custom-role-table > tbody > .custom-role-table-row");
-    toggleStatus(customRoleTableRow, null);
+    toggleStatus(getCurrentElement($("#custom-role-table > tbody > .custom-role-table-row")));
     $("#custom-role-table > tbody > .custom-role-table-row").remove();
 
     // pre-load the data rows
@@ -21,28 +21,32 @@ $(document).ready(function() {
     $("[class*='custom-role-button-edit']").click(function(event) {
         event.preventDefault();
 
-        var editRow = $(this).closest("tr");
+        var dataTable = $(this).closest("#custom-role-table");
+        $.each(dataTable.find(".custom-role-table-row"), function(index, dataRow) {
+            var element = getCurrentElement(dataRow);
+            if (element.isNew()) {
+                populateDropdown(element.sakaiSelect, allSakaiRoles, null);
+                populateDropdown(element.ltiSelect, allLtiRoles, null);
+            } else {
+                toggleDataRowComponents(element, false);
+            }
+        });
 
-        toggleStatus(editRow, null);
+        var element = getCurrentElement($(this).closest("tr"));
 
-        var id = getRowMappingId(editRow);
+        toggleStatus(element, null);
 
-        var sakaiRoleTextElement = $(editRow).find("[class*='custom-role-sakai-text']");
-        var sakaiRole = $(sakaiRoleTextElement).text();
-        var sakaiRoleSelectElement = $(editRow).find("[class*='custom-role-sakai-select']");
-        populateDropdown(sakaiRoleSelectElement, allSakaiRoles, sakaiRole);
+        populateDropdown(element.sakaiSelect, allSakaiRoles, element.sakaiRole);
 
-        var ltiRoleElement = $(editRow).find("[class*='custom-role-lti-text']");
-        var ltiRole = $(ltiRoleElement).text();
-        var ltiRoleSelectElement = $(editRow).find("[class*='custom-role-lti-select']");
-        populateDropdown(ltiRoleSelectElement, allLtiRoles, ltiRole);
-        $.each($(ltiRoleSelectElement).find("option"), function(index, option) {
-            if (this.text == ltiRole) {
+        populateDropdown(element.ltiSelect, allLtiRoles, element.ltiRole);
+        filterLtiRoles(element);
+        $.each($(element.ltiSelect).find("option"), function(index, option) {
+            if (this.text == element.ltiRole) {
                 this.setAttribute('selected','selected');
             }
         });
 
-        toggleDataRowComponents(editRow, true);
+        toggleDataRowComponents(element, true);
 
         return false;
     });
@@ -51,49 +55,42 @@ $(document).ready(function() {
     $("[class*='custom-role-button-save'").click(function(event) {
         event.preventDefault();
 
-        var saveRow = $(this).closest("tr");
+        var element = getCurrentElement($(this).closest("tr"));
 
-        toggleStatus(saveRow, null);
+        toggleStatus(element, null);
 
-        var id = getRowMappingId(saveRow);
-        if (id == "new") {
-            id = "";
+        if (element.isNew()) {
+            element.setId("");
+            addNewMappingRow();
         }
 
-        var sakaiRoleTextElement = $(saveRow).find("[class*='custom-role-sakai-text']");
-        var sakaiRoleSelectElement = $(saveRow).find("[class*='custom-role-sakai-select']");
-        var sakaiRole = $(sakaiRoleSelectElement).val();
-        
-        var ltiRoleSelectElement = $(saveRow).find("[class*='custom-role-lti-select']");
-        var ltiRoleTextElement = $(saveRow).find("[class*='custom-role-lti-text']");
-        var ltiRole = $(ltiRoleSelectElement).val();
+        element.newSakaiRole = $(element.sakaiSelect).val();
+        element.newLtiRole = $(element.ltiSelect).val();
 
         var data = [
             {
-                "sakaiRole": sakaiRole,
-                "ltiRole": ltiRole
+                "sakaiRole": element.newSakaiRole,
+                "ltiRole": element.newLtiRole
             }
         ];
 
         // save the data row
-        kaltura.doPost(data, kaltura.roleUrl + "/" + id, function(success, rv) {
+        kaltura.doPost(data, kaltura.roleUrl + "/" + element.id, function(success, rv) {
             if (success) {
                 var roleMapping = rv[0];
-                $(saveRow).find(".custom-role-id").val(roleMapping.id);
-                $(ltiRoleTextElement).text(ltiRole);
-                $(sakaiRoleTextElement).text(sakaiRole);
-                toggleDataRowComponents(saveRow, false);
+                element.setId(roleMapping.id);
+
+                updateSakaiLtiRoleMap(buildRoleMapString(element.newSakaiRole, element.newLtiRole), buildRoleMapString(element.sakaiRole, element.ltiRole));
+
+                $(element.ltiText).text(element.newLtiRole);
+                $(element.sakaiText).text(element.newSakaiRole);
+                toggleDataRowComponents(element, false);
             }
 
-            toggleStatus(saveRow, success);
+            toggleStatus(element, success);
         });
 
-        toggleDataRowComponents(saveRow, false);
-
-        // this is a new mapping, create another new row
-        if (id == "") {
-            addNewMappingRow();
-        }
+        toggleDataRowComponents(element, false);
 
         return false;
     });
@@ -102,18 +99,14 @@ $(document).ready(function() {
     $("[class*='custom-role-button-cancel']").click(function(event) {
         event.preventDefault();
 
-        var cancelRow = $(this).closest("tr");
+        var element = getCurrentElement($(this).closest("tr"));
 
-        var id = getRowMappingId(cancelRow);
-
-        if (id == "new") {
-            var sakaiRoleSelectElement = $(cancelRow).find("[class*='custom-role-sakai-select']");
-            var ltiRoleSelectElement = $(cancelRow).find("[class*='custom-role-lti-select']");
-            populateDropdown(sakaiRoleSelectElement, allSakaiRoles, null);
-            populateDropdown(ltiRoleSelectElement, allLtiRoles, null);
+        if (element.isNew()) {
+            populateDropdown(element.sakaiSelect, allSakaiRoles, null);
+            populateDropdown(element.ltiSelect, allLtiRoles, null);
         } else {
-            toggleStatus(cancelRow, null);
-            toggleDataRowComponents(cancelRow, false);
+            toggleStatus(element, null);
+            toggleDataRowComponents(element, false);
         }
 
         return false;
@@ -123,26 +116,34 @@ $(document).ready(function() {
     $("[class*='custom-role-button-delete']").click(function(event) {
         event.preventDefault();
 
-        var deleteRow = $(this).closest("tr");
-
-        var id = getRowMappingId(deleteRow);
+        var element = getCurrentElement($(this).closest("tr"));
 
         // save the data row
-        kaltura.doDelete(kaltura.roleUrl + "/delete/" + id, function(success, rv) {
+        kaltura.doDelete(kaltura.roleUrl + "/delete/" + element.id, function(success, rv) {
             if (success) {
-                var ltiRoleSelectElement = $(deleteRow).find("[class*='custom-role-lti-select']");
-                var ltiRole = $(ltiRoleSelectElement).val();
-                var ltiRoleTextElement = $(deleteRow).find("[class*='custom-role-lti-text']");
-
-                $(ltiRoleTextElement).text(ltiRole);
-                toggleDataRowComponents(deleteRow, false);
+                toggleDataRowComponents(element, false);
             }
 
-            toggleStatus(deleteRow, !success);
-            disableDataRow(deleteRow);
+            toggleStatus(element, !success);
+            disableDataRow(element);
         });
 
         return false;
+    });
+
+    $("[class*='custom-role-lti-select']").focus(function(event) {
+        var element = getCurrentElement($(this).closest("tr"));
+        filterLtiRoles(element);
+    });
+
+    $("[class*='custom-role-sakai-select']").focus(function(event) {
+        var element = getCurrentElement($(this).closest("tr"));
+        filterLtiRoles(element);
+    });
+
+    $("[class*='custom-role-sakai-select']").change(function(event) {
+        var element = getCurrentElement($(this).closest("tr"));
+        filterLtiRoles(element);
     });
 
     /* GET request for existing Sakai roles defined */
@@ -189,13 +190,15 @@ $(document).ready(function() {
             $.each(data, function(index, roleMapping) {
                 var newCustomRoleTableRow = customRoleTableRow.clone(true);
 
-                $(newCustomRoleTableRow).find(".custom-role-sakai-text").text(roleMapping.sakaiRole);
-                $(newCustomRoleTableRow).find(".custom-role-lti-text").text(roleMapping.ltiRole);
-                $(newCustomRoleTableRow).find(".custom-role-id").val(roleMapping.id);
+                var element = getCurrentElement(newCustomRoleTableRow);
 
-                appendRow(newCustomRoleTableRow);
+                $(element.sakaiText).text(roleMapping.sakaiRole);
+                $(element.ltiText).text(roleMapping.ltiRole);
+                element.setId(roleMapping.id);
 
-                sakaiLtiRoleMap.push(roleMapping.sakaiRole + ":" + roleMapping.ltiRole);
+                appendRow(element);
+
+                updateSakaiLtiRoleMap(buildRoleMapString(roleMapping.sakaiRole, roleMapping.ltiRole), null);
             });
 
             addNewMappingRow();
@@ -207,44 +210,38 @@ $(document).ready(function() {
     }
 
     /* Show/hide a data row's components */
-    function toggleDataRowComponents(dataRow, editable) {
-        var sakaiRoleSelectElement = $(dataRow).find("[class*='custom-role-sakai-select']");
-        var sakaiRoleTextElement = $(dataRow).find("[class*='custom-role-sakai-text']");
-        var ltiRoleSelectElement = $(dataRow).find("[class*='custom-role-lti-select']");
-        var ltiRoleTextElement = $(dataRow).find("[class*='custom-role-lti-text']");
-        var id = getRowMappingId(dataRow);
-
+    function toggleDataRowComponents(element, editable) {
         if (editable) {
-            $(sakaiRoleTextElement).hide();
-            $(sakaiRoleSelectElement).show();
-            $(ltiRoleTextElement).hide();
-            $(ltiRoleSelectElement).show();
+            $(element.sakaiText).hide();
+            $(element.sakaiSelect).show();
+            $(element.ltiText).hide();
+            $(element.ltiSelect).show();
 
-            $(dataRow).find("[class*='custom-role-button-edit']").hide();
-            $(dataRow).find("[class*='custom-role-button-save']").show();
-            $(dataRow).find("[class*='custom-role-button-cancel']").show();
-            $(dataRow).find("[class*='custom-role-button-delete']").show();
+            $(element.buttonEdit).hide();
+            $(element.buttonSave).show();
+            $(element.buttonCancel).show();
+            $(element.buttonDelete).show();
         } else {
-            $(sakaiRoleTextElement).show();
-            $(sakaiRoleSelectElement).hide();
-            $(ltiRoleTextElement).show();
-            $(ltiRoleSelectElement).hide();
+            $(element.sakaiText).show();
+            $(element.sakaiSelect).hide();
+            $(element.ltiText).show();
+            $(element.ltiSelect).hide();
 
-            $(dataRow).find("[class*='custom-role-button-edit']").show();
-            $(dataRow).find("[class*='custom-role-button-save']").hide();
-            $(dataRow).find("[class*='custom-role-button-cancel']").hide();
-            $(dataRow).find("[class*='custom-role-button-delete']").hide();
+            $(element.buttonEdit).show();
+            $(element.buttonSave).hide();
+            $(element.buttonCancel).hide();
+            $(element.buttonDelete).hide();
         }
 
-        if (id == "new") {
-            $(dataRow).find("[class*='custom-role-button-delete']").hide();
+        if (element.isNew()) {
+            $(element.buttonDelete).hide();
         }
     }
 
     /* Add a data row to the table */
-    function appendRow(row) {
+    function appendRow(element) {
         $("#custom-role-table").append(
-            "<tr class='custom-role-table-row'>" + $(row).html() + "</tr>"
+            "<tr class='custom-role-table-row'>" + $(element.row).html() + "</tr>"
         );
     }
 
@@ -252,21 +249,18 @@ $(document).ready(function() {
     function addNewMappingRow() {
         // add new mapping row
         var newCustomRoleTableRow = customRoleTableRow.clone(true);
-        toggleDataRowComponents(newCustomRoleTableRow, true);
+        var element = getCurrentElement(newCustomRoleTableRow);
 
-        var sakaiRoleSelectElement = $(newCustomRoleTableRow).find("[class*='custom-role-sakai-select']");
-        $(sakaiRoleSelectElement).show();
+        toggleDataRowComponents(element, true);
 
-        var sakaiRoleTextElement = $(newCustomRoleTableRow).find("[class*='custom-role-sakai-text']");
-        $(sakaiRoleTextElement).hide();
+        $(element.sakaiSelect).show();
 
-        populateDropdown(sakaiRoleSelectElement, allSakaiRoles, null);
+        $(element.sakaiText).hide();
 
-        var ltiRoleSelectElement = $(newCustomRoleTableRow).find("[class*='custom-role-lti-select']");
-
-        populateDropdown(ltiRoleSelectElement, allLtiRoles, null);
-        toggleStatus(newCustomRoleTableRow, null);
-        appendRow(newCustomRoleTableRow);
+        populateDropdown(element.sakaiSelect, allSakaiRoles, null);
+        populateDropdown(element.ltiSelect, allLtiRoles, null);
+        toggleStatus(element, null);
+        appendRow(element);
     }
 
     /* Populates a select dropdown, where the value and text are the same */
@@ -283,39 +277,95 @@ $(document).ready(function() {
         });
     }
 
-    function toggleStatus(dataRow, success) {
-        $(dataRow).find("[class*='custom-role-status-success']").hide();
-        $(dataRow).find("[class*='custom-role-status-fail']").hide();
+    function toggleStatus(element, success) {
+        $(element.statusSuccess).hide();
+        $(element.statusFail).hide();
 
         if (success != null) {
             if (success) {
-                $(dataRow).find("[class*='custom-role-status-success']").show();
-                $(dataRow).find("[class*='custom-role-status-fail']").hide();
+                $(element.statusSuccess).show();
+                $(element.statusFail).hide();
             } else {
-                $(dataRow).find("[class*='custom-role-status-success']").hide();
-                $(dataRow).find("[class*='custom-role-status-fail']").show();
+                $(element.statusSuccess).hide();
+                $(element.statusFail).show();
             }
         }
     }
 
-    function disableDataRow(dataRow) {
-        var ltiRoleTextElement = $(dataRow).find("[class*='custom-role-lti-text']");
+    function disableDataRow(element) {
+        $(element.ltiText).show();
 
-        $(ltiRoleTextElement).show();
+        $(element.buttonEdit).hide();
+        $(element.buttonSave).hide();
+        $(element.buttonCancel).hide();
+        $(element.buttonDelete).hide();
 
-        $(dataRow).find("[class*='custom-role-button-edit']").hide();
-        $(dataRow).find("[class*='custom-role-button-save']").hide();
-        $(dataRow).find("[class*='custom-role-button-cancel']").hide();
-        $(dataRow).find("[class*='custom-role-button-delete']").hide();
-
-        $(dataRow).addClass("danger");
+        $(element.row).addClass("danger");
     }
 
-    function getRowMappingId(dataRow) {
-        var idElement = $(dataRow).find(".custom-role-id");
-        var id = $(idElement).val();
+    function filterLtiRoles(element) {
+        populateDropdown(element.ltiSelect, allLtiRoles, $(element.ltiSelect).val());
 
-        return id;
+        var existingLtiRoles = [];
+        $.each(sakaiLtiRoleMap, function(index, map) {
+            var arr = map.split(":");
+            if (arr[0] == element.sakaiRole) {
+                existingLtiRoles.push(arr[1]);
+            }
+        });
+
+        $.each($(element.ltiSelect).find("option"), function(index, option) {
+            if ($.inArray(this.value, existingLtiRoles) > -1) {
+                if (this.value != element.ltiRole) {
+                    this.remove();
+                }
+            }
+        });
+    }
+
+    function updateSakaiLtiRoleMap(add, remove) {
+        if (add) {
+            sakaiLtiRoleMap.push(add);
+        }
+
+        if (remove) {
+            sakaiLtiRoleMap.splice($.inArray(remove, sakaiLtiRoleMap), 1);
+        }
+    }
+
+    function buildRoleMapString(sakaiRole, ltiRole) {
+        return sakaiRole + ":" + ltiRole;
+    } 
+
+    function getCurrentElement(dataRow) {
+        var currentElement = {};
+
+        currentElement.row = $(dataRow);
+        currentElement.id = currentElement.row.find(".custom-role-id").val();
+        currentElement.roleId = currentElement.row.find(".custom-role-id");
+        currentElement.sakaiSelect = currentElement.row.find("[class*='custom-role-sakai-select']");
+        currentElement.sakaiText = currentElement.row.find("[class*='custom-role-sakai-text']");
+        currentElement.sakaiRole = currentElement.row.find("[class*='custom-role-sakai-text']").text();
+        currentElement.newSakaiRole = null;
+        currentElement.ltiSelect = currentElement.row.find("[class*='custom-role-lti-select']");
+        currentElement.ltiText = currentElement.row.find("[class*='custom-role-lti-text']");
+        currentElement.ltiRole = currentElement.row.find("[class*='custom-role-lti-text']").text();
+        currentElement.newLtiRole = null;
+        currentElement.buttonEdit = currentElement.row.find("[class*='custom-role-button-edit']");
+        currentElement.buttonSave = currentElement.row.find("[class*='custom-role-button-save']");
+        currentElement.buttonCancel = currentElement.row.find("[class*='custom-role-button-cancel']");
+        currentElement.buttonDelete = currentElement.row.find("[class*='custom-role-button-delete']");
+        currentElement.statusSuccess = currentElement.row.find("[class*='custom-role-status-success']");
+        currentElement.statusFail = currentElement.row.find("[class*='custom-role-status-fail']");
+        currentElement.isNew = function() {
+            return (currentElement.id == "new");
+        };
+        currentElement.setId = function(newId) {
+            currentElement.id = newId;
+            $(currentElement.roleId).val(newId);
+        }
+
+        return currentElement;
     }
 
 });
