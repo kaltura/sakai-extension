@@ -122,6 +122,7 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
             kalturaLtiRole.setDateModified(new Date());
 
             super.save(kalturaLtiRole);
+            commit();
         } catch ( Exception e) {
             log.error("Kaltura :: addRoleMapping : An error occurred persisting the role mapping: " + kalturaLtiRole.toString() + ", error: " + e, e);
         }

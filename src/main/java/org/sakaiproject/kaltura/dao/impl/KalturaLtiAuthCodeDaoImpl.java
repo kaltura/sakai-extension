@@ -142,6 +142,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
             }
 
             super.save(kalturaLtiAuthCode);
+            commit();
         } catch (Exception e) {
             String error = "Kaltura :: save : An error occurred persisting the authorization code: " + kalturaLtiAuthCode.toString() + ", error: " + e;
             log.error(error, e);
@@ -149,6 +150,14 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
         }
 
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void commit() {
+        this.getSession().flush();
     }
 
 }
