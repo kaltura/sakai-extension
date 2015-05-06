@@ -25,12 +25,16 @@
     <bean id="roleController" class="org.sakaiproject.kaltura.controllers.RoleController">
     </bean>
 
+    <bean id="mymediaController" class="org.sakaiproject.kaltura.controllers.MyMediaController">
+    </bean>
+
     <!-- Spring controller mappings -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
                 <prop key="/main.htm">mainController</prop>
                 <prop key="/role.htm">roleController</prop>
+                <prop key="/mymedia.htm">mymediaController</prop>
             </props>
         </property>
     </bean>

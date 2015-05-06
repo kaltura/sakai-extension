@@ -21,7 +21,7 @@
   <packaging>pom</packaging>
   
   <modules>
-  <module>kaltura-job</module>
+  <module>kaltura-impl</module>
   <module>kaltura-pack</module>
   <module>kaltura-lti</module>
   </modules>

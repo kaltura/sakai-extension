@@ -66,4 +66,10 @@ public class Constants {
      */
     public static final int DEFAULT_AUTHORIZATION_CODE_TTL = 60000; // 1 minute
 
+    /*
+     * Kaltura module names
+     */
+    public static final String MY_MEDIA = "my-media";
+    public static final String MEDIA_GALLERY = "course-gallery";
+
 }

@@ -23,8 +23,6 @@
     <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
-    <a href="role.htm">Custom Roles</a>
-    <h2>This is where the new Kaltura Sakai LTI tool shall reside... Stay tuned!</h2>
-    <a href="mymedia.htm">LTI launch to My Media </a>
+    ${returndata}
 </body>
 </html>
