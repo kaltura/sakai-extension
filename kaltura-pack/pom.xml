@@ -25,7 +25,7 @@
   <dependencies>
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>kaltura-job</artifactId>
+      <artifactId>kaltura-impl</artifactId>
       <version>0.1</version>
     </dependency>
   </dependencies>
