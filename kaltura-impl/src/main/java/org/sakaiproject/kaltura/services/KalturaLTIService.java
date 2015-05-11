@@ -14,19 +14,20 @@
  */
 package org.sakaiproject.kaltura.services;
 
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 import java.util.Properties;
 import java.util.Map;
-import java.util.TreeMap;
+//import java.util.TreeMap;
 import java.util.HashMap;
 
-
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+//import org.apache.commons.lang.StringUtils;
 import org.imsglobal.basiclti.BasicLTIUtil;
 import org.imsglobal.basiclti.BasicLTIConstants;
-
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
@@ -41,6 +42,7 @@ import org.sakaiproject.util.Web;
 import org.sakaiproject.authz.cover.SecurityService;
 
 public class KalturaLTIService {
+    private static final Log LOG = LogFactory.getLog(KalturaLTIService.class);
 
     private static ResourceLoader rb = new ResourceLoader("basiclti");
     public static final boolean verbosePrint = true;
@@ -51,8 +53,31 @@ public class KalturaLTIService {
     public static final String LTI_FRAMEHEIGHT = "frameheight";
     public static final String LTI1_PATH = "/imsblis/service/";
 
-    public String[] launchLTIRequest(String module){
+    public String[] launchLTIRequest(String module) {
+        User user = UserDirectoryService.getCurrentUser();
+        
+        ToolManager toolManager =  (ToolManager) ComponentManager.get("org.sakaiproject.tool.api.ToolManager");
+        String siteId = toolManager.getCurrentPlacement().getContext();
+        String placementId = toolManager.getCurrentPlacement().getId();
 
+
+    	return launchLTIRequest(module, user, placementId, siteId);
+    }
+    
+    public String[] launchLTIRequest(String module, String userId, String siteId) {
+        User user = null;
+        try {
+			user = UserDirectoryService.getUser(userId);
+		} catch (UserNotDefinedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+        String placementId = "placementId123";
+    	return launchLTIRequest(module, user, placementId, siteId);
+    }
+    
+    public String[] launchLTIRequest(String module, User user, String placementId, String siteId){
         // Start building up the properties
         Properties ltiProps = new Properties();
         Properties toolProps = new Properties();
@@ -88,7 +113,6 @@ public class KalturaLTIService {
         int releasename = 1;
         int releaseemail = 1;
 
-        User user = UserDirectoryService.getCurrentUser();
         if ( user != null )
         {
             setProperty(ltiProps,BasicLTIConstants.USER_ID,user.getId());
@@ -109,9 +133,6 @@ public class KalturaLTIService {
         }
         
         // For My media - sent workspace id , media gallery - send site id
-        ToolManager toolManager =  (ToolManager) ComponentManager.get("org.sakaiproject.tool.api.ToolManager");
-        String siteId = toolManager.getCurrentPlacement().getContext();
-        String placementId = toolManager.getCurrentPlacement().getId();
         Site site =  null;
         try{
             site = SiteService.getSite(siteId);

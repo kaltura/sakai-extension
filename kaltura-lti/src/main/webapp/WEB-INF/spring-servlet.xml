@@ -27,6 +27,9 @@
 
     <bean id="mymediaController" class="org.sakaiproject.kaltura.controllers.MyMediaController">
     </bean>
+    
+    <bean id="ckeditorController" class="org.sakaiproject.kaltura.controllers.CKEditorController">
+    </bean>
 
     <!-- Spring controller mappings -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
@@ -35,6 +38,7 @@
                 <prop key="/main.htm">mainController</prop>
                 <prop key="/role.htm">roleController</prop>
                 <prop key="/mymedia.htm">mymediaController</prop>
+                <prop key="/ckeditor.htm">ckeditorController</prop>
             </props>
         </property>
     </bean>
