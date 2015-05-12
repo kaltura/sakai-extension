@@ -14,16 +14,12 @@
  */
 package org.sakaiproject.kaltura.services;
 
-//import java.util.ArrayList;
-//import java.util.List;
 import java.util.Properties;
 import java.util.Map;
-//import java.util.TreeMap;
 import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-//import org.apache.commons.lang.StringUtils;
 import org.imsglobal.basiclti.BasicLTIUtil;
 import org.imsglobal.basiclti.BasicLTIConstants;
 import org.sakaiproject.user.api.User;
