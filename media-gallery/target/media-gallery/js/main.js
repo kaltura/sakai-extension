@@ -1,3 +1,0 @@
-/*
- * Javascript for main.jsp
- */
