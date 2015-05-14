@@ -24,6 +24,7 @@
   <module>kaltura-impl</module>
   <module>kaltura-pack</module>
   <module>kaltura-lti</module>
+  <module>media-gallery</module>
   </modules>
   
   <developers>
