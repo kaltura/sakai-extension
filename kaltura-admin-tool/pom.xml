@@ -3,22 +3,22 @@
                       http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.sakaiproject.kaltura</groupId>
-    <artifactId>kaltura</artifactId>
-    <version>0.1</version>
-    <relativePath>../pom.xml</relativePath>
+    <groupId>org.sakaiproject</groupId>
+    <artifactId>master</artifactId>
+    <version>10-SNAPSHOT</version>
+    <relativePath>../master/pom.xml</relativePath>
   </parent>
 
-  <name>Sakai Kaltura Job</name>
+  <name>Sakai Kaltura Admin Tool</name>
   <groupId>org.sakaiproject.kaltura</groupId>
-  <artifactId>kaltura-impl</artifactId>
+  <artifactId>kaltura-admin</artifactId>
   <version>0.1</version>
   <organization>
     <name>Sakai Project</name>
     <url>http://sakaiproject.org/</url>
   </organization>
   <inceptionYear>2014</inceptionYear>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <properties>
     <commons.lang3.version>3.3.2</commons.lang3.version>
@@ -66,24 +66,10 @@
       <artifactId>entitybroker-utils</artifactId>
     </dependency>
     <dependency>
-    <groupId>org.sakaiproject.basiclti</groupId>
-    <artifactId>basiclti-common</artifactId>
-    <version>10-SNAPSHOT</version>
+        <groupId>org.sakaiproject.kaltura</groupId>
+        <artifactId>kaltura-impl</artifactId>
+        <version>0.1</version>
     </dependency>
-    <dependency>
-    <groupId>org.sakaiproject.basiclti</groupId>
-    <artifactId>basiclti-api</artifactId>
-    <version>10-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-    <groupId>org.sakaiproject.scheduler</groupId>
-    <artifactId>scheduler-api</artifactId>
-    </dependency>
-    <dependency>
-    <groupId>org.sakaiproject.scheduler</groupId>
-    <artifactId>scheduler-component-shared</artifactId>
-    </dependency>
-
      <!-- generic DAO -->
     <dependency>
       <groupId>org.sakaiproject</groupId>
@@ -172,13 +158,6 @@
         <artifactId>gson</artifactId>
         <version>${gson.version}</version>
     </dependency>
-    
-    <dependency>
-        <groupId>org.opensymphony.quartz</groupId>
-        <artifactId>quartz</artifactId>
-        <version>1.6.6</version>
-    </dependency>
-
 
   </dependencies>
 
@@ -193,9 +172,23 @@
           <include>**/*.properties</include>
         </includes>
       </resource>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
     </resources>
     <plugins>
       <!-- configure the war plugin to correctly use the standard maven structure -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <warSourceDirectory>${basedir}/src/main/webapp</warSourceDirectory>
+        </configuration>
+      </plugin>
       <plugin>
         <!-- Used to replace the headers of files with proper licenses - 
         http://code.google.com/p/maven-license-plugin - 
@@ -243,6 +236,7 @@
       </plugin>
     </plugins>
     <!-- sets the name of the war file and thus the webapp URL -->
+    <finalName>kaltura-admin</finalName>
   </build>
 
   <developers>
