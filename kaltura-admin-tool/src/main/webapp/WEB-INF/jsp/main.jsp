@@ -1,4 +1,3 @@
- <?xml version="1.0" encoding="UTF-8" ?>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -16,14 +15,18 @@
     <link media="all" href="<c:url value='/bootstrap/css/bootstrap-theme.min.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional CSS -->
-    <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
+    <link media="all" href="<c:url value='/css/main.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional JavaScript -->
     <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
-    <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
-    <a href="role.htm">Custom Roles</a>
-    <h2>This is where the new Kaltura Sakai LTI tool shall reside... Stay tuned!</h2>
+    <div class="main-header">
+        <h3>Kaltura Administration</h3>
+    </div>
+    <!-- Role mapping -->
+    <div class="panel-group content-section" id="accordion">
+        <%@include file="role.jsp"%>
+    </div>
 </body>
 </html>

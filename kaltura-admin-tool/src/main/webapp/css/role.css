@@ -4,12 +4,11 @@
     margin: 0px 3px;
 }
 
-.panel-default {
-    width: 800px !important;
-    margin: 0 auto;
-}
-
 .custom-role-button > div {
     float: left;
     display: inline;
+}
+
+.column-role {
+    width: 33.3%;
 }
