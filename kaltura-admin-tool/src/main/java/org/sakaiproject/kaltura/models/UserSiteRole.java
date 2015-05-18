@@ -26,14 +26,14 @@ public class UserSiteRole {
      */
     @Expose
     @SerializedName("context_id")
-    private String siteId;
+    private String contextId;
 
     /**
      * The title of the site
      */
     @Expose
     @SerializedName("context_title")
-    private String siteTitle;
+    private String contextTitle;
 
     /**
      * A comma-separated string with the LTI roles
@@ -43,21 +43,29 @@ public class UserSiteRole {
 
     public UserSiteRole(){}
 
-    public UserSiteRole(String siteId) {
-        this(siteId, null);
+    public UserSiteRole(String contextId) {
+        this(contextId, null);
     }
 
-    public UserSiteRole(String siteId, String ltiRoles) {
-        this.siteId = siteId;
+    public UserSiteRole(String contextId, String ltiRoles) {
+        this.contextId = contextId;
         this.ltiRoles = ltiRoles;
     }
 
-    public String getSiteId() {
-        return siteId;
+    public String getContextId() {
+        return contextId;
     }
 
-    public void setSiteId(String siteId) {
-        this.siteId = siteId;
+    public void setContextId(String contextId) {
+        this.contextId = contextId;
+    }
+
+    public String getContextTitle() {
+        return contextTitle;
+    }
+
+    public void setContextTitle(String contextTitle) {
+        this.contextTitle = contextTitle;
     }
 
     public String getLtiRoles() {

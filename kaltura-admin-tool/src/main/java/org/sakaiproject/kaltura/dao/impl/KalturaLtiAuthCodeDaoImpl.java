@@ -15,7 +15,6 @@
 package org.sakaiproject.kaltura.dao.impl;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -65,22 +64,14 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public List<KalturaLtiAuthCode> getUnusedAuthCodes(String userId, String authCode) {
-        String[] properties = new String[] {
-            "userID",
-            "authCode",
-            "used"
-        };
-        Object[] values = new Object[] {
-            userId,
-            authCode,
-            false
-        };
+    public KalturaLtiAuthCode getAuthCode(String authCode, String userId) {
+        String[] properties = new String[] {"sakaiRole", "ltiRole"};
+        String[] values = new String[] {authCode, userId};
         Search search = new Search(properties, values);
 
-        List<KalturaLtiAuthCode> unusedAuthCodes = findBySearch(KalturaLtiAuthCode.class, search);
+        KalturaLtiAuthCode kalturaLtiAuthCode = findOneBySearch(KalturaLtiAuthCode.class, search);
 
-        return unusedAuthCodes;
+        return kalturaLtiAuthCode;
     }
 
     /**

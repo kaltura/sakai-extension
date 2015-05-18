@@ -212,7 +212,7 @@ public class RoleService {
      * @return the corresponding LTI roles (default: Learner)
      */
     public String calculateLtiRoles(String sakaiRole) throws Exception {
-        String ltiRoles = null;
+        String ltiRoles = "";
 
         List<KalturaLtiRole> kalturaLtiRoles = kalturaLtiRoleDao.getSakaiRoleMappings(sakaiRole);
 
@@ -263,4 +263,5 @@ public class RoleService {
     public void deleteRoleMapping(String id) {
         kalturaLtiRoleDao.delete(id);
     }
+
 }

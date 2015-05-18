@@ -56,20 +56,6 @@ public class AuthCodeService {
     }
 
     /**
-     * {@link KalturaLtiAuthCodeDao#getUnusedAuthCodes(String, String)}
-     */
-    public List<KalturaLtiAuthCode> getUnusedAuthCodes(String userId, String authCode) throws Exception {
-        if (StringUtils.isBlank(userId)) {
-            throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
-        }
-        if (StringUtils.isBlank(authCode)) {
-            throw new IllegalArgumentException("AuthCodeService :: auth code cannot be null.");
-        }
-
-        return kalturaLtiAuthCodeDao.getUnusedAuthCodes(userId, authCode);
-    }
-
-    /**
      * {@link KalturaLtiAuthCodeDao#createAuthCode(String)}
      */
     public KalturaLtiAuthCode createAuthCode(String userId) throws Exception {
@@ -121,6 +107,33 @@ public class AuthCodeService {
         }
 
         return kalturaLtiAuthCodeDao.createAuthCode(kalturaLtiAuthCode);
+    }
+
+    /**
+     * Checks to see if the authorization code and user ID mapping is valid (i.e. not expired)
+     * 
+     * @param authorizationCode the authorization code
+     * @param userId the internal Sakai user ID
+     * @return true, if valid
+     * @throws Exception
+     */
+    public boolean isValid(String authorizationCode, String userId) throws Exception {
+        if (StringUtils.isBlank(userId)) {
+            throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
+        }
+        if (StringUtils.isBlank(authorizationCode)) {
+            throw new IllegalArgumentException("AuthCodeService :: authorization code cannot be null.");
+        }
+
+        KalturaLtiAuthCode kalturaLtiAuthCode = kalturaLtiAuthCodeDao.getAuthCode(authorizationCode, userId);
+
+        if (kalturaLtiAuthCode == null) {
+            // no auth code : user ID mapping is found, code is invalid
+            return false;
+        }
+
+        // if current date is after the expiration date, code is invalid
+        return (new Date()).after(kalturaLtiAuthCode.getDateExpires());
     }
 
 }

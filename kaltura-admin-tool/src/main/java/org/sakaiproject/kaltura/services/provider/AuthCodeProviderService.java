@@ -25,6 +25,11 @@ import org.sakaiproject.kaltura.services.AuthCodeService;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
 import org.sakaiproject.kaltura.utils.common.RestUtil;
 
+/**
+ * Service layer to support the kaltura/auth entities
+ * 
+ * @author Robert Long (rlong @ unicon.net)
+ */
 public class AuthCodeProviderService {
 
     private final Log log = LogFactory.getLog(AuthCodeProviderService.class);
