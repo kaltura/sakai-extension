@@ -34,7 +34,7 @@ import org.sakaiproject.kaltura.services.provider.UserProviderService;
 import org.sakaiproject.kaltura.utils.common.SecurityUtil;
 
 /**
- * The Auto Roster provider for the REST API
+ * The provider for the REST API
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
@@ -85,12 +85,12 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
      * GET/POST kaltura/role
      * GET kaltura/role/sakai
      * GET kaltura/role/lti
-     * GET/PUT kaltura/role/{roleId}
-     * DELETE kaltura/role/{roleId}
+     * GET/PUT/POST kaltura/role/{roleId}
+     * POST kaltura/role/delete/{roleId}
      */
     @EntityCustomAction(action="role", viewKey="")
     public ActionReturn role(EntityView view, Map<String, Object> params) {
-        SecurityUtil.securityCheck((String) params.get("shared_secret"));
+        SecurityUtil.securityCheck();
 
         ActionReturn actionReturn = null;
 
@@ -144,13 +144,12 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
      */
     @EntityCustomAction(action="user", viewKey=EntityView.VIEW_LIST)
     public ActionReturn user(EntityView view, Map<String, Object> params) {
-        SecurityUtil.securityCheck((String) params.get("shared_secret"));
-
-        ActionReturn actionReturn = null;
-
         // GET
         String userId = view.getPathSegment(2);
-        actionReturn = userProviderService.get(userId);
+
+        SecurityUtil.securityCheck((String) params.get("auth_code"), userId);
+
+        ActionReturn actionReturn = userProviderService.get(userId);
 
         return actionReturn;
     }
@@ -158,12 +157,12 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     /**
      * The role API
      *
-     * POST kaltura/auth
+     * POST/PUT kaltura/auth
      * GET kaltura/auth/{authCode}
      */
     @EntityCustomAction(action="auth", viewKey="")
     public ActionReturn auth(EntityView view, Map<String, Object> params) {
-        SecurityUtil.securityCheck((String) params.get("shared_secret"));
+        SecurityUtil.securityCheck();
 
         ActionReturn actionReturn = null;
 

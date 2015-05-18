@@ -26,6 +26,7 @@ import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.UserSiteRole;
+import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.user.api.UserDirectoryService;
 
@@ -39,6 +40,14 @@ public class UserService {
     private AuthzGroupService authzGroupService;
     public void setAuthzGroupService(AuthzGroupService authzGroupService) {
         this.authzGroupService = authzGroupService;
+    }
+
+    /**
+     * {@link SiteService}
+     */
+    private SiteService siteService;
+    public void setSiteService(SiteService siteService) {
+        this.siteService = siteService;
     }
 
     /**
@@ -99,6 +108,7 @@ public class UserService {
                 if(reference.isKnownType()) {
                    if(StringUtils.equalsIgnoreCase(reference.getType(), SiteService.APPLICATION_ID)) {
                        String siteId = reference.getId();
+
                        if (StringUtils.isNotBlank(siteId)) {
                            UserSiteRole userSiteRole = new UserSiteRole(siteId);
 
@@ -107,6 +117,11 @@ public class UserService {
                            String ltiRole = roleService.calculateLtiRoles(role.getId());
                            userSiteRole.setLtiRoles(ltiRole);
 
+                           Site site = siteService.getSite(siteId);
+                           if (site != null) {
+                               String siteTitle = site.getTitle();
+                               userSiteRole.setContextTitle(siteTitle);
+                           }
                            user.addUserSiteRole(userSiteRole);
                        }
                    }

@@ -15,7 +15,6 @@
 package org.sakaiproject.kaltura.dao;
 
 import java.util.Date;
-import java.util.List;
 
 import org.sakaiproject.genericdao.api.GeneralGenericDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
@@ -44,13 +43,13 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
     public KalturaLtiAuthCode getAuthCode(String id);
 
     /**
-     * Gets a list of {@link KalturaLtiAuthCode} objects that are unused for the given user ID and auth code
+     * Gets a {@link KalturaLtiAuthCode} object that is associated with the given auth code and Sakai internal user ID
      * 
+     * @param authCode the auth code
      * @param userId the Sakai internal user ID
-     * @param authCode the authorization code
-     * @return a list of {@link KalturaLtiAuthCode} objects
+     * @return a {@link KalturaLtiAuthCode} object
      */
-    public List<KalturaLtiAuthCode> getUnusedAuthCodes(String userId, String authCode);
+    public KalturaLtiAuthCode getAuthCode(String authCode, String userId);
 
     /**
      * Creates an auth code

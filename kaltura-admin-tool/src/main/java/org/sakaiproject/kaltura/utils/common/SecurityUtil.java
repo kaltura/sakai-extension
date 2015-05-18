@@ -15,8 +15,11 @@
 package org.sakaiproject.kaltura.utils.common;
 
 import org.apache.commons.lang.StringUtils;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
+import org.sakaiproject.kaltura.Constants;
+import org.sakaiproject.kaltura.services.AuthCodeService;
 
 /**
  * Utility class for security-specific functionality
@@ -39,34 +42,40 @@ public class SecurityUtil {
     }
 
     /**
-     * Performs a check to ensure the user accessing the app is an administrator in the system.
-     * If the user is NOT an administrator, a SecurityException is thrown and access is denied
-     * 
-     * @param developerHelperService
-     * @exception SecurityException
+     * Convenience method to check if a user is admin and thus has access to the service
      */
     public static void securityCheck() {
-        securityCheck(null);
+        isAdmin();
     }
 
     /**
-     * Performs a check to ensure the user accessing the app is an administrator in the system.
-     * If there is a shared_secret key present, allow the admin user to be set
-     * If the user is NOT an administrator, a SecurityException is thrown and access is denied
+     * Performs a check to ensure the authorization code matches the user ID associated with it and is not expired
+     * If the authorization code is invalid, a SecurityException is thrown and access is denied
      * 
      * @param developerHelperService
-     * @param sharedSecret the security code for session creation
      * @exception SecurityException
      */
-    public static void securityCheck(String sharedSecret) {
+    public static void securityCheck(String authorizationCode, String userId) {
         DeveloperHelperService developerHelperService = (DeveloperHelperService) ComponentManager.get(DeveloperHelperService.class);
         developerHelperService.restoreCurrentUser();
+
         if (!isAdmin()) {
-            // not admin, check shared_secret
-            String secretKey = developerHelperService.getConfigurationSetting("autoroster.shared_secret", "c48cb080-852b-11e4-80c2-0002a5d5c51b");
-            if (!StringUtils.equals(sharedSecret, secretKey)) {
-                // shared_secret key is incorrect, don't allow access
-                throw new SecurityException("This endpoint is not accessible to non-administrators and this user is not an administrator or the shared_secret is incorrect.");
+            // not admin, check authorization code and user ID are valid
+            AuthCodeService authCodeService = (AuthCodeService) ComponentManager.get(AuthCodeService.class);
+            boolean isValid = false;
+
+            try {
+                isValid = authCodeService.isValid(authorizationCode, userId);
+            } catch (Exception e) {
+            }
+
+            if (!isValid) {
+                ServerConfigurationService serverConfigurationService = (ServerConfigurationService) ComponentManager.get(ServerConfigurationService.class);
+                String authCodeOverride = serverConfigurationService.getString("kaltura.authorization.override.code", Constants.AUTHORIZATION_OVERRIDE_CODE);
+                if (!StringUtils.equalsIgnoreCase(authorizationCode, authCodeOverride)) {
+                    // the authorization code is invalid and the override does not match, don't allow access
+                    throw new SecurityException("This endpoint is not accessible to non-administrators and this user is not an administrator or the auth_code is incorrect.");
+                }
             }
             developerHelperService.setCurrentUser("/user/admin");
         }

@@ -28,6 +28,11 @@ import org.sakaiproject.kaltura.utils.common.JsonUtil;
 import org.sakaiproject.kaltura.utils.common.RestUtil;
 import org.sakaiproject.kaltura.utils.common.RoleUtil;
 
+/**
+ * Service layer to support the kaltura/role entities
+ * 
+ * @author Robert Long (rlong @ unicon.net)
+ */
 public class RoleProviderService {
 
     private final Log log = LogFactory.getLog(RoleProviderService.class);

@@ -23,6 +23,7 @@ import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.kaltura.dao.KalturaLtiAuthCodeDao;
 import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
 import org.sakaiproject.kaltura.utils.common.AuthCodeUtil;
 
 /**
@@ -65,22 +66,14 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public List<KalturaLtiAuthCode> getUnusedAuthCodes(String userId, String authCode) {
-        String[] properties = new String[] {
-            "userID",
-            "authCode",
-            "used"
-        };
-        Object[] values = new Object[] {
-            userId,
-            authCode,
-            false
-        };
+    public KalturaLtiAuthCode getAuthCode(String authCode, String userId) {
+        String[] properties = new String[] {"sakaiRole", "ltiRole"};
+        String[] values = new String[] {authCode, userId};
         Search search = new Search(properties, values);
 
-        List<KalturaLtiAuthCode> unusedAuthCodes = findBySearch(KalturaLtiAuthCode.class, search);
+        KalturaLtiAuthCode kalturaLtiAuthCode = findOneBySearch(KalturaLtiAuthCode.class, search);
 
-        return unusedAuthCodes;
+        return kalturaLtiAuthCode;
     }
 
     /**
