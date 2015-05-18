@@ -39,7 +39,7 @@ public class RoleUtil {
     }
 
     public static boolean isValidRoleId(String roleId) {
-        return Constants.INVALID_ROLE_IDS.contains(roleId);
+        return !Constants.INVALID_ROLE_IDS.contains(roleId);
     }
 
 }
