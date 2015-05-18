@@ -263,4 +263,5 @@ public class RoleService {
     public void deleteRoleMapping(String id) {
         kalturaLtiRoleDao.delete(id);
     }
+
 }
