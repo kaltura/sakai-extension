@@ -14,6 +14,9 @@
  */
 package org.sakaiproject.kaltura;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Holder for all Java-based string constants
  * 
@@ -59,6 +62,13 @@ public class Constants {
         "TeachingAssistant",
         "ContentDeveloper",
         "Mentor"
+    };
+    public static final List<String> INVALID_ROLE_IDS = new ArrayList<String>(1) {
+        private static final long serialVersionUID = 1L;
+
+        {
+            add("-1");
+        }
     };
 
     /*

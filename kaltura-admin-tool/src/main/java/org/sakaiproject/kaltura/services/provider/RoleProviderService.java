@@ -26,6 +26,7 @@ import org.sakaiproject.kaltura.models.errors.ErrorRole;
 import org.sakaiproject.kaltura.services.RoleService;
 import org.sakaiproject.kaltura.utils.common.JsonUtil;
 import org.sakaiproject.kaltura.utils.common.RestUtil;
+import org.sakaiproject.kaltura.utils.common.RoleUtil;
 
 public class RoleProviderService {
 
@@ -101,12 +102,30 @@ public class RoleProviderService {
 
             KalturaLtiRole kalturaLtiRole = (KalturaLtiRole) k;
 
+            if (!RoleUtil.isValidSakaiRoleId(kalturaLtiRole.getSakaiRole())) {
+                String msg = "Invalid Sakai role ID: " + kalturaLtiRole.getSakaiRole();
+                errorRole.updateErrorList(msg, "add", kalturaLtiRole.toString());
+                log.error(msg);
+
+                continue;
+            }
+
+            if (!RoleUtil.isValidLtiRoleId(kalturaLtiRole.getLtiRole())) {
+                String msg = "Invalid LTI role ID: " + kalturaLtiRole.getLtiRole();
+                errorRole.updateErrorList(msg, "add", kalturaLtiRole.toString());
+                log.error(msg);
+
+                continue;
+            }
+
             try {
                 kalturaLtiRole = roleService.addRoleMapping(kalturaLtiRole);
                 added.add(kalturaLtiRole);
             } catch (Exception e) {
                 errorRole.updateErrorList(e.toString(), "add", kalturaLtiRole.toString());
                 log.error(e.toString(), e);
+
+                continue;
             }
 
         }

@@ -19,9 +19,6 @@
     <tool id="kaltura.admin"
         title="Kaltura Admin Tool"
         description="Kaltura Admin Tool">
-        <category name="course" />
-        <category name="project" />
-        <category name="myworkspace" />
         <category name="sakai.admin" />
     </tool>
 </registration>

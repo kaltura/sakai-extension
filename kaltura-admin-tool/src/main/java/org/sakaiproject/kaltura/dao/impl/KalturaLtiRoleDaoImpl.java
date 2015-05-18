@@ -152,6 +152,7 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
     @Override
     public void delete(long id) {
         super.delete(KalturaLtiRole.class, id);
+        commit();
     }
 
     /**
