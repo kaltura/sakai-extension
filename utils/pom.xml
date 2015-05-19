@@ -9,14 +9,19 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>Kaltura My Media Tool</name>
-  <artifactId>my-media-tool</artifactId>
+  <name>Sakai Kaltura Utilities</name>
+  <artifactId>utils</artifactId>
   <organization>
     <name>Sakai Project</name>
     <url>http://sakaiproject.org/</url>
   </organization>
   <inceptionYear>2014</inceptionYear>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
+
+  <properties>
+    <commons.lang3.version>3.3.2</commons.lang3.version>
+    <gson.version>2.2.4</gson.version>
+  </properties>
 
   <dependencies>
     <!-- we are running a webapp in a servlet container so we need the servlet API -->
@@ -157,31 +162,7 @@
   <build>
     <!-- configure the build to use the standard maven structure -->
     <sourceDirectory>src/main/java</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>${basedir}/src/main/java</directory>
-        <includes>
-          <include>**/*.xml</include>
-          <include>**/*.properties</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>${basedir}/src/main/resources</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>**/*</include>
-        </includes>
-      </resource>
-    </resources>
     <plugins>
-      <!-- configure the war plugin to correctly use the standard maven structure -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <warSourceDirectory>${basedir}/src/main/webapp</warSourceDirectory>
-        </configuration>
-      </plugin>
       <plugin>
         <!-- Used to replace the headers of files with proper licenses - 
         http://code.google.com/p/maven-license-plugin - 
@@ -228,8 +209,6 @@
         </executions>
       </plugin>
     </plugins>
-    <!-- sets the name of the war file and thus the webapp URL -->
-    <finalName>my-media</finalName>
   </build>
 
   <developers>

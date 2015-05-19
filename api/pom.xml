@@ -9,33 +9,20 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>Kaltura My Media Tool</name>
-  <artifactId>my-media-tool</artifactId>
+  <name>Sakai Kaltura API</name>
+  <artifactId>api</artifactId>
   <organization>
     <name>Sakai Project</name>
     <url>http://sakaiproject.org/</url>
   </organization>
   <inceptionYear>2014</inceptionYear>
-  <packaging>war</packaging>
 
   <dependencies>
-    <!-- we are running a webapp in a servlet container so we need the servlet API -->
+    <!-- Kaltura dependencies -->
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-    </dependency>
-    <!-- We need this special package to run the jsps in Sakai -->
-    <dependency>
-      <groupId>org.sakaiproject</groupId>
-      <artifactId>sakai-jsp-adapter</artifactId>
-      <version>0.10-K1</version>
-      <scope>runtime</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.sakaiproject</groupId>
-          <artifactId>sakai-kernel-api</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.sakaiproject.kaltura</groupId>
+      <artifactId>utils</artifactId>
+      <version>${kaltura.version}</version>
     </dependency>
     <!-- Sakai dependencies -->
     <dependency>
@@ -228,8 +215,6 @@
         </executions>
       </plugin>
     </plugins>
-    <!-- sets the name of the war file and thus the webapp URL -->
-    <finalName>my-media</finalName>
   </build>
 
   <developers>

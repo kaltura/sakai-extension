@@ -19,13 +19,21 @@
   </organization>
   <inceptionYear>2014</inceptionYear>
   <packaging>pom</packaging>
-  
+
+  <properties>
+    <kaltura.version>0.1</kaltura.version>
+    <commons.lang3.version>3.3.2</commons.lang3.version>
+    <gson.version>2.2.4</gson.version>
+  </properties>
+
   <modules>
-  <module>kaltura-impl</module>
-  <module>kaltura-pack</module>
-  <module>kaltura-admin-tool</module>
-  <module>my-media-tool</module>
-  <module>media-gallery-tool</module>
+    <module>utils</module>
+    <module>api</module>
+    <module>impl</module>
+    <module>pack</module>
+    <module>admin-tool</module>
+    <module>my-media-tool</module>
+    <module>media-gallery-tool</module>
   </modules>
   
   <developers>

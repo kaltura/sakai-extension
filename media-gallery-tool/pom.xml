@@ -3,27 +3,20 @@
                       http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.sakaiproject</groupId>
-    <artifactId>master</artifactId>
-    <version>10-SNAPSHOT</version>
-    <relativePath>../master/pom.xml</relativePath>
+    <groupId>org.sakaiproject.kaltura</groupId>
+    <artifactId>kaltura</artifactId>
+    <version>0.1</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <name>Kaltura Media Gallery Tool</name>
-  <groupId>org.sakaiproject.kaltura</groupId>
-  <artifactId>media-gallery</artifactId>
-  <version>0.1</version>
+  <artifactId>media-gallery-tool</artifactId>
   <organization>
     <name>Sakai Project</name>
     <url>http://sakaiproject.org/</url>
   </organization>
   <inceptionYear>2014</inceptionYear>
   <packaging>war</packaging>
-
-  <properties>
-    <commons.lang3.version>3.3.2</commons.lang3.version>
-    <gson.version>2.2.4</gson.version>
-  </properties>
 
   <dependencies>
     <!-- we are running a webapp in a servlet container so we need the servlet API -->
