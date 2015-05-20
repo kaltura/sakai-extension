@@ -1,0 +1,42 @@
+.main-header {
+    width: 500px;
+    margin: 20px;
+}
+
+.content-section {
+    width: 80%;
+    margin: 20px auto;
+}
+
+.panel-default {
+    width: 800px !important;
+    margin: 0 auto;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+th {
+    border-top: none !important;
+}
+
+.accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';
+    content: "\e114";
+    float: left;
+    color: grey;
+}
+.accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    font-family: 'Glyphicons Halflings';
+    content: "\e080";
+    float: left;
+    color: grey;
+}
+
+.panel-title {
+    margin-left: 5px;
+    display: inline;
+}
