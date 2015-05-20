@@ -20,9 +20,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.kaltura.Constants;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.kaltura.services.KalturaLTIService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
@@ -40,15 +41,18 @@ public class CKEditorController extends AbstractController {
      * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	
     	String userId = request.getParameter("userid");
     	String siteId = request.getParameter("siteid");
         
         Map<String,Object> model = new HashMap<String,Object>();
         KalturaLTIService service = new KalturaLTIService();
-        String retval[] = service.launchLTIRequest(Constants.MY_MEDIA, userId, siteId);
+        String retval[] = service.launchCKEditorRequest("", userId, siteId);
         model.put("returndata", retval[0]);
-        return new ModelAndView("mymedia", model);
-    }
 
+        String view = "ckeditor";
+        if (!StringUtils.isEmpty(ServerConfigurationService.getString("kaltura.ckeditor.debug"))) {
+        	view = "ckeditordebug";
+        }
+        return new ModelAndView(view, model);
+    }
 }

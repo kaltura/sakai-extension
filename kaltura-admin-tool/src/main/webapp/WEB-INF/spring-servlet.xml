@@ -27,6 +27,9 @@
 
     <bean id="ckeditorController" class="org.sakaiproject.kaltura.controllers.CKEditorController">
     </bean>
+    
+    <bean id="ckeditorCallbackController" class="org.sakaiproject.kaltura.controllers.CKEditorCallbackController">
+    </bean>
 
     <!-- Spring controller mappings -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
@@ -35,6 +38,7 @@
                 <prop key="/main.htm">mainController</prop>
                 <prop key="/role.htm">roleController</prop>
                 <prop key="/ckeditor.htm">ckeditorController</prop>
+                <prop key="/ckeditorcallback.htm">ckeditorCallbackController</prop>
             </props>
         </property>
     </bean>
