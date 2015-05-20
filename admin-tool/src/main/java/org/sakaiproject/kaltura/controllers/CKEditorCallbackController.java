@@ -26,45 +26,45 @@ import org.springframework.web.servlet.mvc.AbstractController;
 public class CKEditorCallbackController extends AbstractController {
     final protected Log log = LogFactory.getLog(getClass());
     
-	@Override
-	protected ModelAndView handleRequestInternal(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		EmbeddedMediaModel model = this.populateModel(request);
+    @Override
+    protected ModelAndView handleRequestInternal(HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        EmbeddedMediaModel model = this.populateModel(request);
         return new ModelAndView("ckeditorcallback", "mediaitem", model);
-	}
+    }
 
-	private EmbeddedMediaModel populateModel(HttpServletRequest request) {
-		String url = request.getParameter("url");
-		String playerId = request.getParameter("playerId");
-		String size = request.getParameter("size");
-		String width = request.getParameter("width");
-		String height = request.getParameter("height");
-		String returnType = request.getParameter("return_type");
-		String entryId = request.getParameter("entry_id");
-		String owner = request.getParameter("owner");
-		String title = request.getParameter("title");
-		String duration = request.getParameter("duration");
-		String description = request.getParameter("description");
-		String createdAt = request.getParameter("createdAt");
-		String tags = request.getParameter("tags");
-		String thumbnailUrl = request.getParameter("thumbnailUrl");
-		
-		EmbeddedMediaModel model = new EmbeddedMediaModel();
-		model.setCreatedAt(createdAt);
-		model.setDescription(description);
-		model.setDuration(duration);
-		model.setEntryId(entryId);
-		model.setHeight(height);
-		model.setOwner(owner);
-		model.setPlayerId(playerId);
-		model.setReturnType(returnType);
-		model.setSize(size);
-		model.setTags(tags);
-		model.setThumbnailUrl(thumbnailUrl);
-		model.setTitle(title);
-		model.setUrl(url);
-		model.setWidth(width);
-		
-		return model;
-	}
+    private EmbeddedMediaModel populateModel(HttpServletRequest request) {
+        String url = request.getParameter("url");
+        String playerId = request.getParameter("playerId");
+        String size = request.getParameter("size");
+        String width = request.getParameter("width");
+        String height = request.getParameter("height");
+        String returnType = request.getParameter("return_type");
+        String entryId = request.getParameter("entry_id");
+        String owner = request.getParameter("owner");
+        String title = request.getParameter("title");
+        String duration = request.getParameter("duration");
+        String description = request.getParameter("description");
+        String createdAt = request.getParameter("createdAt");
+        String tags = request.getParameter("tags");
+        String thumbnailUrl = request.getParameter("thumbnailUrl");
+        
+        EmbeddedMediaModel model = new EmbeddedMediaModel();
+        model.setCreatedAt(createdAt);
+        model.setDescription(description);
+        model.setDuration(duration);
+        model.setEntryId(entryId);
+        model.setHeight(height);
+        model.setOwner(owner);
+        model.setPlayerId(playerId);
+        model.setReturnType(returnType);
+        model.setSize(size);
+        model.setTags(tags);
+        model.setThumbnailUrl(thumbnailUrl);
+        model.setTitle(title);
+        model.setUrl(url);
+        model.setWidth(width);
+        
+        return model;
+    }
 }
