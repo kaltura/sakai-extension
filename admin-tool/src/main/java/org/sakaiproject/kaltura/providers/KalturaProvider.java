@@ -31,7 +31,7 @@ import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 import org.sakaiproject.kaltura.services.provider.AuthCodeProviderService;
 import org.sakaiproject.kaltura.services.provider.RoleProviderService;
 import org.sakaiproject.kaltura.services.provider.UserProviderService;
-import org.sakaiproject.kaltura.utils.SecurityUtil;
+import org.sakaiproject.kaltura.services.SecurityService;
 
 /**
  * The provider for the REST API
@@ -51,6 +51,11 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     private RoleProviderService roleProviderService;
     public void setRoleProviderService(RoleProviderService roleProviderService) {
         this.roleProviderService = roleProviderService;
+    }
+
+    private SecurityService securityService;
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
     }
 
     private UserProviderService userProviderService;
@@ -90,7 +95,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
      */
     @EntityCustomAction(action="role", viewKey="")
     public ActionReturn role(EntityView view, Map<String, Object> params) {
-        SecurityUtil.securityCheck();
+        securityService.securityCheck();
 
         ActionReturn actionReturn = null;
 
@@ -147,7 +152,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
         // GET
         String userId = view.getPathSegment(2);
 
-        SecurityUtil.securityCheck((String) params.get("auth_code"), userId);
+        securityService.securityCheck((String) params.get("auth_code"), userId);
 
         ActionReturn actionReturn = userProviderService.get(userId);
 
@@ -162,7 +167,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
      */
     @EntityCustomAction(action="auth", viewKey="")
     public ActionReturn auth(EntityView view, Map<String, Object> params) {
-        SecurityUtil.securityCheck();
+        securityService.securityCheck();
 
         ActionReturn actionReturn = null;
 

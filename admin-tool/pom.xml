@@ -9,7 +9,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>Sakai Kaltura Admin Tool</name>
+  <name>Kaltura Admin Tool</name>
   <artifactId>kaltura-admin-tool</artifactId>
   <organization>
     <name>Sakai Project</name>
@@ -22,17 +22,12 @@
     <!-- Kaltura dependencies -->
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>api</artifactId>
+      <artifactId>kaltura-impl</artifactId>
       <version>${kaltura.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>impl</artifactId>
-      <version>${kaltura.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>utils</artifactId>
+      <artifactId>kaltura-utils</artifactId>
       <version>${kaltura.version}</version>
     </dependency>
 

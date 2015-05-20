@@ -9,8 +9,8 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>Sakai Kaltura Impl</name>
-  <artifactId>impl</artifactId>
+  <name>Kaltura Impl</name>
+  <artifactId>kaltura-impl</artifactId>
   <organization>
     <name>Sakai Project</name>
     <url>http://sakaiproject.org/</url>
@@ -22,12 +22,12 @@
     <!-- Kaltura dependencies -->
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>api</artifactId>
+      <artifactId>kaltura-dao</artifactId>
       <version>${kaltura.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>utils</artifactId>
+      <artifactId>kaltura-utils</artifactId>
       <version>${kaltura.version}</version>
     </dependency>
     <!-- Sakai dependencies -->

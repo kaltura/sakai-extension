@@ -19,11 +19,11 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
-import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
-import org.sakaiproject.kaltura.models.errors.ErrorAuthCode;
+import org.sakaiproject.kaltura.dao.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.dao.models.errors.ErrorAuthCode;
 import org.sakaiproject.kaltura.services.AuthCodeService;
 import org.sakaiproject.kaltura.utils.JsonUtil;
-import org.sakaiproject.kaltura.utils.RestUtil;
+import org.sakaiproject.kaltura.services.RestService;
 
 /**
  * Service layer to support the kaltura/auth entities
@@ -37,6 +37,11 @@ public class AuthCodeProviderService {
     private AuthCodeService authCodeService;
     public void setAuthCodeService(AuthCodeService authCodeService) {
         this.authCodeService = authCodeService;
+    }
+
+    private RestService restService;
+    public void setRestService(RestService restService) {
+        this.restService = restService;
     }
 
     public void init() {
@@ -59,7 +64,7 @@ public class AuthCodeProviderService {
             log.error(e.toString(), e);
         }
 
-        return RestUtil.processActionReturn(errorAuthCode, JsonUtil.parseToJson(kalturaLtiAuthCode));
+        return restService.processActionReturn(errorAuthCode, JsonUtil.parseToJson(kalturaLtiAuthCode));
     }
 
     /**
@@ -88,7 +93,7 @@ public class AuthCodeProviderService {
 
         }
 
-        return RestUtil.processActionReturn(errorAuthCode);
+        return restService.processActionReturn(errorAuthCode);
     }
 
 }

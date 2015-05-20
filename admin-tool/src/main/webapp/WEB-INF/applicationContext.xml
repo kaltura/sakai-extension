@@ -23,9 +23,15 @@
         <property name="kalturaLtiAuthCodeDao" ref="kalturaLtiAuthCodeDaoTarget" />
     </bean>
 
+    <bean id="restService" class="org.sakaiproject.kaltura.services.RestService">
+    </bean>
+
     <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService">
         <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDaoTarget" />
         <property name="roleData" ref="roleData" />
+    </bean>
+
+    <bean id="securityService" class="org.sakaiproject.kaltura.services.SecurityService">
     </bean>
 
     <bean id="userService" class="org.sakaiproject.kaltura.services.UserService">
@@ -46,13 +52,17 @@
     <!-- provider services -->
     <bean id="authCodeProviderService" class="org.sakaiproject.kaltura.services.provider.AuthCodeProviderService">
         <property name="authCodeService" ref="authCodeService" />
+        <property name="restService" ref="restService" />
     </bean>
 
     <bean id="roleProviderService" class="org.sakaiproject.kaltura.services.provider.RoleProviderService">
+        <property name="restService" ref="restService" />
         <property name="roleService" ref="roleService" />
     </bean>
 
     <bean id="userProviderService" class="org.sakaiproject.kaltura.services.provider.UserProviderService">
+        <property name="restService" ref="restService" />
+        <property name="securityService" ref="securityService" />
         <property name="userService" ref="userService" />
     </bean>
 
@@ -61,6 +71,7 @@
     <bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider" class="org.sakaiproject.kaltura.providers.KalturaProvider">
         <property name="authCodeProviderService" ref="authCodeProviderService" />
         <property name="roleProviderService" ref="roleProviderService" />
+        <property name="securityService" ref="securityService" />
         <property name="userProviderService" ref="userProviderService" />
     </bean>
 

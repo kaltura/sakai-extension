@@ -17,8 +17,8 @@ package org.sakaiproject.kaltura.services;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.sakaiproject.kaltura.dao.KalturaLtiAuthCodeDao;
-import org.sakaiproject.kaltura.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.dao.api.KalturaLtiAuthCodeDao;
+import org.sakaiproject.kaltura.dao.models.db.KalturaLtiAuthCode;
 
 /**
  * A helper class for getting, updating, and calculating authorization code objects

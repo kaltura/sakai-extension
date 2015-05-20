@@ -9,7 +9,7 @@
   </parent>
 
   <name>Kaltura Pack</name>
-  <artifactId>pack</artifactId>
+  <artifactId>kaltura-pack</artifactId>
   <organization>
     <name>Sakai Project</name>
     <url>http://sakaiproject.org/</url>
@@ -25,7 +25,7 @@
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
       <artifactId>kaltura-impl</artifactId>
-      <version>0.1</version>
+      <version>${kaltura.version}</version>
     </dependency>
   </dependencies>
 

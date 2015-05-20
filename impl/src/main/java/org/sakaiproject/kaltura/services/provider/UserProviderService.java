@@ -18,12 +18,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
-import org.sakaiproject.kaltura.models.User;
-import org.sakaiproject.kaltura.models.errors.ErrorUser;
+import org.sakaiproject.kaltura.dao.models.User;
+import org.sakaiproject.kaltura.dao.models.errors.ErrorUser;
 import org.sakaiproject.kaltura.services.UserService;
 import org.sakaiproject.kaltura.utils.JsonUtil;
-import org.sakaiproject.kaltura.utils.RestUtil;
-import org.sakaiproject.kaltura.utils.SecurityUtil;
+import org.sakaiproject.kaltura.services.RestService;
+import org.sakaiproject.kaltura.services.SecurityService;
 
 /**
  * Service layer to support the kaltura/user entities
@@ -33,6 +33,16 @@ import org.sakaiproject.kaltura.utils.SecurityUtil;
 public class UserProviderService {
 
     private final Log log = LogFactory.getLog(UserProviderService.class);
+
+    private RestService restService;
+    public void setRestService(RestService restService) {
+        this.restService = restService;
+    }
+
+    private SecurityService securityService;
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
+    }
 
     private UserService userService;
     public void setUserService(UserService userService) {
@@ -48,7 +58,7 @@ public class UserProviderService {
         User user = null;
         ErrorUser errorUser = new ErrorUser();
 
-        if (StringUtils.isBlank(userId) || !SecurityUtil.isAdmin()) {
+        if (StringUtils.isBlank(userId) || !securityService.isAdmin()) {
             user = userService.getCurrentUser();
         } else {
             try {
@@ -61,7 +71,7 @@ public class UserProviderService {
 
         userService.populateUserData(user);
 
-        return RestUtil.processActionReturn(errorUser, JsonUtil.parseToJson(user));
+        return restService.processActionReturn(errorUser, JsonUtil.parseToJson(user));
     }
 
 }

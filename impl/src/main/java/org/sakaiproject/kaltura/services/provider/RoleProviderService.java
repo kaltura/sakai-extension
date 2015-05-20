@@ -21,11 +21,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
-import org.sakaiproject.kaltura.models.db.KalturaLtiRole;
-import org.sakaiproject.kaltura.models.errors.ErrorRole;
+import org.sakaiproject.kaltura.dao.models.db.KalturaLtiRole;
+import org.sakaiproject.kaltura.dao.models.errors.ErrorRole;
 import org.sakaiproject.kaltura.services.RoleService;
 import org.sakaiproject.kaltura.utils.JsonUtil;
-import org.sakaiproject.kaltura.utils.RestUtil;
+import org.sakaiproject.kaltura.services.RestService;
 import org.sakaiproject.kaltura.utils.RoleUtil;
 
 /**
@@ -36,6 +36,11 @@ import org.sakaiproject.kaltura.utils.RoleUtil;
 public class RoleProviderService {
 
     private final Log log = LogFactory.getLog(RoleProviderService.class);
+
+    private RestService restService;
+    public void setRestService(RestService restService) {
+        this.restService = restService;
+    }
 
     private RoleService roleService;
     public void setRoleService(RoleService roleService) {
@@ -68,7 +73,7 @@ public class RoleProviderService {
             log.error(e.toString(), e);
         }
 
-        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(kalturaLtiRole));
+        return restService.processActionReturn(errorRole, JsonUtil.parseToJson(kalturaLtiRole));
     }
 
     /**
@@ -86,7 +91,7 @@ public class RoleProviderService {
             log.error(e.toString(), e);
         }
 
-        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(allKalturaLtiRoleMappings));
+        return restService.processActionReturn(errorRole, JsonUtil.parseToJson(allKalturaLtiRoleMappings));
     }
 
     /**
@@ -135,7 +140,7 @@ public class RoleProviderService {
 
         }
 
-        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(added));
+        return restService.processActionReturn(errorRole, JsonUtil.parseToJson(added));
     }
 
     /**
@@ -165,7 +170,7 @@ public class RoleProviderService {
             }
         }
 
-        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(updated));
+        return restService.processActionReturn(errorRole, JsonUtil.parseToJson(updated));
     }
 
     /**
@@ -183,7 +188,7 @@ public class RoleProviderService {
             log.error(e.toString(), e);
         }
 
-        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(allSakaiRoles));
+        return restService.processActionReturn(errorRole, JsonUtil.parseToJson(allSakaiRoles));
     }
 
     /**
@@ -201,7 +206,7 @@ public class RoleProviderService {
             log.error(e.toString(), e);
         }
 
-        return RestUtil.processActionReturn(errorRole, JsonUtil.parseToJson(allLtiRoles));
+        return restService.processActionReturn(errorRole, JsonUtil.parseToJson(allLtiRoles));
     }
 
     /**
@@ -219,7 +224,7 @@ public class RoleProviderService {
             log.error(e.toString(), e);
         }
 
-        return RestUtil.processActionReturn(errorRole);
+        return restService.processActionReturn(errorRole);
     }
 
 }
