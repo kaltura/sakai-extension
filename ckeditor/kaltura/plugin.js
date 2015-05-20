@@ -17,33 +17,33 @@ var ckeditorId;
 (function() {
   var pluginName = 'kaltura';
   CKEDITOR.plugins.add(pluginName,
-      {    
+      {
           init: function(editor) {
-          
+
               editor.addCommand(pluginName, {
-                  exec : function(editor) {        	
+                  exec : function(editor) {
                       ckeditorId = editor.name;
-          
+
                       var height = 480;
                       var width = 750;
                       CKEDITOR.dialog.addIframe('kaltura',
                           'Kaltura',
-                          '/kaltura-lti/ckeditor.htm?userid=' + parent.portal.user.id + '&siteid=' + parent.portal.siteId, 
-                          width, 
+                          '/kaltura-lti/ckeditor.htm?userid=' + parent.portal.user.id + '&siteid=' + parent.portal.siteId,
+                          width,
                           height,
                           function() {
                               // iframe callback
                           },
- 
+
                           {
                               onOk : function() {}
-                          } 
+                          }
                       );
- 
+
                       editor.addCommand( 'kaltura', new CKEDITOR.dialogCommand( 'kaltura' ) );
                   }
             });
-      
+
             editor.ui.addButton(pluginName, {
                 label: pluginName,
                 command: pluginName,
