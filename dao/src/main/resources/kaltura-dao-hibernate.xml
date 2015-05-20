@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010 Unicon (R) Licensed under the
+    Educational Community License, Version 2.0 (the "License"); you may
+    not use this file except in compliance with the License. You may
+    obtain a copy of the License at
+
+    http://www.osedu.org/licenses/ECL-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an "AS IS"
+    BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+    or implied. See the License for the specific language governing
+    permissions and limitations under the License.
+
+-->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- Session Factory -->
+    <bean id="kalturaSessionFactory" parent="org.sakaiproject.springframework.orm.hibernate.SessionFactoryBase">
+        <property name="mappingResources">
+            <list>
+                <value>hbm/KalturaLtiRole.hbm.xml</value>
+                <value>hbm/KalturaLtiAuthCode.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Transaction Manager -->
+    <bean id="kalturaTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+            <ref bean="kalturaSessionFactory" />
+        </property>
+    </bean>
+
+    <!-- Role DAO Target -->
+    <bean id="kalturaLtiRoleDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiRoleDaoImpl" init-method="init" singleton="true">
+        <property name="sessionFactory">
+            <ref bean="kalturaSessionFactory" />
+        </property>
+        <property name="persistentClasses">
+            <list>
+                <value>org.sakaiproject.kaltura.dao.models.db.KalturaLtiRole</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Role DAO -->
+    <bean id="kalturaLtiRoleDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="kalturaTransactionManager" />
+        </property>
+        <property name="target">
+            <ref bean="kalturaLtiRoleDaoTarget" />
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Auth Code DAO Target -->
+    <bean id="kalturaLtiAuthCodeDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiAuthCodeDaoImpl" init-method="init" singleton="true">
+        <property name="sessionFactory">
+            <ref bean="kalturaSessionFactory" />
+        </property>
+        <property name="persistentClasses">
+            <list>
+                <value>org.sakaiproject.kaltura.dao.models.db.KalturaLtiAuthCode</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Auth Code DAO -->
+    <bean id="kalturaLtiAuthCodeDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="kalturaTransactionManager" />
+        </property>
+        <property name="target">
+            <ref bean="kalturaLtiAuthCodeDaoTarget" />
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- a role mapping data preloading bean that has transaction protection -->
+    <bean id="preloadLtiRoleData" class="org.sakaiproject.kaltura.impl.dao.PreloadLtiRoleDataImpl" init-method="init">
+        <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDao" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+
+</beans>

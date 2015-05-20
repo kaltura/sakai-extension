@@ -9,8 +9,8 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>Kaltura My Media Tool</name>
-  <artifactId>my-media-tool</artifactId>
+  <name>Kaltura Admin Tool</name>
+  <artifactId>kaltura-admin-tool</artifactId>
   <organization>
     <name>Sakai Project</name>
     <url>http://sakaiproject.org/</url>
@@ -19,6 +19,18 @@
   <packaging>war</packaging>
 
   <dependencies>
+    <!-- Kaltura dependencies -->
+    <dependency>
+      <groupId>org.sakaiproject.kaltura</groupId>
+      <artifactId>kaltura-api</artifactId>
+      <version>${kaltura.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.sakaiproject.kaltura</groupId>
+      <artifactId>kaltura-services</artifactId>
+      <version>${kaltura.version}</version>
+    </dependency>
+
     <!-- we are running a webapp in a servlet container so we need the servlet API -->
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -145,12 +157,6 @@
       <artifactId>log4j</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- JSON dependencies -->
-    <dependency>
-        <groupId>com.google.code.gson</groupId>
-        <artifactId>gson</artifactId>
-        <version>${gson.version}</version>
-    </dependency>
 
   </dependencies>
 
@@ -159,17 +165,10 @@
     <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
       <resource>
-        <directory>${basedir}/src/main/java</directory>
+        <directory>${basedir}/src/main</directory>
         <includes>
           <include>**/*.xml</include>
           <include>**/*.properties</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>${basedir}/src/main/resources</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>**/*</include>
         </includes>
       </resource>
     </resources>
@@ -229,7 +228,7 @@
       </plugin>
     </plugins>
     <!-- sets the name of the war file and thus the webapp URL -->
-    <finalName>my-media</finalName>
+    <finalName>kaltura-admin</finalName>
   </build>
 
   <developers>

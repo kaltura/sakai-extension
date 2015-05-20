@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>kaltura</artifactId>
+    <groupId>org.sakaiproject.kaltura</groupId>
+    <version>0.1</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <name>Kaltura API</name>
+  <artifactId>kaltura-api</artifactId>
+  <organization>
+    <name>Sakai Project</name>
+    <url>http://sakaiproject.org/</url>
+  </organization>
+  <inceptionYear>2004</inceptionYear>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <!-- Kaltura dependencies -->
+    <dependency>
+      <groupId>org.sakaiproject.kaltura</groupId>
+      <artifactId>kaltura-dao</artifactId>
+      <version>${kaltura.version}</version>
+    </dependency>
+
+    <!-- generic DAO -->
+    <dependency>
+      <groupId>org.sakaiproject</groupId>
+      <artifactId>generic-dao</artifactId>
+      <version>${generic-dao.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- configure the build to use the standard maven structure -->
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+
+</project>
