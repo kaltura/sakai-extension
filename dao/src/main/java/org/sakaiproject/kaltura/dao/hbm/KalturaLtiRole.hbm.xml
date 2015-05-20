@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2010 Unicon (R) Licensed under the
+    Educational Community License, Version 2.0 (the "License"); you may
+    not use this file except in compliance with the License. You may
+    obtain a copy of the License at
+
+    http://www.osedu.org/licenses/ECL-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an "AS IS"
+    BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+    or implied. See the License for the specific language governing
+    permissions and limitations under the License.
+
+-->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="org.sakaiproject.kaltura.models.db.KalturaLtiRole" table="KALTURA_LTI_ROLE">
+        <id name="id" type="long">
+            <generator class="native">
+                <param name="sequence">KALTURA_LTI_ROLE_ID_SEQ</param>
+            </generator>
+        </id>
+        <property name="sakaiRole" type="string" length="255" not-null="true">
+            <column name="sakai_role" not-null="true" />
+        </property>
+        <property name="ltiRole" type="string" length="255" not-null="true">
+            <column name="lti_role" not-null="true" />
+        </property>
+        <property name="dateCreated" type="java.util.Date">
+            <column name="created_on" not-null="true" />
+        </property>
+        <property name="dateModified" type="java.util.Date">
+            <column name="last_modified" not-null="true" />
+        </property>
+    </class>
+
+</hibernate-mapping>
