@@ -28,7 +28,6 @@
 
   <modules>
     <module>utils</module>
-    <module>dao</module>
     <module>impl</module>
     <module>pack</module>
     <module>admin-tool</module>

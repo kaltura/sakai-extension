@@ -19,17 +19,6 @@
   <packaging>jar</packaging>
 
   <dependencies>
-    <!-- Kaltura dependencies -->
-    <dependency>
-      <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>kaltura-dao</artifactId>
-      <version>${kaltura.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>kaltura-utils</artifactId>
-      <version>${kaltura.version}</version>
-    </dependency>
     <!-- Sakai dependencies -->
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
@@ -173,10 +162,9 @@
     <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
       <resource>
-        <directory>${basedir}/src/main/java</directory>
+        <directory>${basedir}/src/main</directory>
         <includes>
           <include>**/*.xml</include>
-          <include>**/*.properties</include>
         </includes>
       </resource>
     </resources>

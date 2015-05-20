@@ -17,54 +17,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-    <!-- services -->
-
-    <bean id="authCodeService" class="org.sakaiproject.kaltura.services.AuthCodeService">
-        <property name="kalturaLtiAuthCodeDao" ref="kalturaLtiAuthCodeDaoTarget" />
-    </bean>
-
-    <bean id="restService" class="org.sakaiproject.kaltura.services.RestService">
-    </bean>
-
-    <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService">
-        <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDaoTarget" />
-        <property name="roleData" ref="roleData" />
-    </bean>
-
-    <bean id="securityService" class="org.sakaiproject.kaltura.services.SecurityService">
-    </bean>
-
-    <bean id="userService" class="org.sakaiproject.kaltura.services.UserService">
-        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
-        <property name="entityManager" ref="org.sakaiproject.entity.api.EntityManager" />
-        <property name="roleService" ref="roleService" />
-        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
-        <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
-    </bean>
-
-    <bean id="jdbcDatabase" class="org.sakaiproject.kaltura.dao.jdbc.Database">
-        <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
-    </bean>
-
-    <bean id="roleData" class="org.sakaiproject.kaltura.dao.jdbc.data.RoleData" parent="jdbcDatabase">
-    </bean>
-
-    <!-- provider services -->
-    <bean id="authCodeProviderService" class="org.sakaiproject.kaltura.services.provider.AuthCodeProviderService">
-        <property name="authCodeService" ref="authCodeService" />
-        <property name="restService" ref="restService" />
-    </bean>
-
-    <bean id="roleProviderService" class="org.sakaiproject.kaltura.services.provider.RoleProviderService">
-        <property name="restService" ref="restService" />
-        <property name="roleService" ref="roleService" />
-    </bean>
-
-    <bean id="userProviderService" class="org.sakaiproject.kaltura.services.provider.UserProviderService">
-        <property name="restService" ref="restService" />
-        <property name="securityService" ref="securityService" />
-        <property name="userService" ref="userService" />
-    </bean>
+    <import resource="classpath*:kaltura-utils-context.xml" />
 
     <!-- entity provider -->
 
@@ -74,9 +27,5 @@
         <property name="securityService" ref="securityService" />
         <property name="userProviderService" ref="userProviderService" />
     </bean>
-
-    <!-- hibernate imports -->
-
-    <import resource="spring-hibernate.xml" />
 
 </beans>

@@ -23,8 +23,8 @@
     <bean id="kalturaSessionFactory" parent="org.sakaiproject.springframework.orm.hibernate.SessionFactoryBase">
         <property name="mappingResources">
             <list>
-                <value>org/sakaiproject/kaltura/dao/hbm/KalturaLtiRole.hbm.xml</value>
-                <value>org/sakaiproject/kaltura/dao/hbm/KalturaLtiAuthCode.hbm.xml</value>
+                <value>hbm/KalturaLtiRole.hbm.xml</value>
+                <value>hbm/KalturaLtiAuthCode.hbm.xml</value>
             </list>
         </property>
     </bean>

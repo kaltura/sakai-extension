@@ -68,7 +68,7 @@ public class AuthCodeProviderService {
     }
 
     /**
-     * Create a new {@link KalturaLtiAuthCode} oobject
+     * Create a new {@link KalturaLtiAuthCode} object
      * 
      * @param data the data to create the new {@link KalturaLtiAuthCode} object
      */
