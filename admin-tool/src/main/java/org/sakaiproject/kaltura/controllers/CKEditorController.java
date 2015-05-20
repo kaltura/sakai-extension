@@ -41,8 +41,8 @@ public class CKEditorController extends AbstractController {
      * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	String userId = request.getParameter("userid");
-    	String siteId = request.getParameter("siteid");
+        String userId = request.getParameter("userid");
+        String siteId = request.getParameter("siteid");
         
         Map<String,Object> model = new HashMap<String,Object>();
         KalturaLTIService service = new KalturaLTIService();
@@ -51,7 +51,7 @@ public class CKEditorController extends AbstractController {
 
         String view = "ckeditor";
         if (!StringUtils.isEmpty(ServerConfigurationService.getString("kaltura.ckeditor.debug"))) {
-        	view = "ckeditordebug";
+            view = "ckeditordebug";
         }
         return new ModelAndView(view, model);
     }

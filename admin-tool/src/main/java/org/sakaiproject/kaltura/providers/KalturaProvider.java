@@ -43,8 +43,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     private final Log log = LogFactory.getLog(KalturaProvider.class);
 
     private AuthCodeProviderService authCodeProviderService;
-    public void setAuthCodeProviderService(
-            AuthCodeProviderService authCodeProviderService) {
+    public void setAuthCodeProviderService(AuthCodeProviderService authCodeProviderService) {
         this.authCodeProviderService = authCodeProviderService;
     }
 

@@ -11,10 +11,9 @@
   <name>Kaltura Pack</name>
   <artifactId>kaltura-pack</artifactId>
   <organization>
-    <name>Sakai Project</name>
-    <url>http://sakaiproject.org/</url>
+    <name>Unicon, Inc.</name>
+    <url>http://www.unicon.net</url>
   </organization>
-  <inceptionYear>2004</inceptionYear>
   <packaging>sakai-component</packaging>
 
   <properties>
