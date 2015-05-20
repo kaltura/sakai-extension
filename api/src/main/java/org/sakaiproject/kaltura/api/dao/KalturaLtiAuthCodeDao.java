@@ -1,5 +1,5 @@
 /**
- * Copyright 2014 Sakaiproject Licensed under the
+ * Copyright 2004 Sakaiproject Licensed under the
  * Educational Community License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may
  * obtain a copy of the License at
@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.dao.api;
+package org.sakaiproject.kaltura.api.dao;
 
 import java.util.Date;
 
@@ -64,31 +64,13 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
      * Creates an auth code
      * 
      * @param userId the Sakai internal user ID
-     * @return the {@link KalturaLtiAuthCode} object
-     * @throws Exception 
-     */
-    public KalturaLtiAuthCode createAuthCode(String userId) throws Exception;
-
-    /**
-     * Creates an auth code
-     * 
-     * @param userId the Sakai internal user ID
-     * @param authCode the auth code
-     * @return the {@link KalturaLtiAuthCode} object
-     * @throws Exception 
-     */
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode) throws Exception;
-
-    /**
-     * Creates an auth code
-     * 
-     * @param userId the Sakai internal user ID
      * @param authCode the auth code
      * @param dateCreated the date of creation
+     * @param dateExpires the date the code expires
      * @return the {@link KalturaLtiAuthCode} object
      * @throws Exception 
      */
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated) throws Exception;
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated, Date dateExpires) throws Exception;
 
     /**
      * Add/update an authorization code

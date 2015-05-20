@@ -19,7 +19,7 @@
 
 <hibernate-configuration>
     <session-factory>
-        <mapping resource="org/sakaiproject/kaltura/hbm/KalturaLtiRole.hbm.xml" />
-        <mapping resource="org/sakaiproject/kaltura/hbm/KalturaLtiAuthCode.hbm.xml" />
+        <mapping resource="hbm/KalturaLtiRole.hbm.xml" />
+        <mapping resource="hbm/KalturaLtiAuthCode.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

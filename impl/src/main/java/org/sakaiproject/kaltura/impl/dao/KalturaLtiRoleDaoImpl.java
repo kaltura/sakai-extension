@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.dao.impl;
+package org.sakaiproject.kaltura.impl.dao;
 
 import java.util.Date;
 import java.util.List;
@@ -21,7 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
-import org.sakaiproject.kaltura.dao.api.KalturaLtiRoleDao;
+import org.sakaiproject.kaltura.api.dao.KalturaLtiRoleDao;
 import org.sakaiproject.kaltura.dao.models.db.KalturaLtiRole;
 
 /**

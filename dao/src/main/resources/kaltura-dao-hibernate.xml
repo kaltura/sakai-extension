@@ -37,7 +37,7 @@
     </bean>
 
     <!-- Role DAO Target -->
-    <bean id="kalturaLtiRoleDaoTarget" class="org.sakaiproject.kaltura.dao.impl.KalturaLtiRoleDaoImpl" init-method="init" singleton="true">
+    <bean id="kalturaLtiRoleDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiRoleDaoImpl" init-method="init" singleton="true">
         <property name="sessionFactory">
             <ref bean="kalturaSessionFactory" />
         </property>
@@ -64,7 +64,7 @@
     </bean>
 
     <!-- Auth Code DAO Target -->
-    <bean id="kalturaLtiAuthCodeDaoTarget" class="org.sakaiproject.kaltura.dao.impl.KalturaLtiAuthCodeDaoImpl" init-method="init" singleton="true">
+    <bean id="kalturaLtiAuthCodeDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiAuthCodeDaoImpl" init-method="init" singleton="true">
         <property name="sessionFactory">
             <ref bean="kalturaSessionFactory" />
         </property>
@@ -91,7 +91,7 @@
     </bean>
 
     <!-- a role mapping data preloading bean that has transaction protection -->
-    <bean id="preloadLtiRoleData" class="org.sakaiproject.kaltura.dao.impl.PreloadLtiRoleDataImpl" init-method="init">
+    <bean id="preloadLtiRoleData" class="org.sakaiproject.kaltura.impl.dao.PreloadLtiRoleDataImpl" init-method="init">
         <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDao" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
     </bean>

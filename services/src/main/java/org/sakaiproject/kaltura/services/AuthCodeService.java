@@ -17,8 +17,9 @@ package org.sakaiproject.kaltura.services;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.sakaiproject.kaltura.dao.api.KalturaLtiAuthCodeDao;
+import org.sakaiproject.kaltura.api.dao.KalturaLtiAuthCodeDao;
 import org.sakaiproject.kaltura.dao.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.utils.AuthCodeUtil;
 
 /**
  * A helper class for getting, updating, and calculating authorization code objects
@@ -55,18 +56,27 @@ public class AuthCodeService {
     }
 
     /**
-     * {@link KalturaLtiAuthCodeDao#createAuthCode(String)}
+     * Creates an authorization code with the given userId
+     * 
+     * @param userId the user's internal Sakai ID
+     * @return the {@link KalturaLtiAuthCode} object
      */
     public KalturaLtiAuthCode createAuthCode(String userId) throws Exception {
         if (StringUtils.isBlank(userId)) {
             throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
         }
 
-        return kalturaLtiAuthCodeDao.createAuthCode(userId);
+        String authCode = AuthCodeUtil.createNewAuthorizationCode();
+
+        return createAuthCode(userId, authCode);
     }
 
     /**
-     * {@link KalturaLtiAuthCodeDao#createAuthCode(String, String)}
+     * Creates an authorization code with the given userId and authorization code
+     * 
+     * @param userId the user's internal Sakai ID
+     * @param authCode the authorization code
+     * @return the {@link KalturaLtiAuthCode} object
      */
     public KalturaLtiAuthCode createAuthCode(String userId, String authCode) throws Exception {
         if (StringUtils.isBlank(userId)) {
@@ -76,13 +86,17 @@ public class AuthCodeService {
             throw new IllegalArgumentException("AuthCodeService :: auth code cannot be null.");
         }
 
-        return kalturaLtiAuthCodeDao.createAuthCode(userId, authCode);
+        return createAuthCode(userId, authCode, new Date());
     }
 
     /**
-     * {@link KalturaLtiAuthCodeDao#createAuthCode(String, String, Date)}
+     * Creates an authorization code with the given userId, authorization code, and date created
+     * 
+     * @param userId the user's internal Sakai ID
+     * @param authCode the authorization code
+     * @param dateCreated the date of creation
+     * @return the {@link KalturaLtiAuthCode} object
      */
-
     public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated) throws Exception {
         if (StringUtils.isBlank(userId)) {
             throw new IllegalArgumentException("AuthCodeService :: user ID cannot be null.");
@@ -93,8 +107,11 @@ public class AuthCodeService {
         if (dateCreated == null) {
             dateCreated = new Date();
         }
+        Date dateExpires = AuthCodeUtil.calculateExpirationDate(dateCreated);
 
-        return kalturaLtiAuthCodeDao.createAuthCode(userId, authCode, dateCreated);
+        KalturaLtiAuthCode kalturaLtiAuthCode = new KalturaLtiAuthCode(userId, authCode, dateCreated, dateExpires);
+
+        return createAuthCode(kalturaLtiAuthCode);
     }
 
     /**

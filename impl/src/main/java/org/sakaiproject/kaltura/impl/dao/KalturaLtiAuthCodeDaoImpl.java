@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.dao.impl;
+package org.sakaiproject.kaltura.impl.dao;
 
 import java.util.Date;
 
@@ -20,9 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
-import org.sakaiproject.kaltura.dao.api.KalturaLtiAuthCodeDao;
+import org.sakaiproject.kaltura.api.dao.KalturaLtiAuthCodeDao;
 import org.sakaiproject.kaltura.dao.models.db.KalturaLtiAuthCode;
-import org.sakaiproject.kaltura.utils.AuthCodeUtil;
 
 /**
  * Implementation of DAO Interface for authorization codes allowing access to RESTful APIs
@@ -78,26 +77,8 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public KalturaLtiAuthCode createAuthCode(String userId) throws Exception {
-        String authorizationCode = AuthCodeUtil.createNewAuthorizationCode();
-
-        return createAuthCode(userId, authorizationCode);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode) throws Exception {
-        return createAuthCode(userId, authCode);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated) throws Exception {
-        KalturaLtiAuthCode kalturaLtiAuthCode = new KalturaLtiAuthCode(userId, authCode, dateCreated, AuthCodeUtil.calculateExpirationDate(dateCreated));
+    public KalturaLtiAuthCode createAuthCode(String userId, String authCode, Date dateCreated, Date dateExpires) throws Exception {
+        KalturaLtiAuthCode kalturaLtiAuthCode = new KalturaLtiAuthCode(userId, authCode, dateCreated, dateExpires);
 
         return createAuthCode(kalturaLtiAuthCode);
     }

@@ -27,8 +27,11 @@
   </properties>
 
   <modules>
+    <module>services</module>
     <module>utils</module>
+    <module>api</module>
     <module>impl</module>
+    <module>dao</module>
     <module>pack</module>
     <module>admin-tool</module>
     <module>my-media-tool</module>
