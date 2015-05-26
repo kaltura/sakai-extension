@@ -23,7 +23,7 @@
     <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
-<form method="post" action="/kaltura-lti/ckeditorcallback.htm">
+<form method="post" action="/kaltura-admin-tool/ckeditorcallback.htm">
 
   	<div class="form-group">
   	    <label for="url">URL</label>

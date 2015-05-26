@@ -37,8 +37,8 @@
     <div id="description">${mediaitem.description}</div>
     <div id="createdAt">${mediaitem.createdAt}</div>
     <div id="tags">${mediaitem.tags}</div>
-    <div id="thumbnailUrl">${mediaitem.thumbnailUrl}</div>
 
+    <div id="thumbnailUrl">${mediaitem.thumbnailUrl}</div>
 <script src="<c:url value='/js/ckeditorinsert.js'/>" type="text/javascript"></script>
 </body>
 </html>
