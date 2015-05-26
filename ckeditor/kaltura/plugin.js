@@ -16,7 +16,6 @@
 //var CKEDITOR = CKEDITOR || {};
 var ckeditorId;
 (function() {
-<<<<<<< HEAD
   var pluginName = 'kaltura';
   CKEDITOR.plugins.add(pluginName,
       {
