@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.dao.models;
+package org.sakaiproject.kaltura.api.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class User {
     private String id;
 
     /**
-     * The Sakai {@link org.sakaiproject.user.api.User} object
+     * The Sakai {@link org.sakaiproject.kaltura.api.dao.models.user.api.User} object
      */
     private org.sakaiproject.user.api.User sakaiUser;
 

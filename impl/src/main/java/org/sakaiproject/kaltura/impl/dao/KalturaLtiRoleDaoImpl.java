@@ -22,7 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiRoleDao;
-import org.sakaiproject.kaltura.dao.models.db.KalturaLtiRole;
+import org.sakaiproject.kaltura.api.models.db.KalturaLtiRole;
 
 /**
  * Implementation of DAO Interface for Kaltura custom role mappings

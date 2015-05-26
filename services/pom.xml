@@ -25,7 +25,7 @@
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>kaltura-dao</artifactId>
+      <artifactId>kaltura-impl</artifactId>
       <version>${kaltura.version}</version>
     </dependency>
     <dependency>

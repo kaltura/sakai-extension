@@ -20,6 +20,7 @@
 
     <!-- Sakai tool controllers -->
     <bean id="mymediaController" class="org.sakaiproject.kaltura.controllers.MyMediaController">
+        <property name="kalturaLTIService" ref="kalturaLTIService" />
     </bean>
 
     <!-- Spring controller mappings -->
@@ -38,5 +39,7 @@
         <property name="suffix" value=".jsp" />
         <property name="order" value="10" />
     </bean>
+
+    <import resource="classpath*:kaltura-services-context.xml" />
 
 </beans>

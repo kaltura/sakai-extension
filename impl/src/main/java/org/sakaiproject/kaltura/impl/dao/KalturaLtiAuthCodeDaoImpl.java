@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiAuthCodeDao;
-import org.sakaiproject.kaltura.dao.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.api.models.db.KalturaLtiAuthCode;
 
 /**
  * Implementation of DAO Interface for authorization codes allowing access to RESTful APIs

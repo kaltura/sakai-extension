@@ -18,7 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.kaltura.Constants;
-import org.sakaiproject.kaltura.dao.models.errors.BaseError;
+import org.sakaiproject.kaltura.api.models.error.BaseError;
 
 public class RestService {
 
