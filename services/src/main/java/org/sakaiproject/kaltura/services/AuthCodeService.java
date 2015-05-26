@@ -18,7 +18,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiAuthCodeDao;
-import org.sakaiproject.kaltura.dao.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.api.models.db.KalturaLtiAuthCode;
 import org.sakaiproject.kaltura.utils.AuthCodeUtil;
 
 /**

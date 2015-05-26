@@ -20,16 +20,6 @@
   <dependencies>
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>kaltura-dao</artifactId>
-      <version>${kaltura.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.sakaiproject.kaltura</groupId>
-        <artifactId>kaltura-impl</artifactId>
-        <version>${kaltura.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.sakaiproject.kaltura</groupId>
       <artifactId>kaltura-services</artifactId>
       <version>${kaltura.version}</version>
     </dependency>
