@@ -17,7 +17,7 @@ package org.sakaiproject.kaltura.api.dao;
 import java.util.Date;
 
 import org.sakaiproject.genericdao.api.GeneralGenericDao;
-import org.sakaiproject.kaltura.dao.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.api.models.db.KalturaLtiAuthCode;
 
 /**
  * DAO Interface for authorization codes allowing access to RESTful APIs

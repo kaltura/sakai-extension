@@ -42,13 +42,23 @@
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     </bean>
 
+    <bean id="kalturaLTIService" class="org.sakaiproject.kaltura.services.KalturaLTIService">
+        <property name="authCodeService" ref="authCodeService" />
+        <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+        <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
+    </bean>
+
     <!-- dao services -->
 
-    <bean id="jdbcDatabase" class="org.sakaiproject.kaltura.dao.jdbc.Database">
+    <bean id="jdbcDatabase" class="org.sakaiproject.kaltura.services.dao.jdbc.Database">
         <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
     </bean>
 
-    <bean id="roleData" class="org.sakaiproject.kaltura.dao.jdbc.data.RoleData" parent="jdbcDatabase">
+    <bean id="roleData" class="org.sakaiproject.kaltura.services.dao.jdbc.data.RoleData" parent="jdbcDatabase">
     </bean>
 
     <!-- provider services -->
@@ -71,6 +81,6 @@
 
     <!-- hibernate imports -->
 
-    <import resource="classpath*:kaltura-dao-hibernate.xml" />
+    <import resource="classpath*:kaltura-hibernate.xml" />
 
 </beans>

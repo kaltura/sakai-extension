@@ -17,7 +17,7 @@ package org.sakaiproject.kaltura.api.dao;
 import java.util.List;
 
 import org.sakaiproject.genericdao.api.GeneralGenericDao;
-import org.sakaiproject.kaltura.dao.models.db.KalturaLtiRole;
+import org.sakaiproject.kaltura.api.models.db.KalturaLtiRole;
 
 /**
  * DAO Interface for Kaltura custom role mappings

@@ -19,7 +19,7 @@
 
 <hibernate-mapping>
 
-    <class name="org.sakaiproject.kaltura.dao.models.db.KalturaLtiRole" table="KALTURA_LTI_ROLE">
+    <class name="org.sakaiproject.kaltura.api.models.db.KalturaLtiRole" table="KALTURA_LTI_ROLE">
         <id name="id" type="long">
             <generator class="native">
                 <param name="sequence">KALTURA_LTI_ROLE_ID_SEQ</param>

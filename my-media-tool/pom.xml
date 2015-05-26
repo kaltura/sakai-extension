@@ -20,7 +20,7 @@
   <dependencies>
     <dependency>
         <groupId>org.sakaiproject.kaltura</groupId>
-        <artifactId>kaltura-impl</artifactId>
+        <artifactId>kaltura-services</artifactId>
         <version>${kaltura.version}</version>
     </dependency>
     <dependency>
@@ -89,17 +89,10 @@
     <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
       <resource>
-        <directory>${basedir}/src/main/java</directory>
+        <directory>${basedir}/src/main</directory>
         <includes>
           <include>**/*.xml</include>
           <include>**/*.properties</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>${basedir}/src/main/resources</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>**/*</include>
         </includes>
       </resource>
     </resources>

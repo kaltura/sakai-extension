@@ -12,32 +12,32 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.dao.models.errors;
+package org.sakaiproject.kaltura.api.models.error;
 
 import org.apache.commons.lang.StringUtils;
 
 /**
- * The model for errors during role processing
+ * The model for errors during user processing
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public class ErrorRole extends BaseError {
+public class ErrorUser extends BaseError {
 
     /**
-     * Update the role errors listing with an error
+     * Update the user processing errors listing with an error
      * 
      * @param error the error message
-     * @param site the site id (may be null)
-     * @param eid the user's eid (may be null)
+     * @param action the action being performed (may be null)
+     * @param userId the user id
      */
     @Override
-    public void updateErrorList(String error, String action, String roleId) {
+    public void updateErrorList(String error, String action, String userId) {
         String value = "Error: " + error;
         if (StringUtils.isNotBlank(action)) {
             value += ", action: " + action;
         }
-        if (StringUtils.isNotBlank(roleId)) {
-            value += ", object: " + roleId;
+        if (StringUtils.isNotBlank(userId)) {
+            value += ", userId: " + userId;
         }
 
         update(errors, value);
