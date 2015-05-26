@@ -19,7 +19,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee  http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     version="2.4">
-  <display-name>kaltura.media.gallery</display-name>
+  <display-name>sakai.kaltura</display-name>
   <description>Sakai Kaltura Media Gallery tool</description>
 
   <!-- Sakai request filter -->
@@ -35,7 +35,7 @@
 
   <filter-mapping>
     <filter-name>sakai.request</filter-name>
-    <servlet-name>kaltura.media.gallery</servlet-name>
+    <servlet-name>sakai.kaltura</servlet-name>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -57,7 +57,7 @@
 
   <filter-mapping>
     <filter-name>encodingFilter</filter-name>
-    <servlet-name>kaltura.media.gallery</servlet-name>
+    <servlet-name>sakai.kaltura</servlet-name>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -72,7 +72,7 @@
 
   <!-- Tool Servlet -->
   <servlet>
-    <servlet-name>kaltura.media.gallery</servlet-name>
+    <servlet-name>sakai.kaltura</servlet-name>
     <servlet-class>uk.ac.cam.caret.sakai.WebappToolServlet
     </servlet-class>
     <!-- use this to specify a starting page location if needed -->
