@@ -35,6 +35,7 @@ import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Web;
 import org.sakaiproject.authz.cover.SecurityService;
+import org.sakaiproject.kaltura.services.AuthCodeService;
 
 public class KalturaLTIService {
     private static final Log LOG = LogFactory.getLog(KalturaLTIService.class);
@@ -47,6 +48,12 @@ public class KalturaLTIService {
     public static final String LTI_DEBUG = "debug";
     public static final String LTI_FRAMEHEIGHT = "frameheight";
     public static final String LTI1_PATH = "/imsblis/service/";
+    
+    private AuthCodeService authCodeService;
+
+    public void setAuthCodeService(AuthCodeService authCodeService) {
+        this.authCodeService = authCodeService;
+    }
 
     public String[] launchLTIRequest(String module) {
         User user = UserDirectoryService.getCurrentUser();
@@ -159,7 +166,19 @@ public class KalturaLTIService {
         setProperty(ltiProps,BasicLTIConstants.RESOURCE_LINK_ID,placementId);
 
         if ( rb != null ) setProperty(ltiProps,BasicLTIConstants.LAUNCH_PRESENTATION_LOCALE,rb.getLocale().toString());
-        
+
+        if(authCodeService!=null){
+            System.out.println("Spring took care of authcodeservice");
+        }
+
+        try{
+            String auth_code = authCodeService.createAuthCode(user.getId()).getAuthCode();
+            System.out.println("auth code is :"+ auth_code);
+        }catch(Exception e){
+            LOG.error("Error thrown generating auth code from user id :");
+            e.printStackTrace();
+        }
+
         String theRole = "Learner";
         if ( SecurityService.isSuperUser() )
         {

@@ -20,7 +20,7 @@
   <dependencies>
     <dependency>
         <groupId>org.sakaiproject.kaltura</groupId>
-        <artifactId>kaltura-impl</artifactId>
+        <artifactId>kaltura-services</artifactId>
         <version>${kaltura.version}</version>
     </dependency>
     <dependency>

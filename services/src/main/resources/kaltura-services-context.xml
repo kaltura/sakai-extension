@@ -42,6 +42,10 @@
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     </bean>
 
+    <bean id="kalturaLTIService" class="org.sakaiproject.kaltura.services.KalturaLTIService">
+        <property name="authCodeService" ref="authCodeService" />
+    </bean>
+
     <!-- dao services -->
 
     <bean id="jdbcDatabase" class="org.sakaiproject.kaltura.dao.jdbc.Database">
