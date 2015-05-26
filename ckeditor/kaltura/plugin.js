@@ -16,36 +16,40 @@
 //var CKEDITOR = CKEDITOR || {};
 var ckeditorId;
 (function() {
-    var pluginName = 'kaltura';
-    CKEDITOR.plugins.add(pluginName,
-        {    
-            init: function(editor) {
-          
-                ckeditorId = editor.name;
-          
-                var height = 480;
-                var width = 750;
-                CKEDITOR.dialog.addIframe(pluginName,
-                    'Kaltura',
-                    '/kaltura-lti/ckeditor.htm?userid=' + parent.portal.user.id + '&siteid=' + parent.portal.siteId, 
-                    width, 
-                    height,
-                    function() {
-                        // iframe callback
-                    },
- 
-                    {
-                        onOk : function() {}
-                    } 
-                );
-                editor.addCommand(pluginName, new CKEDITOR.dialogCommand( 'kaltura' ) );
-      
-                editor.ui.addButton(pluginName, {
-                    label: pluginName,
-                    command: pluginName,
-                    icon: this.path + 'images/kaltura.gif'
-                });
-            }
+  var pluginName = 'kaltura';
+  CKEDITOR.plugins.add(pluginName,
+      {
+          init: function(editor) {
+
+              editor.addCommand(pluginName, {
+                  exec : function(editor) {
+                      ckeditorId = editor.name;
+
+                      var height = 480;
+                      var width = 750;
+                      CKEDITOR.dialog.addIframe('kaltura',
+                          'Kaltura',
+                          '/kaltura-admin-tool/ckeditor.htm?userid=' + parent.portal.user.id + '&siteid=' + parent.portal.siteId,
+                          width,
+                          height,
+                          function() {
+                              // iframe callback
+                          },
+
+                          {
+                              onOk : function() {}
+                          }
+                      );
+
+                      editor.addCommand( 'kaltura', new CKEDITOR.dialogCommand( 'kaltura' ) );
+                  }
+            });
+
+            editor.ui.addButton(pluginName, {
+                label: pluginName,
+                command: pluginName,
+                icon: this.path + 'images/kaltura.gif'
+            });
         }
     );
 })();
