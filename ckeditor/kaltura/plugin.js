@@ -32,7 +32,9 @@ var ckeditorId;
                           width,
                           height,
                           function() {
-                              // iframe callback
+                      	      var ckDialog = CKEDITOR.dialog.getCurrent();
+                    	      document.getElementById(ckDialog.getButton('ok').domId).style.display='none';
+                    	      document.getElementById(ckDialog.getButton('cancel').domId).style.display='none';                              // iframe callback
                           },
 
                           {
