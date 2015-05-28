@@ -16,8 +16,9 @@ package org.sakaiproject.kaltura.api.dao;
 
 import java.util.List;
 
+import org.hibernate.Transaction;
 import org.sakaiproject.genericdao.api.GeneralGenericDao;
-import org.sakaiproject.kaltura.api.models.db.KalturaLtiRole;
+import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
 
 /**
  * DAO Interface for Kaltura custom role mappings
@@ -106,6 +107,12 @@ public interface KalturaLtiRoleDao extends GeneralGenericDao {
      */
     public void delete(long id);
 
-    public void commit();
+    /**
+     * Commit the transaction
+     * 
+     * @param kalturaLtiRole the {@link KalturaLtiRole} object
+     * @param delete is this a delete operation?
+     */
+    public void commit(KalturaLtiRole kalturaLtiRole, boolean delete);
 
 }

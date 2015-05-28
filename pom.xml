@@ -97,6 +97,7 @@
             <exclude>*.sql</exclude>
             <exclude>*.md</exclude>
             <exclude>.gitignore</exclude>
+            <exclude>ckeditor/**</exclude>
           </excludes>
           <mapping>
             <tag>DYNASCRIPT_STYLE</tag>

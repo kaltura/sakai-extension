@@ -43,7 +43,7 @@
         </property>
         <property name="persistentClasses">
             <list>
-                <value>org.sakaiproject.kaltura.api.models.db.KalturaLtiRole</value>
+                <value>org.sakaiproject.kaltura.models.dao.KalturaLtiRole</value>
             </list>
         </property>
     </bean>
@@ -70,7 +70,7 @@
         </property>
         <property name="persistentClasses">
             <list>
-                <value>org.sakaiproject.kaltura.api.models.db.KalturaLtiAuthCode</value>
+                <value>org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode</value>
             </list>
         </property>
     </bean>
