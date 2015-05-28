@@ -19,7 +19,7 @@
 
 <hibernate-mapping>
 
-    <class name="org.sakaiproject.kaltura.api.models.db.KalturaLtiAuthCode" table="KALTURA_LTI_AUTH_CODE">
+    <class name="org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode" table="KALTURA_LTI_AUTH_CODE">
         <id name="id" type="long">
             <generator class="native">
                 <param name="sequence">KALTURA_LTI_AUTH_CODE_ID_SEQ</param>

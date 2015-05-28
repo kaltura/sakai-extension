@@ -19,10 +19,12 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiRoleDao;
-import org.sakaiproject.kaltura.api.models.db.KalturaLtiRole;
+import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
 
 /**
  * Implementation of DAO Interface for Kaltura custom role mappings
@@ -114,18 +116,13 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
      */
     @Override
     public void save(KalturaLtiRole kalturaLtiRole) {
-        try {
-            if (!kalturaLtiRole.isValid()) {
-                kalturaLtiRole = new KalturaLtiRole(kalturaLtiRole);
-            }
-
-            kalturaLtiRole.setDateModified(new Date());
-
-            super.save(kalturaLtiRole);
-            commit();
-        } catch ( Exception e) {
-            log.error("Kaltura :: addRoleMapping : An error occurred persisting the role mapping: " + kalturaLtiRole.toString() + ", error: " + e, e);
+        if (!kalturaLtiRole.isValid()) {
+            kalturaLtiRole = new KalturaLtiRole(kalturaLtiRole);
         }
+
+        kalturaLtiRole.setDateModified(new Date());
+
+        commit(kalturaLtiRole, false);
     }
 
     /**
@@ -151,16 +148,46 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
      */
     @Override
     public void delete(long id) {
-        super.delete(KalturaLtiRole.class, id);
-        commit();
+        KalturaLtiRole kalturaLtiRole = getRoleMapping(id);
+
+        if (kalturaLtiRole != null) {
+            commit(kalturaLtiRole, true);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void commit() {
-        this.getSession().flush();
+    public void commit(KalturaLtiRole kalturaLtiRole, boolean delete) {
+        getHibernateTemplate().flush();
+
+        Session session = getSessionFactory().openSession();
+        Transaction transaction = session.getTransaction();
+
+        try {
+            transaction = session.beginTransaction();
+
+            if (delete) {
+                session.delete(kalturaLtiRole);
+            } else {
+            session.saveOrUpdate(kalturaLtiRole);
+            }
+
+            transaction.commit();
+        } catch ( Exception e) {
+            if (delete) {
+                log.error("Kaltura :: deleteRoleMapping : An error occurred deleting the role mapping: " + kalturaLtiRole.toString() + ", error: " + e, e);
+            } else {
+                log.error("Kaltura :: addRoleMapping : An error occurred persisting the role mapping: " + kalturaLtiRole.toString() + ", error: " + e, e);
+            }
+
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            session.close();
+        }
     }
 
 }

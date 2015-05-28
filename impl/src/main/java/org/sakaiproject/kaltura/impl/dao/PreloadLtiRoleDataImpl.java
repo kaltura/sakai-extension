@@ -22,7 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.kaltura.Constants;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiRoleDao;
-import org.sakaiproject.kaltura.api.models.db.KalturaLtiRole;
+import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
 
 /**
  * Service to pre-load role mappings on first boot, if configured
