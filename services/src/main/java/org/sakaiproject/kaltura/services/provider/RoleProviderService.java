@@ -21,11 +21,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
-import org.sakaiproject.kaltura.api.models.error.ErrorRole;
-import org.sakaiproject.kaltura.api.models.db.KalturaLtiRole;
+import org.sakaiproject.kaltura.models.error.ErrorRole;
+import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
+import org.sakaiproject.kaltura.services.RestService;
 import org.sakaiproject.kaltura.services.RoleService;
 import org.sakaiproject.kaltura.utils.JsonUtil;
-import org.sakaiproject.kaltura.services.RestService;
 import org.sakaiproject.kaltura.utils.RoleUtil;
 
 /**

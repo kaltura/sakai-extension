@@ -17,7 +17,10 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
+    <import resource="classpath*:kaltura-services-context.xml" />
+
     <!-- the i18n messages source -->
+
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames" value="Messages"/>
     </bean>

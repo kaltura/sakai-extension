@@ -16,11 +16,27 @@ package org.sakaiproject.kaltura.services;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.kaltura.Constants;
 
 public class SecurityService {
+
+    private AuthCodeService authCodeService;
+    public void setAuthCodeService(AuthCodeService authCodeService) {
+        this.authCodeService = authCodeService;
+    }
+
+    private DeveloperHelperService developerHelperService;
+    public void setDeveloperHelperService(
+            DeveloperHelperService developerHelperService) {
+        this.developerHelperService = developerHelperService;
+    }
+
+    private ServerConfigurationService serverConfigurationService;
+    public void setServerConfigurationService(
+            ServerConfigurationService serverConfigurationService) {
+        this.serverConfigurationService = serverConfigurationService;
+    }
 
     /**
      * Is the current user an administrator in the system?
@@ -29,7 +45,6 @@ public class SecurityService {
      * @return true, if the current user is admin
      */
     public boolean isAdmin() {
-        DeveloperHelperService developerHelperService = (DeveloperHelperService) ComponentManager.get(DeveloperHelperService.class);
         String userReference = developerHelperService.getCurrentUserReference();
 
         return developerHelperService.isUserAdmin(userReference);
@@ -50,12 +65,10 @@ public class SecurityService {
      * @exception SecurityException
      */
     public void securityCheck(String authorizationCode, String userId) {
-        DeveloperHelperService developerHelperService = (DeveloperHelperService) ComponentManager.get(DeveloperHelperService.class);
         developerHelperService.restoreCurrentUser();
 
         if (!isAdmin()) {
             // not admin, check authorization code and user ID are valid
-            AuthCodeService authCodeService = (AuthCodeService) ComponentManager.get(AuthCodeService.class);
             boolean isValid = false;
 
             try {
@@ -64,11 +77,10 @@ public class SecurityService {
             }
 
             if (!isValid) {
-                ServerConfigurationService serverConfigurationService = (ServerConfigurationService) ComponentManager.get(ServerConfigurationService.class);
                 String authCodeOverride = serverConfigurationService.getString("kaltura.authorization.override.code", Constants.AUTHORIZATION_OVERRIDE_CODE);
                 if (!StringUtils.equalsIgnoreCase(authorizationCode, authCodeOverride)) {
                     // the authorization code is invalid and the override does not match, don't allow access
-                    throw new SecurityException("This endpoint is not accessible to non-administrators and this user is not an administrator or the auth_code is incorrect.");
+                    throw new SecurityException("This endpoint is not accessible to non-administrators and this user is not an administrator or the authorization code is incorrect / has expired.");
                 }
             }
             developerHelperService.setCurrentUser("/user/admin");

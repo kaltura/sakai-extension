@@ -16,8 +16,9 @@ package org.sakaiproject.kaltura.api.dao;
 
 import java.util.Date;
 
+import org.hibernate.Transaction;
 import org.sakaiproject.genericdao.api.GeneralGenericDao;
-import org.sakaiproject.kaltura.api.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
 
 /**
  * DAO Interface for authorization codes allowing access to RESTful APIs
@@ -77,11 +78,15 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
      * 
      * @param kalturaLtiAuthCode the {@link KalturaLtiAuthCode} object
      * 
-     * @return true, if added/updated successfully
      * @throws Exception 
      */
-    public boolean save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception;
+    public void save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception;
 
-    public void commit();
+    /**
+     * Commit the transaction
+     * 
+     * @param kalturaLtiAuthCode the {@link KalturaLtiAuthCode} object
+     */
+    public void commit(KalturaLtiAuthCode kalturaLtiAuthCode);
 
 }

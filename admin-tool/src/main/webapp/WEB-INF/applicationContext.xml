@@ -17,15 +17,4 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-    <import resource="classpath*:kaltura-services-context.xml" />
-
-    <!-- entity provider -->
-
-    <bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider" class="org.sakaiproject.kaltura.providers.KalturaProvider">
-        <property name="authCodeProviderService" ref="authCodeProviderService" />
-        <property name="roleProviderService" ref="roleProviderService" />
-        <property name="securityService" ref="securityService" />
-        <property name="userProviderService" ref="userProviderService" />
-    </bean>
-
 </beans>

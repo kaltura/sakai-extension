@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.Constants;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiRoleDao;
 import org.sakaiproject.kaltura.services.dao.jdbc.data.RoleData;
-import org.sakaiproject.kaltura.api.models.db.KalturaLtiRole;
+import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
 
 /**
  * A helper class for getting and calculating role objects

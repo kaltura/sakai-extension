@@ -18,7 +18,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiAuthCodeDao;
-import org.sakaiproject.kaltura.api.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
 import org.sakaiproject.kaltura.utils.AuthCodeUtil;
 
 /**
@@ -149,7 +149,7 @@ public class AuthCodeService {
         }
 
         // if current date is after the expiration date, code is invalid
-        return (new Date()).after(kalturaLtiAuthCode.getDateExpires());
+        return (new Date()).before(kalturaLtiAuthCode.getDateExpires());
     }
 
 }

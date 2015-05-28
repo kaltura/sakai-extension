@@ -18,10 +18,13 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiAuthCodeDao;
-import org.sakaiproject.kaltura.api.models.db.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
+import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
 
 /**
  * Implementation of DAO Interface for authorization codes allowing access to RESTful APIs
@@ -64,7 +67,7 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      */
     @Override
     public KalturaLtiAuthCode getAuthCode(String authCode, String userId) {
-        String[] properties = new String[] {"sakaiRole", "ltiRole"};
+        String[] properties = new String[] {"authCode", "userId"};
         String[] values = new String[] {authCode, userId};
         Search search = new Search(properties, values);
 
@@ -107,29 +110,39 @@ public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implem
      * {@inheritDoc}
      */
     @Override
-    public boolean save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception {
-        try {
-            if (!kalturaLtiAuthCode.isValid()) {
-                kalturaLtiAuthCode = new KalturaLtiAuthCode(kalturaLtiAuthCode);
-            }
-
-            super.save(kalturaLtiAuthCode);
-            commit();
-        } catch (Exception e) {
-            String error = "Kaltura :: save : An error occurred persisting the authorization code: " + kalturaLtiAuthCode.toString() + ", error: " + e;
-            log.error(error, e);
-            throw new Exception(error, e);
+    public void save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception {
+        if (!kalturaLtiAuthCode.isValid()) {
+            kalturaLtiAuthCode = new KalturaLtiAuthCode(kalturaLtiAuthCode);
         }
 
-        return true;
+        commit(kalturaLtiAuthCode);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void commit() {
-        this.getSession().flush();
+    public void commit(KalturaLtiAuthCode kalturaLtiAuthCode) {
+        getHibernateTemplate().flush();
+
+        Session session = getSessionFactory().openSession();
+        Transaction transaction = session.getTransaction();
+
+        try {
+            transaction = session.beginTransaction();
+
+            session.saveOrUpdate(kalturaLtiAuthCode);
+
+            transaction.commit();
+        } catch ( Exception e) {
+            log.error("Kaltura :: addAuthCode : An error occurred persisting the authorization code: " + kalturaLtiAuthCode.toString() + ", error: " + e, e);
+
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            session.close();
+        }
     }
 
 }
