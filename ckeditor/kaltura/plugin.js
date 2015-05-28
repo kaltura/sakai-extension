@@ -28,7 +28,7 @@ var ckeditorId;
                       var width = 750;
                       CKEDITOR.dialog.addIframe('kaltura',
                           'Kaltura',
-                          '/kaltura-admin-tool/ckeditor.htm?userid=' + parent.portal.user.id + '&siteid=' + parent.portal.siteId,
+                          '/media-gallery-tool/ckeditor.htm?userid=' + parent.portal.user.id + '&siteid=' + parent.portal.siteId,
                           width,
                           height,
                           function() {

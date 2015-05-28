@@ -23,10 +23,20 @@
         <property name="kalturaLTIService" ref="kalturaLTIService" />
     </bean>
 
+    <bean id="ckeditorController" class="org.sakaiproject.kaltura.controllers.CKEditorController">
+        <property name="kalturaLTIService" ref="kalturaLTIService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    
+    <bean id="ckeditorCallbackController" class="org.sakaiproject.kaltura.controllers.CKEditorCallbackController">
+    </bean>
+
     <!-- Spring controller mappings -->
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
+                <prop key="/ckeditor.htm">ckeditorController</prop>
+                <prop key="/ckeditorcallback.htm">ckeditorCallbackController</prop>
                 <prop key="/mediagallery.htm">mediagalleryController</prop>
             </props>
         </property>
