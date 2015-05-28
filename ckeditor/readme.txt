@@ -45,11 +45,11 @@ at about line 190, add the following additional line:
         ckconfig.extraPlugins+="movieplayer,wordcount,fmath_formula";
         ckconfig.extraPlugins+=",kaltura";
 
-3. Add the following script to {SAKAI_ROOT}/portal/portal-render-engine-impl/pack/src/webapp/vm/defaultskin/includeStandardHead.vm (around line 50):
+3. Add the following script to {SAKAI_ROOT}/portal/portal-render-engine-impl/pack/src/webapp/vm/neoskin/includeStandardHead.vm (around line 50):
 
 <script type="text/javascript" language="JavaScript" src="/kaltura/javascript/kaltura-display.js"></script>
 
-4. Add the following script to {SAKAI_ROOT}/portal/portal-render-engine-impl/pack/src/webapp/vm/neoskin/includeStandardHead.vm (around line 49):
+4. Add the following script to {SAKAI_ROOT}/portal/portal-render-engine-impl/pack/src/webapp/vm/morpheus/includeStandardHead.vm (around line 150):
 
 <script type="text/javascript" language="JavaScript" src="/kaltura/javascript/kaltura-display.js"></script>
 
