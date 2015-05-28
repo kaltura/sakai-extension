@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Sakaiproject Licensed under the
+ * Copyright 2010 Unicon (R) Licensed under the
  * Educational Community License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may
  * obtain a copy of the License at
@@ -12,6 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 //var CKEDITOR = CKEDITOR || {};
 var ckeditorId;
 (function() {
@@ -28,11 +29,13 @@ var ckeditorId;
                       var width = 750;
                       CKEDITOR.dialog.addIframe('kaltura',
                           'Kaltura',
-                          '/kaltura-admin-tool/ckeditor.htm?userid=' + parent.portal.user.id + '&siteid=' + parent.portal.siteId,
+                          '/media-gallery-tool/ckeditor.htm?userid=' + parent.portal.user.id + '&siteid=' + parent.portal.siteId,
                           width,
                           height,
                           function() {
-                              // iframe callback
+                              var ckDialog = CKEDITOR.dialog.getCurrent();
+                              document.getElementById(ckDialog.getButton('ok').domId).style.display='none';
+                              document.getElementById(ckDialog.getButton('cancel').domId).style.display='none';                              // iframe callback
                           },
 
                           {
@@ -51,4 +54,5 @@ var ckeditorId;
             });
         }
     );
+
 })();

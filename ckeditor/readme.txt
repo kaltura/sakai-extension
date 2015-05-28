@@ -58,3 +58,19 @@ at about line 190, add the following additional line:
 mvn clean install sakai:deploy -f reference/pom.xml
 mvn clean install sakai:deploy -f portal/pom.xml
 
+6. Configure Anti-Samy
+
+Anti-Samy validates potentially dangerous script code and prevents it from being stored in the 
+datastore according to the security policy of Sakai.  This is a Sakai 10 new feature.  There are
+at least two ways to address this.
+* set the default security policy to low enforcement.  This policy file will allow the src attribute 
+for the embedded iframe for Kaltura's LTI server.  These instructions assume that you are using
+the default low-security-policy.xml   Enable low enforcement by setting the following property in
+sakai.properties:
+
+content.cleaner.default.low.security=true
+
+* add an entry to whichever anti-samy policy file you use.  By default sakai uses 
+high-security-policy.xml.  For additional information, refer to Sakai documentation on 
+AntiSamy security policy configuration.
+
