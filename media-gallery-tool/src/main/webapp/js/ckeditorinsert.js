@@ -1,6 +1,6 @@
 (function() {
     var ckDialog = window.parent.CKEDITOR.dialog.getCurrent();
-    var editor = window.parent.CKEDITOR.instances.body;
+    var editor = window.parent.CKEDITOR.currentInstance;
 
     var insert = function(ckDialog, editor) {
         var ckOk = ckDialog._.buttons['ok'];
