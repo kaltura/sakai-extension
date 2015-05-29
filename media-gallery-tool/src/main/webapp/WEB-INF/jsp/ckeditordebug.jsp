@@ -18,9 +18,6 @@
     <!-- Additional CSS -->
     <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
 
-    <!-- Additional JavaScript -->
-    <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
-    <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
 <form method="post" action="/kaltura-admin-tool/ckeditorcallback.htm">
