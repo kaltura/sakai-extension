@@ -86,6 +86,16 @@ kaltura = {
         request.fail(function(jqXHR, textStatus, errorThrown) {
             callback(false, errorThrown);
         });
+    },
+
+    /* display message */
+    displayAlert: function (text, isError) {
+        var alertClass = isError ? "alert-danger" : "alert-success";
+        var alertsParent = $("[class*='alerts']");
+        var alertElement = alertsParent.find("[class*='alert']");
+        alertsParent.addClass(alertClass);
+        alertElement.find(".alert-text").text(text);
+        alertsParent.show();
     }
 
 }

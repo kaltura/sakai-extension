@@ -19,10 +19,17 @@
 
     <!-- Additional JavaScript -->
     <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
+    <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
     <div class="main-header">
         <h3>Kaltura Administration</h3>
+    </div>
+    <div class="alerts">
+        <div class="alert">
+            <span id="alert-close" class="glyphicon glyphicon-ok"></span>
+            <span class="alert-text"></span>
+        </div>
     </div>
     <!-- Role mapping -->
     <div class="panel-group content-section" id="accordion">
