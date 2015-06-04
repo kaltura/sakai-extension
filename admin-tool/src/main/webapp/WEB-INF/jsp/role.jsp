@@ -35,11 +35,8 @@
                                 <span class="glyphicon glyphicon-remove"></span> Delete
                             </button>
                         </div>
-                        <div class="custom-role-status-success alert alert-success">
-                            <a href="#" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-ok"></span></a>
-                        </div>
-                        <div class="custom-role-status-fail alert alert-error">
-                            <a href="#" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove"></span></a>
+                        <div class="custom-role-status alert">
+                            <a href="#" class="close" data-dismiss="alert"><span class="glyphicon"></span></a>
                         </div>
                     </td>
                 </tr>
