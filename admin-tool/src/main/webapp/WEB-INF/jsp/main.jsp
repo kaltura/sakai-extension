@@ -27,7 +27,7 @@
     </div>
     <div class="alerts">
         <div class="alert">
-            <span id="alert-close" class="glyphicon glyphicon-ok"></span>
+            <span id="alert-close" class="glyphicon"></span>
             <span class="alert-text"></span>
         </div>
     </div>

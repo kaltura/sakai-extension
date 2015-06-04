@@ -16,7 +16,7 @@ $(document).ready(function() {
 
     /* Edit existing roles */
     customRoleTableRow = $("#custom-role-table > tbody > .custom-role-table-row");
-    kaltura.role.toggleStatus(kaltura.role.getCurrentElement($("#custom-role-table > tbody > .custom-role-table-row")));
+    kaltura.role.getCurrentElement($("#custom-role-table > tbody > .custom-role-table-row")).setStatus(null);
     $("#custom-role-table > tbody > .custom-role-table-row").remove();
 
     /* Add new role */
@@ -38,7 +38,7 @@ $(document).ready(function() {
 
         var element = kaltura.role.getCurrentElement($(this).closest("tr"));
 
-        kaltura.role.toggleStatus(element, null);
+        element.setStatus(null);
 
         kaltura.role.populateDropdown(element.sakaiSelect, allSakaiRoles, element.sakaiRole);
 
@@ -61,7 +61,7 @@ $(document).ready(function() {
 
         var element = kaltura.role.getCurrentElement($(this).closest("tr"));
 
-        kaltura.role.toggleStatus(element, null);
+        element.setStatus(null);
 
         if (element.isNewRole()) {
             element.setId("");
@@ -78,7 +78,7 @@ $(document).ready(function() {
         ];
 
         // save the data row
-        kaltura.doPost(data, kaltura.roleUrl + "/" + element.id, function(success, rv) {
+        kaltura.ajax.doPost(data, kaltura.ajax.roleUrl + "/" + element.id, function(success, rv) {
             if (success) {
                 var roleMapping = rv[0];
                 element.setId(roleMapping.id);
@@ -89,7 +89,7 @@ $(document).ready(function() {
                 $(element.sakaiText).text(element.newSakaiRole);
                 kaltura.role.toggleDataRowComponents(element, false);
 
-                kaltura.role.toggleStatus(element, success);
+                element.setStatus(success);
 
                 kaltura.main.displayAlert("The role mapping was saved successfully.", false);
             } else {
@@ -111,7 +111,7 @@ $(document).ready(function() {
             $(element.row).remove();
             kaltura.role.appendNewAddRoleButtonRow();
         } else {
-            kaltura.role.toggleStatus(element, null);
+            element.setStatus(null);
             kaltura.role.toggleDataRowComponents(element, false);
         }
 
@@ -125,13 +125,13 @@ $(document).ready(function() {
         var element = kaltura.role.getCurrentElement($(this).closest("tr"));
 
         // save the data row
-        kaltura.doDelete(kaltura.roleUrl + "/delete/" + element.id, function(success, rv) {
+        kaltura.ajax.doDelete(kaltura.ajax.roleUrl + "/delete/" + element.id, function(success, rv) {
             if (success) {
                 kaltura.role.toggleDataRowComponents(element, false);
 
                 kaltura.role.updateSakaiLtiRoleMap(null, kaltura.role.buildRoleMapString(element.sakaiRole, element.ltiRole));
 
-                kaltura.role.toggleStatus(element, !success);
+                element.setStatus(!success);
                 kaltura.role.disableDataRow(element);
 
                 kaltura.main.displayAlert("The role mapping was deleted successfully.", false);
@@ -188,7 +188,7 @@ kaltura.role = kaltura.role || {
     getExistingSakaiRoles: function () {
         var deferred = $.Deferred();
 
-        kaltura.doGet(kaltura.roleUrl + "/sakai", function(success, data) {
+        kaltura.ajax.doGet(kaltura.ajax.roleUrl + "/sakai", function(success, data) {
             if (success) {
                 allSakaiRoles = [];
 
@@ -209,7 +209,7 @@ kaltura.role = kaltura.role || {
     getAllLtiRoles: function () {
         var deferred = $.Deferred();
 
-        kaltura.doGet(kaltura.roleUrl + "/lti", function(success, data) {
+        kaltura.ajax.doGet(kaltura.ajax.roleUrl + "/lti", function(success, data) {
             if (success) {
                 allLtiRoles = [];
 
@@ -230,7 +230,7 @@ kaltura.role = kaltura.role || {
     processRoleMappingData: function () {
         var deferred = $.Deferred();
 
-        kaltura.doGet(kaltura.roleUrl, function(success, data) {
+        kaltura.ajax.doGet(kaltura.ajax.roleUrl, function(success, data) {
             if (success) {
                 // update the data table rows
                 $.each(data, function(index, roleMapping) {
@@ -292,22 +292,6 @@ kaltura.role = kaltura.role || {
             }
             
             $(element.buttonDelete).hide();
-        }
-    },
-
-    /* Toggle the status icons */
-    toggleStatus: function (element, success) {
-        $(element.statusSuccess).hide();
-        $(element.statusFail).hide();
-
-        if (success != null) {
-            if (success) {
-                $(element.statusSuccess).show();
-                $(element.statusFail).hide();
-            } else {
-                $(element.statusSuccess).hide();
-                $(element.statusFail).show();
-            }
         }
     },
 
@@ -383,7 +367,7 @@ kaltura.role = kaltura.role || {
 
         kaltura.role.populateDropdown(element.sakaiSelect, allSakaiRoles, null);
         kaltura.role.populateDropdown(element.ltiSelect, allLtiRoles, null);
-        kaltura.role.toggleStatus(element, null);
+        element.setStatus(null);
         kaltura.role.toggleSaveButton(element);
         kaltura.role.appendRow(element);
     },
@@ -470,8 +454,7 @@ kaltura.role = kaltura.role || {
         currentElement.buttonSave = currentElement.row.find("[class*='custom-role-button-save']");
         currentElement.buttonCancel = currentElement.row.find("[class*='custom-role-button-cancel']");
         currentElement.buttonDelete = currentElement.row.find("[class*='custom-role-button-delete']");
-        currentElement.statusSuccess = currentElement.row.find("[class*='custom-role-status-success']");
-        currentElement.statusFail = currentElement.row.find("[class*='custom-role-status-fail']");
+        currentElement.status = currentElement.row.find("[class*='custom-role-status']");
         currentElement.newRole = currentElement.id == "new";
         currentElement.isNewRole = function() {
             return currentElement.newRole;
@@ -483,6 +466,22 @@ kaltura.role = kaltura.role || {
         currentElement.isDeleted = function() {
             return $(currentElement.row).hasClass("deleted");
         };
+        currentElement.setStatus = function(isSuccess) {
+            var icon = currentElement.status.find("[class*='glyphicon']");
+            icon.removeClass("glyphicon-ok").removeClass("glyphicon-remove");
+            currentElement.status.removeClass("alert-error").removeClass("alert-success");
+            currentElement.status.hide();
+            if (isSuccess != null) {
+                if (isSuccess) {
+                    currentElement.status.addClass("alert-success");
+                    icon.addClass("glyphicon-ok");
+                } else {
+                    currentElement.status.addClass("alert-error");
+                    icon.addClass("glyphicon-remove");
+                }
+                currentElement.status.show();
+            }
+        }
 
         return currentElement;
     }

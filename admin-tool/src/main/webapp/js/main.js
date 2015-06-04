@@ -8,13 +8,13 @@ $(document).ready(function() {
         $(this).hide();
     });
 
-})
+});
 
 kaltura.main = kaltura.main || {
 
     displayAlert: function (text, isError) {
         var alertsParent = $("[class*='alerts']");
-        kaltura.displayAlert(alertsParent, text, isError);
+        kaltura.alert.displayAlert(alertsParent, text, isError);
     }
 
 }

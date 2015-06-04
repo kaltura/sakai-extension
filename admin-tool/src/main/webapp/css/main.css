@@ -1,5 +1,4 @@
 .main-header {
-    width: 500px;
     margin: 20px;
 }
 
@@ -9,7 +8,7 @@
 }
 
 .panel-default {
-    width: 800px !important;
+    width: 100% !important;
     margin: 0 auto;
 }
 
@@ -21,19 +20,19 @@ th {
     border-top: none !important;
 }
 
-.accordion-toggle:after {
-    /* symbol for "opening" panels */
+.accordion-toggle:after, 
+.accordion-toggle.collapsed:after {
     font-family: 'Glyphicons Halflings';
-    content: "\e114";
     float: left;
     color: grey;
 }
+
+.accordion-toggle:after {
+    content: "\e114";
+}
+
 .accordion-toggle.collapsed:after {
-    /* symbol for "collapsed" panels */
-    font-family: 'Glyphicons Halflings';
     content: "\e080";
-    float: left;
-    color: grey;
 }
 
 .panel-title {
@@ -43,4 +42,11 @@ th {
 
 .alerts {
     display: none;
+    width: 80%;
+    margin: 5px auto;
+    border-radius: 3px;
+}
+
+.alert span {
+    margin: 0 5px;
 }
