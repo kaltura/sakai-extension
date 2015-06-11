@@ -1,4 +1,3 @@
- <?xml version="1.0" encoding="UTF-8" ?>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -18,28 +17,11 @@
     <!-- Additional CSS -->
     <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
 
+    <!-- Additional JavaScript -->
+    <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
+    <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
-
-<script>
-var mediaItem = {
-	url: "${mediaitem.url}",
-	playerId: "${mediaitem.playerId}",
-	size: "${mediaitem.size}",
-	width: "${mediaitem.width}",
-	height: "${mediaitem.height}",
-	returnType: "${mediaitem.returnType}",
-    entryId: "${mediaitem.entryId}",
-    owner: "${mediaitem.owner}",
-    title: "${mediaitem.title}",
-    duration: "${mediaitem.duration}",
-    description: "${mediaitem.description}",
-    createdAt: "${mediaitem.createdAt}",
-    tags: "${mediaitem.tags}",
-    thumbnailUrl: "${mediaitem.thumbnailUrl}"
-}
-</script>
-
-<script src="<c:url value='/js/ckeditorinsert.js'/>" type="text/javascript"></script>
+    ${returndata}
 </body>
 </html>

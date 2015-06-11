@@ -6,12 +6,12 @@
         var ckOk = ckDialog._.buttons['ok'];
 
         if( ckOk && ckOk !== "null" && ckOk !== "undefined" ) {
-            
             var iframeStr = "<iframe " +
-            "src=\"" + $("#url").text() + "\" " +
-            "height=\"" + $("#height").text() + "\" " +
-            "width=\"" + $("#width").text() + "\" >";
+            "src=\"/media-gallery-tool/mediadisplay.htm?mediaitemurl=" + encodeURIComponent(mediaItem.url) + "&userid=" + parent.parent.portal.user.id + "&siteid=" + parent.parent.portal.siteId + "\" " +
+            "height=\"" + mediaItem.height + "\" " +
+            "width=\"" + mediaItem.width + "\" >";
             iframeStr += "</iframe>";
+            
             editor.insertHtml(iframeStr);
             
             // when complete, close the iframe dialog
@@ -20,7 +20,7 @@
             // could not find the Ok button in the dialog
             alert('ckOk is null');
         }
-    }
+    };
     
     insert(ckDialog, editor);
     
