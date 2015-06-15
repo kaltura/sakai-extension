@@ -15,25 +15,13 @@
     <link media="all" href="<c:url value='/bootstrap/css/bootstrap-theme.min.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional CSS -->
-    <link media="all" href="<c:url value='/css/main.css'/>" rel="stylesheet" type="text/css" />
+    <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional JavaScript -->
     <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
     <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
-    <div class="main-header">
-        <h3>Kaltura Administration</h3>
-    </div>
-    <div class="alerts">
-        <div class="alert">
-            <span id="alert-close" class="glyphicon"></span>
-            <span class="alert-text"></span>
-        </div>
-    </div>
-    <!-- Role mapping -->
-    <div class="panel-group content-section" id="accordion">
-        <%@include file="role.jsp"%>
-    </div>
+    ${returndata}
 </body>
 </html>

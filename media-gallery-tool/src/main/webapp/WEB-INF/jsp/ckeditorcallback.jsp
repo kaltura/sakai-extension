@@ -18,27 +18,28 @@
     <!-- Additional CSS -->
     <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
 
-    <!-- Additional JavaScript -->
-    <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
-    <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
 </head>
 <body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
 
-    <div id="url">${mediaitem.url}</div>
-    <div id="playerId">${mediaitem.playerId}</div>
-    <div id="size">${mediaitem.size}</div>
-    <div id="width">${mediaitem.width}</div>
-    <div id="height">${mediaitem.height}</div>
-    <div id="returnType">${mediaitem.returnType}</div>
-    <div id="entryId">${mediaitem.entryId}</div>
-    <div id="owner">${mediaitem.owner}</div>
-    <div id="title">${mediaitem.title}</div>
-    <div id="duration">${mediaitem.duration}</div>
-    <div id="description">${mediaitem.description}</div>
-    <div id="createdAt">${mediaitem.createdAt}</div>
-    <div id="tags">${mediaitem.tags}</div>
+<script>
+var mediaItem = {
+	url: "${mediaitem.url}",
+	playerId: "${mediaitem.playerId}",
+	size: "${mediaitem.size}",
+	width: "${mediaitem.width}",
+	height: "${mediaitem.height}",
+	returnType: "${mediaitem.returnType}",
+    entryId: "${mediaitem.entryId}",
+    owner: "${mediaitem.owner}",
+    title: "${mediaitem.title}",
+    duration: "${mediaitem.duration}",
+    description: "${mediaitem.description}",
+    createdAt: "${mediaitem.createdAt}",
+    tags: "${mediaitem.tags}",
+    thumbnailUrl: "${mediaitem.thumbnailUrl}"
+}
+</script>
 
-    <div id="thumbnailUrl">${mediaitem.thumbnailUrl}</div>
 <script src="<c:url value='/js/ckeditorinsert.js'/>" type="text/javascript"></script>
 </body>
 </html>

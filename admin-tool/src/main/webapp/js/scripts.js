@@ -1,3 +1,7 @@
+/*
+ * General methods for Kaltura functionality
+ */
+
 var kaltura = kaltura || {};
 
 // don't cache ajax calls
@@ -5,7 +9,7 @@ $.ajaxSetup({
     cache: false
 });
 
-kaltura = {
+kaltura.ajax = kaltura.ajax || {
 
     /*
      * URLs
@@ -86,6 +90,20 @@ kaltura = {
         request.fail(function(jqXHR, textStatus, errorThrown) {
             callback(false, errorThrown);
         });
+    }
+
+}
+
+kaltura.alert = kaltura.alert || {
+
+    /* display message */
+    displayAlert: function (alertParentElement, text, isError) {
+        var alertClass = isError ? "alert-danger" : "alert-success";
+        var iconClass = isError ? "glyphicon-remove" : "glyphicon-ok";
+        alertParentElement.addClass(alertClass);
+        alertParentElement.find("#alert-close").addClass(iconClass);
+        alertParentElement.find(".alert-text").text(text);
+        alertParentElement.show();
     }
 
 }
