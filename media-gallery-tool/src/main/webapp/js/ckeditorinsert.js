@@ -6,13 +6,15 @@
         var ckOk = ckDialog._.buttons['ok'];
 
         if( ckOk && ckOk !== "null" && ckOk !== "undefined" ) {
-            
-            var iframeStr = "<iframe " +
-            "src=\"" + $("#url").text() + "\" " +
-            "height=\"" + $("#height").text() + "\" " +
-            "width=\"" + $("#width").text() + "\" >";
-            iframeStr += "</iframe>";
-            editor.insertHtml(iframeStr);
+            var mediaElement = "<span class=\"kaltura-lti-media\">";
+            mediaElement += "<img " +
+            "src=\/media-gallery-tool/img/kaltura-logo.png\" " +
+            "title=\"IFrame\" " +
+            "kaltura-lti-url=\"" + mediaItem.url + "\" " +
+            "height=\"" + mediaItem.height + "\" " +
+            "width=\"" + mediaItem.width + "\" />";
+            mediaElement += "</span>";
+            editor.insertHtml(mediaElement);
             
             // when complete, close the iframe dialog
             ckOk.click();
@@ -20,7 +22,7 @@
             // could not find the Ok button in the dialog
             alert('ckOk is null');
         }
-    }
+    };
     
     insert(ckDialog, editor);
     
