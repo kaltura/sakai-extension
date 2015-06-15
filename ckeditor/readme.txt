@@ -54,14 +54,25 @@ mvn clean install sakai:deploy -f reference/pom.xml
 Anti-Samy validates potentially dangerous script code and prevents it from being stored in the 
 datastore according to the security policy of Sakai.  This is a Sakai 10 new feature.  There are
 at least two ways to address this.
-* set the default security policy to low enforcement.  This policy file will allow the src attribute 
-for the embedded iframe for Kaltura's LTI server.  These instructions assume that you are using
-the default low-security-policy.xml   Enable low enforcement by setting the following property in
-sakai.properties:
+
+a) if you are using default policies:
+* set the default security policy to low enforcement.  Enable low enforcement by 
+setting the following property in sakai.properties:
 
 content.cleaner.default.low.security=true
 
-* add an entry to whichever anti-samy policy file you use.  By default sakai uses 
-high-security-policy.xml.  For additional information, refer to Sakai documentation on 
-AntiSamy security policy configuration.
+* copy the "antisamy" directory into your web container's sakai directory (same directory where
+sakai.properties lives.
+Example
+cp -R {KALTURA_LIT_ROOT/ckeditor/antisamy {CATALINA_HOME}/sakai
 
+The override low-security-policy.xml adds a new attribute, kaltura-lti-url, to the img tag.  This 
+allows the CKEditor to save the new media item inserted by the Kaltura LTI integration.
+
+b) if you are using custom policies:
+* open the file antisamy/low-security-policy.xml and search for "kaltura-lti-url".  You will
+find two references.  One is an attribute definition, and the second add the attribute to the img tag.
+You need to copy both configurations into your custom policy file (either low-security-policy.xml
+ or high-security-policy.xml).
+ 
+Once you have made these configuration changes to Sakai, you will need to stop and restart Sakai.
