@@ -6,13 +6,15 @@
         var ckOk = ckDialog._.buttons['ok'];
 
         if( ckOk && ckOk !== "null" && ckOk !== "undefined" ) {
-            var iframeStr = "<iframe " +
-            "src=\"/media-gallery-tool/mediadisplay.htm?mediaitemurl=" + encodeURIComponent(mediaItem.url) + "&userid=" + parent.parent.portal.user.id + "&siteid=" + parent.parent.portal.siteId + "\" " +
+            var mediaElement = "<span class=\"kaltura-lti-media\">";
+            mediaElement += "<img " +
+            "src=\/media-gallery-tool/img/kaltura-logo.png\" " +
+            "title=\"IFrame\" " +
+            "kaltura-lti-url=\"" + mediaItem.url + "\" " +
             "height=\"" + mediaItem.height + "\" " +
-            "width=\"" + mediaItem.width + "\" >";
-            iframeStr += "</iframe>";
-            
-            editor.insertHtml(iframeStr);
+            "width=\"" + mediaItem.width + "\" />";
+            mediaElement += "</span>";
+            editor.insertHtml(mediaElement);
             
             // when complete, close the iframe dialog
             ckOk.click();
