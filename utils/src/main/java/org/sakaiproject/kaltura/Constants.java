@@ -38,6 +38,14 @@ public class Constants {
     public static final String MEMBERSHIP_COURSE_ROLE_INSTRUCTOR = "Instructor";
     public static final String MEMBERSHIP_PROJECT_ROLE_STUDENT = "access";
     public static final String MEMBERSHIP_PROJECT_ROLE_INSTRUCTOR = "maintain";
+    public static final List<String> MEMBERSHIP_REALM_PERMISSION_IDS = new ArrayList<String>(2) {
+        private static final long serialVersionUID = 1L;
+
+        {
+            add("site.visit");
+            add("site.upd");
+        }
+    };
 
     /*
      * REST configuration

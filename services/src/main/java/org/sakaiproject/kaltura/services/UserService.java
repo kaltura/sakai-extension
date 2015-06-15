@@ -14,6 +14,7 @@
  */
 package org.sakaiproject.kaltura.services;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +25,7 @@ import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.Reference;
+import org.sakaiproject.kaltura.Constants;
 import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.UserSiteRole;
 import org.sakaiproject.site.api.Site;
@@ -100,7 +102,11 @@ public class UserService {
      * @param user the {@link User} object
      */
     public void populateUserData(User user) {
-        Set<String> userAuthzGroupIds = authzGroupService.getAuthzGroupsIsAllowed(user.getId(), "site.visit", null);
+        Set<String> userAuthzGroupIds = new HashSet<String>();
+        for (String realmPermissionId : Constants.MEMBERSHIP_REALM_PERMISSION_IDS) {
+            Set<String> authzGroupIds = authzGroupService.getAuthzGroupsIsAllowed(user.getId(), realmPermissionId, null);
+            userAuthzGroupIds.addAll(authzGroupIds);
+        }
 
         for (String userAuthzGroupId : userAuthzGroupIds) {
             try {
