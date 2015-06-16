@@ -1,0 +1,24 @@
+--- antisamy/low-security-policy.xml	2015-06-16 09:55:25.000000000 -0700
++++ antisamy/low-security-policy.xml	2015-06-16 09:55:10.000000000 -0700
+@@ -159,6 +159,13 @@
+             </regexp-list>
+         </attribute>
+         
++        <!-- custom attribute to support Kaltura LTI -->
++        <attribute name="kaltura-lti-url" description="used by the IMG tag inside of CKEditor to support Kaltura LTI media embedding">
++            <regexp-list>
++                <regexp name="anything" />
++            </regexp-list>
++         </attribute>
++        
+ 
+         <!-- https://jira.sakaiproject.org/browse/KNL-1071 -->
+         <attribute name="dir" description="The 'dir' of any HTML attribute specifies the base direction of directionally neutral text">
+@@ -1562,6 +1569,7 @@
+                     <regexp name="number"/>
+                 </regexp-list>
+             </attribute>
++            <attribute name="kaltura-lti-url"/>
+ 
+ 
+             <!-- https://jira.sakaiproject.org/browse/KNL-1061 -->
