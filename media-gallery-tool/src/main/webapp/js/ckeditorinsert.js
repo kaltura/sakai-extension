@@ -8,7 +8,7 @@
         if( ckOk && ckOk !== "null" && ckOk !== "undefined" ) {
             var mediaElement = "<span class=\"kaltura-lti-media\">";
             mediaElement += "<img " +
-            "src=\/media-gallery-tool/img/kaltura-logo.png\" " +
+            "src=\"/media-gallery-tool/img/kaltura-logo.png\" " +
             "title=\"IFrame\" " +
             "kaltura-lti-url=\"" + mediaItem.url + "\" " +
             "height=\"" + mediaItem.height + "\" " +
