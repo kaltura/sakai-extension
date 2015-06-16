@@ -75,4 +75,6 @@ find two references.  One is an attribute definition, and the second add the att
 You need to copy both configurations into your custom policy file (either low-security-policy.xml
  or high-security-policy.xml).
  
+You can also apply antisamy.patch (in this directory) to your custom policy file to make these changes for you
+ 
 Once you have made these configuration changes to Sakai, you will need to stop and restart Sakai.
