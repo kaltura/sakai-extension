@@ -236,8 +236,9 @@ public class KalturaLTIService {
 
         // TODO handle null result
         String ckeditorUrl = serverConfigurationService.getString("kaltura.ckeditor.url");
-        // TODO handle null result
-        String ckeditorCallbackUrl = serverConfigurationService.getString("kaltura.ckeditor.callback.url");
+        String serverUrl = serverConfigurationService.getServerUrl();
+        String ckeditorCallbackUrl = serverUrl + "/media-gallery-tool/ckeditorcallback.htm";
+        LOG.info("ckeditorCallbackUrl: [" + ckeditorCallbackUrl + "]");
         String key = serverConfigurationService.getString("kaltura.launch.key");
         String secret = serverConfigurationService.getString("kaltura.launch.secret");
         setProperty(ltiProps, BasicLTIConstants.LAUNCH_PRESENTATION_RETURN_URL, ckeditorCallbackUrl);
