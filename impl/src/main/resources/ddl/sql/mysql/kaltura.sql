@@ -1,4 +1,4 @@
-create table KALTURA_LTI_ROLE (
+create table if not exists KALTURA_LTI_ROLE (
     id bigint not null auto_increment,
     sakai_role varchar(255) not null,
     lti_role varchar(255) not null,
@@ -7,7 +7,7 @@ create table KALTURA_LTI_ROLE (
     primary key (id)
 ) ENGINE=InnoDB;
 
-create table KALTURA_LTI_AUTH_CODE (
+create table if not exists KALTURA_LTI_AUTH_CODE (
     id bigint not null auto_increment,
     user_id varchar(255) not null,
     auth_code varchar(255) not null,
@@ -16,7 +16,7 @@ create table KALTURA_LTI_AUTH_CODE (
     primary key (id)
 ) ENGINE=InnoDB;
 
-create table KALTURA_SITE_COPY_BATCH_DETAILS (
+create table if not exists KALTURA_SITE_COPY_BATCH_DETAILS (
     batch_id bigint not null auto_increment,
     source_site_id varchar(255) not null,
     target_site_id varchar(255) not null,
@@ -26,7 +26,7 @@ create table KALTURA_SITE_COPY_BATCH_DETAILS (
     primary key(batch_id)
 ) ENGINE=InnoDB;
 
-create table KALTURA_SITE_COPY_JOB (
+create table if not exists KALTURA_SITE_COPY_JOB (
     job_id bigint not null auto_increment,
     batch_id bigint not null,
     kaltura_job_id bigint not null,
