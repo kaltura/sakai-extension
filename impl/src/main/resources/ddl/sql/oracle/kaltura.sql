@@ -14,7 +14,29 @@ create table KALTURA_LTI_AUTH_CODE (
     created_on timestamp not null,
     exipiration_date timestamp not null,
     primary key (id),
-)
+);
+
+create table KALTURA_SITE_COPY_BATCH_DETAILS (
+    batch_id number(19,0) not null,
+    source_site_id varchar(255) not null,
+    target_site_id varchar(255) not null,
+    status varchar(99) not null,
+    attempts number(11),
+    created_on timestamp not null,
+    primary key(batch_id)
+);
+
+create table KALTURA_SITE_COPY_JOB (
+    job_id number(19,0) not null,
+    batch_id number(19,0) not null,
+    kaltura_job_id number(19,0) not null,
+    status varchar(99) not null,
+    attempts number(11),
+    created_on timestamp not null,
+    primary_key(job_id)
+); 
 
 create sequence KALTURA_LTI_ROLE_ID_SEQ;
 create sequence KALTURA_LTI_AUTH_CODE_ID_SEQ;
+create sequence KALTURA_SITE_COPY_BATCH_ID_SEQ;
+create sequence KALTURA_SITe_COPY_JOB_ID_SEQ;
