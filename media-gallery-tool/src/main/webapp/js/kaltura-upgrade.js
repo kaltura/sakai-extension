@@ -22,7 +22,7 @@
                 var siteId = portal.siteId;
                 var mediaUrl = $(this).attr("kaltura-lti-url");
                 var iframeSource = "/media-gallery-tool/mediadisplay.htm?mediaitemurl=" + encodeURIComponent(mediaUrl) + "&userid=" + userId + "&siteid=" + siteId;
-     	        var iframe = $("<iframe height='" + height + "' width='" + width + "' src='" + iframeSource + "'>");
+     	        var iframe = $("<iframe height='" + height + "' width='" + width + "' src='" + iframeSource + "' allowfullscreen webkitallowfullscreen mozAllowFullScreen />");
 
                 $(this).parent().parent().append(iframe); 
         	});
