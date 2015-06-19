@@ -22,9 +22,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>kaltura-impl</artifactId>
-      <version>${kaltura.version}</version>
+        <groupId>org.sakaiproject.kaltura</groupId>
+        <artifactId>kaltura-services</artifactId>
+        <version>${kaltura.version}</version>
     </dependency>
   </dependencies>
 

@@ -21,10 +21,10 @@
 
     <!-- Session Factory -->
     <bean id="kalturaSessionFactory" parent="org.sakaiproject.springframework.orm.hibernate.SessionFactoryBase">
-        <property name="mappingResources">
+        <property name="mappingLocations">
             <list>
-                <value>hbm/KalturaLtiRole.hbm.xml</value>
-                <value>hbm/KalturaLtiAuthCode.hbm.xml</value>
+                <value>classpath*:hbm/KalturaLtiRole.hbm.xml</value>
+                <value>classpath*:hbm/KalturaLtiAuthCode.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -90,10 +90,57 @@
         </property>
     </bean>
 
-    <!-- a role mapping data preloading bean that has transaction protection -->
-    <bean id="preloadLtiRoleData" class="org.sakaiproject.kaltura.impl.dao.PreloadLtiRoleDataImpl" init-method="init">
-        <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDao" />
-        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <!-- Kaltura Site Copy Batch DAO Target 
+    <bean id="kalturaSiteCopyBatchDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaSiteCopyBatchDaoImpl" init-method="init" singleton="true">
+        <property name="sessionFactory">
+            <ref bean="kalturaSessionFactory" />
+        </property>
+        <property name="persistentClasses">
+             <list>
+            <value>org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch</value>
+            </list>
+        </property>
     </bean>
 
+     Site Copy Batch DAO
+    <bean id="kalturaSiteCopyBatchDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="kalturaTransactionManager" />
+        </property>
+        <property name="target">
+            <ref bean="kalturaSiteCopyBatchDaoTarget" />
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+     Kaltura Site Copy Batch DAO Target
+    <bean id="kalturaSiteCopyJobDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaSiteCopyJobDaoImpl" init-method="init" singleton="true">
+        <property name="sessionFactory">
+            <ref bean="kalturaSessionFactory" />
+        </property>
+        <property name="persistentClasses">
+            <list>
+                <value>org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob</value>
+            </list>
+        </property>
+    </bean>
+
+     Site Copy Batch DAO
+    <bean id="kalturaSiteCopyJobDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="kalturaTransactionManager" />
+        </property>
+        <property name="target">
+            <ref bean="kalturaSiteCopyJobDaoTarget" />
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean> -->
 </beans>

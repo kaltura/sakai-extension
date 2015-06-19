@@ -18,6 +18,7 @@ import java.util.Properties;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.imsglobal.basiclti.BasicLTIUtil;
@@ -502,6 +503,145 @@ public class KalturaLTIService {
             theRole = "Instructor";
         }
         setProperty(ltiProps,BasicLTIConstants.ROLES,theRole);    	
+    }
+
+    public Properties prepareSiteCopyRequest(String module,String fromSiteId, String targetSiteId, String jobId){
+
+        // Start building up the properties
+        Properties ltiProps = new Properties();
+        Properties toolProps = new Properties();
+
+        setProperty(ltiProps,BasicLTIConstants.LTI_VERSION,BasicLTIConstants.LTI_VERSION_1);
+        // Let tools know we are coming from Sakai
+        String sakaiVersion = serverConfigurationService.getString("version.sakai","2");
+        setProperty(ltiProps,"ext_lms", "sakai-"+sakaiVersion);
+        setProperty(ltiProps,BasicLTIConstants.TOOL_CONSUMER_INFO_PRODUCT_FAMILY_CODE,
+                "sakai");
+        setProperty(ltiProps,BasicLTIConstants.TOOL_CONSUMER_INFO_VERSION, sakaiVersion);
+
+        String launch_url = serverConfigurationService.getString("kaltura.launch.url");
+        if(!module.isEmpty()){
+            launch_url=launch_url+"/"+ module;
+        }
+        String key = serverConfigurationService.getString("kaltura.launch.key");
+        String secret = serverConfigurationService.getString("kaltura.launch.secret");
+        String siteCopyCallbackUrl= serverConfigurationService.getString("kaltura.site.copy.callback.url");
+        setProperty(toolProps, "launch_url", launch_url);
+        setProperty(toolProps, LTI_SECRET, secret );
+        setProperty(toolProps, "key", key );
+        setProperty(ltiProps, BasicLTIConstants.LAUNCH_PRESENTATION_RETURN_URL, siteCopyCallbackUrl);
+        int debug=0;
+        int newpage=0;
+        int frameheight = 0;
+        setProperty(toolProps, LTI_DEBUG, debug+"");
+        setProperty(toolProps, LTI_FRAMEHEIGHT, frameheight+"" );
+        setProperty(toolProps, LTI_NEWPAGE, newpage+"" );
+
+        int releasename = 0;
+        int releaseemail = 0;
+
+        // get admin user 
+        User user = null;
+        try {
+            user = userDirectoryService.getUser("admin");
+        } catch (UserNotDefinedException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        if ( user != null )
+        {
+            setProperty(ltiProps,BasicLTIConstants.USER_ID,user.getId());
+
+            setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_SOURCEDID,user.getEid());
+            if ( releasename == 1 ) {
+                setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_GIVEN,user.getFirstName());
+                setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_FAMILY,user.getLastName());
+                setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_FULL,user.getDisplayName());
+            }
+            if ( releaseemail == 1 ) {
+                setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_GIVEN,user.getFirstName());
+                setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_FAMILY,user.getLastName());
+                setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_FULL,user.getDisplayName());
+            }
+            if ( releaseemail == 1 ) {
+                setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_CONTACT_EMAIL_PRIMARY,user.getEmail());
+                // Only send the display ID if it's different to the EID.
+                if (!user.getEid().equals(user.getDisplayId())) {
+                    setProperty(ltiProps,BasicLTIConstants.EXT_SAKAI_PROVIDER_DISPLAYID,user.getDisplayId());
+                }
+            }
+        }
+
+        Site fromSite =  null;
+        try{
+            fromSite = siteService.getSite(fromSiteId);
+        }catch(Exception e){
+
+        }
+
+        setProperty(ltiProps,BasicLTIConstants.CONTEXT_ID,fromSiteId);
+        setProperty(ltiProps,BasicLTIConstants.CONTEXT_TITLE,fromSite.getTitle());
+
+        String placementId ="copySitePlacement123";
+        setProperty(ltiProps,BasicLTIConstants.RESOURCE_LINK_ID,placementId);
+
+        String theRole = "Instructor,Administrator,urn:lti:instrole:ims/lis/Administrator,urn:lti:sysrole:ims/lis/Administrator";
+        setProperty(ltiProps,BasicLTIConstants.ROLES,theRole);
+
+        if(!StringUtils.isBlank(targetSiteId)){
+            // set custom parameters for Site copy lti data
+
+            String custom_copy_source_course_id="";
+            String custom_copy_target_course_id="";
+            String custom_copy_target_course_name= "";
+            String custom_copy_content_owners="";
+            String custom_copy_incontext=serverConfigurationService.getString("kaltura.site.copy.incontext", "false");
+
+            Site targetSite =  null;
+            try{
+                targetSite = siteService.getSite(targetSiteId);
+            }catch(Exception e){
+
+            }
+
+            setProperty(toolProps,"custom_copy_source_course_id",fromSiteId);
+            setProperty(toolProps,"custom_copy_target_course_id",targetSiteId);
+            if(targetSite!=null){
+                setProperty(toolProps,"custom_copy_target_course_name", targetSite.getTitle());
+            }
+            setProperty(toolProps,"custom_copy_incontext", "true");
+        }
+        if(!StringUtils.isBlank(jobId)){
+            setProperty(toolProps,"custom_jobid",jobId);
+        }
+
+        // Pull in all of the custom parameters
+        for(Object okey : toolProps.keySet() ) {
+            String skey = (String) okey;
+            if ( ! skey.startsWith(BasicLTIConstants.CUSTOM_PREFIX) ) continue;
+            String value = toolProps.getProperty(skey);
+            if ( value == null ) continue;
+            setProperty(ltiProps, skey, value);
+        }
+
+        String oauth_callback = serverConfigurationService.getString("basiclti.oauth_callback",null);
+        // Too bad there is not a better default callback url for OAuth
+        // Actually since we are using signing-only, there is really not much point 
+        // In OAuth 6.2.3, this is after the user is authorized
+
+        if ( oauth_callback == null ) oauth_callback = "about:blank";
+        setProperty(ltiProps, "oauth_callback", oauth_callback);
+        setProperty(ltiProps, BasicLTIUtil.BASICLTI_SUBMIT, "Press to Launch External Tool");
+
+        String org_guid = serverConfigurationService.getString("basiclti.consumer_instance_guid",null);
+        String org_desc = serverConfigurationService.getString("basiclti.consumer_instance_description",null);
+        String org_url = serverConfigurationService.getString("basiclti.consumer_instance_url",null);
+        Map<String,String> extra = new HashMap<String,String> ();
+
+        ltiProps = BasicLTIUtil.signProperties(ltiProps, launch_url, "POST",
+                key, secret, org_guid, org_desc, org_url, extra);
+
+        return ltiProps;
     }
         
     public static String[] postError(String str) {
