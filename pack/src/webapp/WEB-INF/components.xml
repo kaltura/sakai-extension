@@ -99,25 +99,5 @@
             <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
         </property>
     </bean>
-
-    <bean id="kalturaSiteCopyJobScheduling" class="org.sakaiproject.component.app.scheduler.jobs.SpringInitialJobSchedule"
-        singleton="true">
-        <property name="jobBeanWrapper"><ref bean="checkKalturaSiteCopyJobWrapper"/></property>
-        <property name="jobName" value="Kaltura Site Copy Job Status Check 0"/>
-        <property name="triggerName" value="Every 10 seconds"/>
-        <property name="cronExpression" value="0/10 * * * * ?"/>
-        <property name="configuration">
-            <map />
-        </property>
-    </bean>
-
-    <bean id="org.sakaiproject.kaltura.services.KalturaEntityProducer" class="org.sakaiproject.kaltura.services.KalturaEntityProducer" init-method="init">
-        <property name="service" ref="kalturaLTIService" />
-        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
-        <property name="entityManager" ref="org.sakaiproject.entity.api.EntityManager" />
-        <property name="kalturaSiteCopyBatchDao" ref ="kalturaSiteCopyBatchDaoTarget" />
-        <property name="kalturaSiteCopyJobDao" ref ="kalturaSiteCopyJobDaoTarget" />
-    </bean>
-
     <import resource="classpath*:kaltura-services-context.xml" />
 </beans>

@@ -25,6 +25,8 @@
             <list>
                 <value>classpath*:hbm/KalturaLtiRole.hbm.xml</value>
                 <value>classpath*:hbm/KalturaLtiAuthCode.hbm.xml</value>
+                <value>classpath*:hbm/KalturaSiteCopyBatch.hbm.xml</value>
+                <value>classpath*:hbm/KalturaSiteCopyJob.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -89,58 +91,4 @@
             </props>
         </property>
     </bean>
-
-    <!-- Kaltura Site Copy Batch DAO Target 
-    <bean id="kalturaSiteCopyBatchDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaSiteCopyBatchDaoImpl" init-method="init" singleton="true">
-        <property name="sessionFactory">
-            <ref bean="kalturaSessionFactory" />
-        </property>
-        <property name="persistentClasses">
-             <list>
-            <value>org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch</value>
-            </list>
-        </property>
-    </bean>
-
-     Site Copy Batch DAO
-    <bean id="kalturaSiteCopyBatchDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-        <property name="transactionManager">
-            <ref bean="kalturaTransactionManager" />
-        </property>
-        <property name="target">
-            <ref bean="kalturaSiteCopyBatchDaoTarget" />
-        </property>
-        <property name="transactionAttributes">
-            <props>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>
-    </bean>
-
-     Kaltura Site Copy Batch DAO Target
-    <bean id="kalturaSiteCopyJobDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaSiteCopyJobDaoImpl" init-method="init" singleton="true">
-        <property name="sessionFactory">
-            <ref bean="kalturaSessionFactory" />
-        </property>
-        <property name="persistentClasses">
-            <list>
-                <value>org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob</value>
-            </list>
-        </property>
-    </bean>
-
-     Site Copy Batch DAO
-    <bean id="kalturaSiteCopyJobDao" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-        <property name="transactionManager">
-            <ref bean="kalturaTransactionManager" />
-        </property>
-        <property name="target">
-            <ref bean="kalturaSiteCopyJobDaoTarget" />
-        </property>
-        <property name="transactionAttributes">
-            <props>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>
-    </bean> -->
 </beans>
