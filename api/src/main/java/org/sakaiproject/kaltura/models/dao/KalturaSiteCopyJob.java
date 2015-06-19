@@ -19,9 +19,6 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.Constants;
-import org.sakaiproject.kaltura.utils.JsonUtil;
-
-import com.google.gson.annotations.Expose;
 
 /**
  * This is a Kaltura Site Copy Job, it represents an job that is added on sakai to check the status of kaltura jobs created for given site copy request
@@ -68,15 +65,22 @@ public class KalturaSiteCopyJob implements Serializable{
             );
     }
 
-
-    /**
-     * Override to show this model as a JSON string
-     */
     @Override
     public String toString() {
-        return JsonUtil.parseToJson(this);
+        StringBuilder output = new StringBuilder();
+        output.append("[KalturaSiteCopyJob:");
+        output.append(jobId);
+        output.append(',');
+        output.append(batchId);
+        output.append(',');
+        output.append(kalturaJobId);
+        output.append(',');
+        output.append(attempts);
+        output.append(',');
+        output.append(status);
+        output.append(']');
+        return output.toString();
     }
-
     /**
      * {@inheritDoc}
      */

@@ -19,9 +19,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.Constants;
-import org.sakaiproject.kaltura.utils.JsonUtil;
 
-import com.google.gson.annotations.Expose;
 
 /**
  * This is a Kaltura Site copy batch , it represents an site copy request from sakai to kaltura
@@ -67,12 +65,21 @@ public class KalturaSiteCopyBatch implements Serializable{
             );
     }
 
-    /**
-     * Override to show this model as a JSON string
-     */
     @Override
     public String toString() {
-        return JsonUtil.parseToJson(this);
+        StringBuilder output = new StringBuilder();
+        output.append("[KalturaSiteCopyBatch:");
+        output.append(batchId);
+        output.append(',');
+        output.append(sourceSiteId);
+        output.append(',');
+        output.append(targetSiteId);
+        output.append(',');
+        output.append(attempts);
+        output.append(',');
+        output.append(status);
+        output.append(']');
+        return output.toString();
     }
 
     /**
