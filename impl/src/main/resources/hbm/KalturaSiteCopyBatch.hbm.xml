@@ -20,7 +20,7 @@
 <hibernate-mapping>
 
     <class name="org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch" table="KALTURA_SITE_COPY_BATCH_DETAILS">
-        <id name="batchId" type="long">
+        <id name="batchId" column="batch_id" type="long">
             <generator class="native">
                 <param name="sequence">KALTURA_SITE_COPY_BATCH_ID_SEQ</param>
             </generator>

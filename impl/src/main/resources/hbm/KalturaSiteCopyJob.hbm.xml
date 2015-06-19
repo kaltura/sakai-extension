@@ -20,7 +20,7 @@
 <hibernate-mapping>
 
     <class name="org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob" table="KALTURA_SITE_COPY_JOB">
-        <id name="jobId" type="long">
+        <id name="jobId" column ="job_id" type="long">
             <generator class="native">
                 <param name="sequence">KALTURA_SITE_COPY_JOB_ID_SEQ</param>
             </generator>
