@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.services.dao.jdbc.data;
+package org.sakaiproject.kaltura.impl.dao.jdbc.data;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.kaltura.services.dao.jdbc.Database;
-import org.sakaiproject.kaltura.services.dao.jdbc.sql.RoleSql;
+import org.sakaiproject.kaltura.impl.dao.jdbc.sql.RoleSql;
+import org.sakaiproject.kaltura.impl.dao.jdbc.Database;
 
 /**
  * Processes app-specific role services dao needs

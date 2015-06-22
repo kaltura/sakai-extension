@@ -45,6 +45,15 @@ public class KalturaSiteCopyJob implements Serializable{
     public KalturaSiteCopyJob() {
     }
 
+    public KalturaSiteCopyJob(Long jobId, Long batchId, Long kalturaJobId, String status, int attempts, Date dateCreated) {
+        this.jobId = jobId;
+        this.batchId = batchId;
+        this.kalturaJobId = kalturaJobId;
+        this.status = status;
+        this.attempts = attempts;
+        this.dateCreated = dateCreated;
+    }
+
     public KalturaSiteCopyJob(Long batchId, Long kalturaJobId, String status){
         this.batchId = batchId;
         this.kalturaJobId = kalturaJobId;

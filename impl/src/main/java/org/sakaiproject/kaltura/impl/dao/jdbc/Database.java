@@ -12,7 +12,7 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.sakaiproject.kaltura.services.dao.jdbc;
+package org.sakaiproject.kaltura.impl.dao.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -131,17 +131,23 @@ public class Database {
      * Executes the given prepared statement (update, insert, delete)
      * 
      * @param preparedStatement the prepared statement
-     * @return true, if successful, false otherwise
+     * @return the key from execution
      */
-    protected boolean executeUpdatePreparedStatement(PreparedStatement preparedStatement) {
+    protected Long executeUpdatePreparedStatement(PreparedStatement preparedStatement) {
+        Long key = null;
+
         try {
             preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
+            while (resultSet.next()) {
+                key = resultSet.getLong(1);
+            }
         } catch (Exception e) {
             log.error("Cannot perform database call: " + e, e);
-            return false;
         }
 
-        return true;
+        return key;
     }
 
 }
