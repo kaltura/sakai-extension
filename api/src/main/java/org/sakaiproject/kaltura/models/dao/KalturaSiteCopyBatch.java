@@ -45,6 +45,17 @@ public class KalturaSiteCopyBatch implements Serializable{
     public KalturaSiteCopyBatch() {
     }
 
+
+    public KalturaSiteCopyBatch(Long batchId, String sourceSiteId, String targetSiteId, String status, int attempts, Date dateCreated) {
+        this.batchId = batchId;
+        this.sourceSiteId = sourceSiteId;
+        this.targetSiteId = targetSiteId;
+        this.status = status;
+        this.attempts = attempts;
+        this.dateCreated = dateCreated;
+    }
+
+
     public KalturaSiteCopyBatch(String sourceSiteId , String targetSiteId, String status){
         this.sourceSiteId = sourceSiteId;
         this.targetSiteId = targetSiteId;

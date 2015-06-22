@@ -20,7 +20,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.Constants;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiRoleDao;
-import org.sakaiproject.kaltura.services.dao.jdbc.data.RoleData;
+import org.sakaiproject.kaltura.impl.dao.jdbc.data.RoleData;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
 
 /**

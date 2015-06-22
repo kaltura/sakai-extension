@@ -14,10 +14,6 @@
  */
 package org.sakaiproject.kaltura.api.dao;
 
-import java.util.List;
-
-import org.hibernate.Transaction;
-import org.sakaiproject.genericdao.api.GeneralGenericDao;
 import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch;
 
 /**
