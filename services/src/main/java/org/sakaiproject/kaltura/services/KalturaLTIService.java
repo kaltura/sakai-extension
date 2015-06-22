@@ -598,12 +598,10 @@ public class KalturaLTIService {
      */
     private void setDebugOption(Properties toolProps, String module){
     
-        boolean debug =false;
+        String debug = "off";
         if(!StringUtils.isBlank(module)){
-            debug = serverConfigurationService.getBoolean("kaltura."+module+".debug",false);      
+            debug = serverConfigurationService.getString("kaltura."+module+".debug","off");  
         }
-        String debug_option = (debug) ? "1" : "0";
-
         setProperty(toolProps, LTI_DEBUG, debug+"");
     }
 
