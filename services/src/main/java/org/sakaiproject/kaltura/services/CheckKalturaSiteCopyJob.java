@@ -112,7 +112,7 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob
         }
         if(service!=null){
             String module ="check-job";
-            Properties ltiProps = service.prepareSiteCopyRequest(module,sourceSiteId,null,job.getKalturaJobId().toString());
+            Properties ltiProps = service.prepareJobStatusRequest(module,sourceSiteId,job.getKalturaJobId().toString());
             try{
                 String launch_url = serverConfigurationService.getString("kaltura.launch.url");
                 launch_url=launch_url+"/"+ module;

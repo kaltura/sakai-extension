@@ -196,7 +196,7 @@ public class KalturaEntityProducer implements EntityProducer {
             // call KAF endpoint to do lti request to initiate copy on kaltura end       
             if(service!=null){
                 String module ="copy-course";
-                Properties ltiProps = service.prepareSiteCopyRequest(module,fromSiteId,siteId, null);
+                Properties ltiProps = service.prepareSiteCopyRequest(module,fromSiteId,siteId);
                 try{
                     String launch_url = serverConfigurationService.getString("kaltura.launch.url");
                     launch_url=launch_url+"/"+ module;
