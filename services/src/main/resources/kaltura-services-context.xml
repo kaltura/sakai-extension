@@ -65,15 +65,6 @@
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     </bean>
 
-    <!-- dao services -->
-
-    <bean id="jdbcDatabase" class="org.sakaiproject.kaltura.services.dao.jdbc.Database">
-        <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
-    </bean>
-
-    <bean id="roleData" class="org.sakaiproject.kaltura.services.dao.jdbc.data.RoleData" parent="jdbcDatabase">
-    </bean>
-
     <!-- provider services -->
 
     <bean id="authCodeProviderService" class="org.sakaiproject.kaltura.services.provider.AuthCodeProviderService">

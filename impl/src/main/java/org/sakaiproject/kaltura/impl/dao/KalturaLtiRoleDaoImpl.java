@@ -171,7 +171,7 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
             if (delete) {
                 session.delete(kalturaLtiRole);
             } else {
-            session.saveOrUpdate(kalturaLtiRole);
+                session.saveOrUpdate(kalturaLtiRole);
             }
 
             transaction.commit();
