@@ -18,6 +18,7 @@
 <beans>
 
     <import resource="classpath*:kaltura-services-context.xml" />
+    <import resource="classpath*:kaltura-hibernate-preload.xml" />
 
     <!-- the i18n messages source -->
 

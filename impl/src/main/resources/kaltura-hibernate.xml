@@ -21,10 +21,12 @@
 
     <!-- Session Factory -->
     <bean id="kalturaSessionFactory" parent="org.sakaiproject.springframework.orm.hibernate.SessionFactoryBase">
-        <property name="mappingResources">
+        <property name="mappingLocations">
             <list>
-                <value>hbm/KalturaLtiRole.hbm.xml</value>
-                <value>hbm/KalturaLtiAuthCode.hbm.xml</value>
+                <value>classpath*:hbm/KalturaLtiRole.hbm.xml</value>
+                <value>classpath*:hbm/KalturaLtiAuthCode.hbm.xml</value>
+                <value>classpath*:hbm/KalturaSiteCopyBatch.hbm.xml</value>
+                <value>classpath*:hbm/KalturaSiteCopyJob.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -90,10 +92,19 @@
         </property>
     </bean>
 
-    <!-- a role mapping data preloading bean that has transaction protection -->
-    <bean id="preloadLtiRoleData" class="org.sakaiproject.kaltura.impl.dao.PreloadLtiRoleDataImpl" init-method="init">
-        <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDao" />
-        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <!-- dao services -->
+
+    <bean id="jdbcDatabase" class="org.sakaiproject.kaltura.impl.dao.jdbc.Database">
+        <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
+    </bean>
+
+    <bean id="roleData" class="org.sakaiproject.kaltura.impl.dao.jdbc.data.RoleData" parent="jdbcDatabase">
+    </bean>
+
+    <bean id="siteCopyBatchData" class="org.sakaiproject.kaltura.impl.dao.jdbc.data.SiteCopyBatchData" parent="jdbcDatabase">
+    </bean>
+
+    <bean id="siteCopyJobData" class="org.sakaiproject.kaltura.impl.dao.jdbc.data.SiteCopyJobData" parent="jdbcDatabase">
     </bean>
 
 </beans>

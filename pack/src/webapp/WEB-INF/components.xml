@@ -16,8 +16,7 @@
 -->
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-   
-    <!-- Kaltura Job -->
+    <!-- Kaltura Jobs -->
 
     <bean id="kalturaAddMyMediaJobParent" class="org.sakaiproject.kaltura.services.AddMyMediaJob" abstract="true">
         <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
@@ -29,6 +28,14 @@
 
     <bean id="kalturaAddMyMediaJob" parent="kalturaAddMyMediaJobParent"/>
 
+    <bean id="kalturaSiteCopyBatchDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaSiteCopyBatchDaoImpl">
+        <property name="siteCopyBatchData" ref="siteCopyBatchData" />
+    </bean>
+
+    <bean id="kalturaSiteCopyJobDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaSiteCopyJobDaoImpl">
+        <property name="siteCopyJobData" ref="siteCopyJobData" />
+    </bean>
+
     <bean id="kalturaAddToolJobWrapper"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
 
@@ -39,5 +46,68 @@
             <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
         </property>
     </bean>
+
+    <bean id="kalturaSiteCopyBatchJobParent" class="org.sakaiproject.kaltura.services.KalturaSiteCopyBatchJob" abstract="true">
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="adminEmail" value="${jobs.admin.email}" />
+        <property name="kalturaSiteCopyBatchDao" ref ="kalturaSiteCopyBatchDaoTarget" />
+        <property name="kalturaSiteCopyJobDao" ref ="kalturaSiteCopyJobDaoTarget" />
+    </bean>
+
+    <bean id="kalturaSiteCopyBatchJob" parent="kalturaSiteCopyBatchJobParent"/>
+
+    <bean id="kalturaSiteCopyBatchJobWrapper"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId" value="kalturaSiteCopyBatchJob" />
+        <property name="jobName" value="Add kaltura site copy batch details Job" />
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <bean id="kalturaSiteCopyBatchScheduling" class="org.sakaiproject.component.app.scheduler.jobs.SpringInitialJobSchedule"
+        singleton="true">
+        <property name="jobBeanWrapper"><ref bean="kalturaSiteCopyBatchJobWrapper"/></property>
+        <property name="jobName" value="Kaltura Site Copy Batch 0"/>
+        <property name="triggerName" value="Every 10 minutes"/>
+        <property name="cronExpression" value="* 0/10 * * * ?"/>
+        <property name="configuration">
+            <map />
+        </property>
+    </bean>
+
+    <bean id="checkKalturaSiteCopyJobParent" class="org.sakaiproject.kaltura.services.CheckKalturaSiteCopyJob" abstract="true">
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="adminEmail" value="${jobs.admin.email}" />
+        <property name="kalturaSiteCopyBatchDao" ref ="kalturaSiteCopyBatchDaoTarget" />
+        <property name="kalturaSiteCopyJobDao" ref ="kalturaSiteCopyJobDaoTarget" />
+        <property name="service" ref="kalturaLTIService" />
+    </bean>
+
+    <bean id="checkKalturaSiteCopyJob" parent="checkKalturaSiteCopyJobParent"/>
+
+    <bean id="checkKalturaSiteCopyJobWrapper"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId" value="checkKalturaSiteCopyJob" />
+        <property name="jobName" value="Add kaltura site copy job status details Job" />
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <bean id="org.sakaiproject.kaltura.services.KalturaEntityProducer" class="org.sakaiproject.kaltura.services.KalturaEntityProducer" init-method="init">
+        <property name="service" ref="kalturaLTIService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="entityManager" ref="org.sakaiproject.entity.api.EntityManager" />
+        <property name="kalturaSiteCopyBatchDao" ref ="kalturaSiteCopyBatchDaoTarget" />
+        <property name="kalturaSiteCopyJobDao" ref ="kalturaSiteCopyJobDaoTarget" />
+    </bean>
+
+
+    <import resource="classpath*:kaltura-services-context.xml" />
 
 </beans>

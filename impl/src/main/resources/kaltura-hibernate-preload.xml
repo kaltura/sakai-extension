@@ -15,13 +15,16 @@
     permissions and limitations under the License.
 
 -->
-<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
-<hibernate-configuration>
-    <session-factory>
-        <mapping resource="hbm/KalturaLtiRole.hbm.xml" />
-        <mapping resource="hbm/KalturaLtiAuthCode.hbm.xml" />
-         <mapping resource="hbm/KalturaSiteCopyBatch.hbm.xml" />
-          <mapping resource="hbm/KalturaSiteCopyJob.hbm.xml" />
-    </session-factory>
-</hibernate-configuration>
+<beans>
+
+    <!-- a role mapping data preloading bean that has transaction protection -->
+    <bean id="preloadLtiRoleData" class="org.sakaiproject.kaltura.impl.dao.PreloadLtiRoleDataImpl" init-method="init">
+        <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDao" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+
+    <import resource="classpath*:kaltura-services-context.xml" />
+
+</beans>
