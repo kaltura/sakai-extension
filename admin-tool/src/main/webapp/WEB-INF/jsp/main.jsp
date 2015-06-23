@@ -35,5 +35,7 @@
     <div class="panel-group content-section" id="accordion">
         <%@include file="role.jsp"%>
     </div>
+    <!-- Git versioning -->
+    <div class="git-versioning" hidden></div>
 </body>
 </html>
