@@ -17,6 +17,7 @@ kaltura.ajax = kaltura.ajax || {
     baseUrl: "/direct/kaltura/",
     userUrl: "/direct/kaltura/user",
     roleUrl: "/direct/kaltura/role",
+    gitUrl: "/direct/kaltura/git",
 
     /* POST ajax request */
     doPost: function (data, url, callback) {
