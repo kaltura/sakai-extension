@@ -29,6 +29,7 @@ import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 import org.sakaiproject.kaltura.services.provider.AuthCodeProviderService;
+import org.sakaiproject.kaltura.services.provider.GitProviderService;
 import org.sakaiproject.kaltura.services.provider.RoleProviderService;
 import org.sakaiproject.kaltura.services.provider.UserProviderService;
 import org.sakaiproject.kaltura.services.SecurityService;
@@ -45,6 +46,11 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     private AuthCodeProviderService authCodeProviderService;
     public void setAuthCodeProviderService(AuthCodeProviderService authCodeProviderService) {
         this.authCodeProviderService = authCodeProviderService;
+    }
+
+    private GitProviderService gitProviderService;
+    public void setGitProviderService(GitProviderService gitProviderService) {
+        this.gitProviderService = gitProviderService;
     }
 
     private RoleProviderService roleProviderService;
@@ -198,6 +204,19 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
         } else {
             throw new IllegalArgumentException("Method not allowed on kaltura/auth: " + view.getMethod());
         }
+
+        return actionReturn;
+    }
+
+    /**
+     * The user API
+     *
+     * GET kaltura/git
+     */
+    @EntityCustomAction(action="git", viewKey=EntityView.VIEW_LIST)
+    public ActionReturn git(EntityView view, Map<String, Object> params) {
+        // GET
+        ActionReturn actionReturn = gitProviderService.get();
 
         return actionReturn;
     }

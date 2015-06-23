@@ -36,4 +36,5 @@
         <%@include file="role.jsp"%>
     </div>
 </body>
+<!-- Git SHA-1: ${buildNumber} -->
 </html>
