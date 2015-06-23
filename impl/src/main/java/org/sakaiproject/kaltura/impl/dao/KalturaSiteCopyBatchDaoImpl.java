@@ -85,7 +85,7 @@ public class KalturaSiteCopyBatchDaoImpl implements KalturaSiteCopyBatchDao {
         }
 
         Long batchId = siteCopyBatchData.persistBatch(batch, update);
-        if (batchId == null) {
+        if (!update && batchId == null) {
             log.error("Could not persist kaltura site copy batch.");
         } else {
             log.info("Persisted kaltura site copy batch row:" + batchId);

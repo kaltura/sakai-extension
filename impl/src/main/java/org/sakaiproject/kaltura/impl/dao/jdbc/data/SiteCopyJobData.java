@@ -149,7 +149,9 @@ public class SiteCopyJobData  extends Database {
         } finally {
             closePreparedStatement(preparedStatement);
         }
-
+        if(update){
+            jobId = job.getJobId();
+        }
         return jobId;
     }
 

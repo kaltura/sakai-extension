@@ -17,6 +17,7 @@ package org.sakaiproject.kaltura.impl.dao.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -80,7 +81,7 @@ public class Database {
         Connection connection = borrowConnection();
 
         try {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
         } catch (Exception e) {
             log.error("Error creating prepared statement: " + e, e);
         }

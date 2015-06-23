@@ -57,13 +57,8 @@ public class KalturaSiteCopyBatchJob extends AbstractConfigurableJob
             log.debug("No \"Kaltura Site copy batch \" to work on.");            
             return;
         }
-        job.setStatus(KalturaSiteCopyBatch.IN_PROGRESS_STATUS);
         job = workOnJob(job);
-        if (KalturaSiteCopyBatch.COMPLETE_STATUS.equals(job.getStatus())) {
-
-            // sendEmail(job);
-        } else {
-            //sendEmail(job);
+        if (!KalturaSiteCopyBatch.COMPLETE_STATUS.equals(job.getStatus())) {
             int jobMaxAttempt = serverConfigurationService.getInt("jobs.max.attempts",10);
             if(job.getAttempts() > jobMaxAttempt){
                 job.setStatus(KalturaSiteCopyBatch.FAILED_STATUS);
@@ -91,7 +86,7 @@ public class KalturaSiteCopyBatchJob extends AbstractConfigurableJob
             log.debug("All kaltura jobs related to site copy from "+ job.getSourceSiteId() + " to "+ job.getTargetSiteId()+ "are complete on kaltura side");
         }
         // increment attempts
-        job.setAttempts( job.getAttempts()+1);                       
+        job.setAttempts( job.getAttempts()+1);  
         return job;
     }
 
