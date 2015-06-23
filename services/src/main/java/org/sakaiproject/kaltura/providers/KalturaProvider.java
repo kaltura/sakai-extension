@@ -209,7 +209,7 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     }
 
     /**
-     * The user API
+     * The git API
      *
      * GET kaltura/git
      */
