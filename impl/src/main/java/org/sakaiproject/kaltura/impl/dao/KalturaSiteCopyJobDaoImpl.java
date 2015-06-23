@@ -112,7 +112,7 @@ public class KalturaSiteCopyJobDaoImpl implements KalturaSiteCopyJobDao {
 
         Long jobId = siteCopyJobData.persistJob(job, update);
 
-        if (jobId == null) {
+        if (!update && jobId == null) {
             log.error("Could not persist kaltura site copy job.");
         } else {
             log.info("Persisted kaltura site copy job row:" + jobId);

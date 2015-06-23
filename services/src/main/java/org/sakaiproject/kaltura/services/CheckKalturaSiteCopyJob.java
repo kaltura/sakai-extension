@@ -91,10 +91,11 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob
             // if max attempts is reached, then set the job to failed status and send a notification to admin email with message from kaltura
             int jobMaxAttempt = serverConfigurationService.getInt("jobs.max.attempt",10);
             if(job.getAttempts() > jobMaxAttempt){
-                job.setStatus(KalturaSiteCopyJob.FAILED_STATUS);
+                job.setStatus(KalturaSiteCopyJob.FAILED_STATUS);            
+                log.error("Setting Kaltura Job status to failed after checking for max attempts :"+ job.toString());
             }
-            log.error("Setting Kaltura Job status to failed after checking for max attempts :"+ job.toString());
         }
+        
         kalturaSiteCopyJobDao.save(job,true);
     }
 
@@ -119,11 +120,14 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob
                 HttpClient client = new DefaultHttpClient();
                 HttpPost post = new HttpPost(launch_url);
                 List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+                StringBuffer nameValues = new StringBuffer();
                 for(Object lkey : ltiProps.keySet()) {
                     String ltiKey = (String) lkey;
                     String ltiValue = ltiProps.getProperty(ltiKey);
+                    nameValues.append(ltiKey+"="+ltiValue+"\n");
                     urlParameters.add(new BasicNameValuePair(ltiKey, ltiValue));
                 }
+                log.debug("Kaltura Job Status check - POST params sent are : "+ nameValues.toString());
                 post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
                 HttpResponse response = client.execute(post);
@@ -137,10 +141,8 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob
                     break;
                 }
                 //first line contains required JSON string
-                String jsonString = StringUtils.substringBetween(line,"{","}");
-                jsonString = "{" + jsonString + "}";
-                log.debug("Json Response from kaltura for job :" + job.getKalturaJobId() + " is :" + jsonString);
-                JSONObject jobStatus = new JSONObject(jsonString);
+                log.debug("Json Response from kaltura for job :" + job.getKalturaJobId() + " is :" + line);
+                JSONObject jobStatus = new JSONObject(line);
                 if(jobStatus!=null){
                     int resultCode = jobStatus.getInt("resultCode");
                     int status = jobStatus.getInt("status");

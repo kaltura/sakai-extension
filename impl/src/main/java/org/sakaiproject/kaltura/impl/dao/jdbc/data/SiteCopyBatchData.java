@@ -106,7 +106,9 @@ public class SiteCopyBatchData  extends Database {
             preparedStatement.setString(2, batch.getTargetSiteId());
             preparedStatement.setString(3, batch.getStatus());
             preparedStatement.setInt(4, batch.getAttempts());
-
+            if(update){
+                preparedStatement.setLong(5,batch.getBatchId());
+            }
             batchId = executeUpdatePreparedStatement(preparedStatement);
         } catch (Exception e) {
             log.error("Error persisting site copy batch data. Error: " + e, e);
@@ -114,6 +116,9 @@ public class SiteCopyBatchData  extends Database {
             closePreparedStatement(preparedStatement);
         }
 
+        if(update){
+            batchId = batch.getBatchId();
+        }
         return batchId;
     }
 

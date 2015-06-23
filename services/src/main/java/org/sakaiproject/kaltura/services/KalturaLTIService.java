@@ -418,6 +418,10 @@ public class KalturaLTIService {
 
         setProperty(toolProps, "launch_url", launch_url);
 
+        setDefaultReturnUrl(ltiProps, fromSiteId);
+        String theRole = "Instructor,Administrator,urn:lti:instrole:ims/lis/Administrator,urn:lti:sysrole:ims/lis/Administrator";
+        setProperty(ltiProps,BasicLTIConstants.ROLES,theRole);
+
         Site fromSite =  null;
         try{
             fromSite = siteService.getSite(fromSiteId);
@@ -450,6 +454,15 @@ public class KalturaLTIService {
                 setProperty(toolProps,"custom_copy_target_course_name", targetSite.getTitle());
             }
             setProperty(toolProps,"custom_copy_incontext", "true");
+        }
+
+        // Pull in all of the custom parameters
+        for(Object okey : toolProps.keySet() ) {
+            String skey = (String) okey;
+            if ( ! skey.startsWith(BasicLTIConstants.CUSTOM_PREFIX) ) continue;
+            String value = toolProps.getProperty(skey);
+            if ( value == null ) continue;
+            setProperty(ltiProps, skey, value);
         }
 
         // Pull in all of the custom parameters
@@ -508,6 +521,9 @@ public class KalturaLTIService {
         }
 
         setProperty(toolProps, "launch_url", launch_url);
+        setDefaultReturnUrl(ltiProps, fromSiteId);
+        String theRole = "Instructor,Administrator,urn:lti:instrole:ims/lis/Administrator,urn:lti:sysrole:ims/lis/Administrator";
+        setProperty(ltiProps,BasicLTIConstants.ROLES,theRole);
 
         String placementId ="copySitePlacement123";
         setProperty(ltiProps,BasicLTIConstants.RESOURCE_LINK_ID,placementId);

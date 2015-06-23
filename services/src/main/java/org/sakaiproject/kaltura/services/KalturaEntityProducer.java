@@ -204,11 +204,14 @@ public class KalturaEntityProducer implements EntityProducer {
                     HttpClient client = new DefaultHttpClient();
                     HttpPost post = new HttpPost(launch_url);
                     List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+                    StringBuffer nameValues = new StringBuffer();
                     for(Object lkey : ltiProps.keySet()) {
                         String ltiKey = (String) lkey;
                         String ltiValue = ltiProps.getProperty(ltiKey);
+                        nameValues.append(ltiKey+"="+ltiValue+"\n");
                         urlParameters.add(new BasicNameValuePair(ltiKey, ltiValue));
                     }
+                    log.debug("Kaltura Site Copy Request - POST params sent are : "+ nameValues.toString());
                     post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
                     HttpResponse response = client.execute(post);
@@ -222,10 +225,8 @@ public class KalturaEntityProducer implements EntityProducer {
                         break;
                     }
                     //first line contains required JSON string
-                    String jsonString = StringUtils.substringBetween(line,"{","}");
-                    jsonString = "{" + jsonString + "}";
-                    log.debug("Kaltura Merge() - Json string for site copy request from kaltura :" + jsonString);
-                    JSONObject copyStatus = new JSONObject(jsonString);
+                    log.debug("Kaltura Merge() - Json string for site copy request from kaltura :" + line);
+                    JSONObject copyStatus = new JSONObject(line);
                     if(copyStatus!=null){
                         int resultCode = copyStatus.getInt("resultCode");
                         log.debug("Kaltura Merge() - Site Copy Json Response from Kaltura : resultcode on site copy request :"+ resultCode);
@@ -238,7 +239,6 @@ public class KalturaEntityProducer implements EntityProducer {
                         ArrayList<Long> jobids = new ArrayList<Long>();
                         for(int i=0;i < jobs.length(); i++){
                             long jobId = jobs.getLong(i);
-                            System.out.println("Job Id from kaltura :" + jobId);
                             jobids.add(new Long(jobId));
                         }
                         if(jobids.size()>0){
