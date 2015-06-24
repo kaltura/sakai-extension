@@ -150,6 +150,8 @@ $(document).ready(function() {
         kaltura.role.resetEditRows(this);
         kaltura.role.toggleAddNewRow(this, false);
 
+        setMainFrameHeight(window.name);
+
         return false;
     });
 
