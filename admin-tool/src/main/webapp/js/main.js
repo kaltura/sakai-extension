@@ -10,6 +10,7 @@ $(document).ready(function() {
         $(this).hide();
     });
 
+    setMainFrameHeight(window.name);
 });
 
 kaltura.main = kaltura.main || {
@@ -27,7 +28,8 @@ kaltura.main = kaltura.main || {
             "commitTime",
             "buildVersion"
         ];
-        var gitVersioningElement = $(".git-versioning");
+        var gitVersioningHiddenElement = $(".git-versioning-hidden");
+        var gitVersioningShownElement = $(".git-versioning-shown");
         kaltura.ajax.doGet(kaltura.ajax.gitUrl, function(success, data) {
             if (success) {
                 var displayString = "";
@@ -36,9 +38,11 @@ kaltura.main = kaltura.main || {
                         displayString += key + ": " + value + "<br />";
                     }
                 });
-                $(gitVersioningElement).html(displayString);
+                $(gitVersioningHiddenElement).html(displayString);
+                $(gitVersioningShownElement).html("Build version: " + data.buildVersion);
             } else {
-                $(gitVersioningElement).text("Error getting Git versioning data.");
+                $(gitVersioningHiddenElement).text("Error getting Git versioning data.");
+                $(gitVersioningShownElement).html("Build version: N/A");
             }
         });
     }

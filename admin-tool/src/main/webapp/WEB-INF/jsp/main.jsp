@@ -36,6 +36,7 @@
         <%@include file="role.jsp"%>
     </div>
     <!-- Git versioning -->
-    <div class="git-versioning" hidden></div>
+    <div class="git-versioning-hidden" hidden></div>
+    <div class="git-versioning-shown"></div>
 </body>
 </html>
