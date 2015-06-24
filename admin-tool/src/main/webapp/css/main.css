@@ -50,3 +50,10 @@ th {
 .alert span {
     margin: 0 5px;
 }
+
+.git-versioning-shown {
+    float:right;
+    margin-right: 10%;
+    font-size: .75em;
+    color: #ccc;
+}
