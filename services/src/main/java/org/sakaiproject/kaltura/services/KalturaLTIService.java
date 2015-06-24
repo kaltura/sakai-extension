@@ -104,17 +104,22 @@ public class KalturaLTIService {
     public String[] launchLTIRequest(String module, String userId, String siteId) {
         User user = null;
         try {
-			user = userDirectoryService.getUser(userId);
-		} catch (UserNotDefinedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+            if (StringUtils.isNotBlank(userId)) {
+                user = userDirectoryService.getUser(userId);
+            }
+        } catch (UserNotDefinedException e1) {
+            LOG.error("User not found with ID: " + userId, e1);
+        }
 
         String placementId = "placementId123";
     	return launchLTIRequest(module, user, placementId, siteId);
     }
     
     public String[] launchLTIRequest(String module, User user, String placementId, String siteId){
+        String userId = Constants.DEFAULT_ANONYMOUS_USER_ID;
+        if (user != null) {
+            userId = user.getId();
+        }
 
         // Start building up the properties
     	Properties ltiProps = initLTIProps(user, siteId);
@@ -139,7 +144,7 @@ public class KalturaLTIService {
         if ( rb != null ) setProperty(ltiProps,BasicLTIConstants.LAUNCH_PRESENTATION_LOCALE,rb.getLocale().toString());
 
         setRole(ltiProps, siteId);
-        setAuthCode(ltiProps, user.getId());
+        setAuthCode(ltiProps, userId);
         setDebugOption(toolProps,module);
         setWindowOption(toolProps);
         
@@ -183,10 +188,11 @@ public class KalturaLTIService {
     public String[] launchCKEditorRequest(String module, String userId, String siteId) {
         User user = null;
         try {
-            user = userDirectoryService.getUser(userId);
-		} catch (UserNotDefinedException e1) {
-		    // TODO Auto-generated catch block
-            e1.printStackTrace();
+            if (StringUtils.isNotBlank(userId)) {
+                user = userDirectoryService.getUser(userId);
+            }
+        } catch (UserNotDefinedException e1) {
+            LOG.error("User not found with ID: " + userId, e1);
         }
 
         String placementId = "placementId123";
@@ -258,10 +264,11 @@ public class KalturaLTIService {
     public String[] launchLTIDisplayRequest(String module, String userId, String siteId) {
         User user = null;
         try {
-            user = userDirectoryService.getUser(userId);
-		} catch (UserNotDefinedException e1) {
-		    // TODO Auto-generated catch block
-            e1.printStackTrace();
+            if (StringUtils.isNotBlank(userId)) {
+                user = userDirectoryService.getUser(userId);
+            }
+        } catch (UserNotDefinedException e1) {
+            LOG.error("User not found with ID: " + userId, e1);
         }
 
         String placementId = "placementId123";
@@ -274,8 +281,13 @@ public class KalturaLTIService {
      * @return
      */
     public String[] launchLTIDisplayRequest(String launch_url, User user, String siteId, String placementId) {
+        String userId = Constants.DEFAULT_ANONYMOUS_USER_ID;
+        if (user != null) {
+            userId = user.getId();
+        }
+
         // Start building up the properties
-    	Properties ltiProps = initLTIProps(user, siteId);
+        Properties ltiProps = initLTIProps(user, siteId);
         Properties toolProps = new Properties();
 
         // Add key and secret
@@ -290,7 +302,7 @@ public class KalturaLTIService {
 
         if ( rb != null ) setProperty(ltiProps,BasicLTIConstants.LAUNCH_PRESENTATION_LOCALE,rb.getLocale().toString());
 
-        setAuthCode(ltiProps,user.getId());
+        setAuthCode(ltiProps, userId);
         setRole(ltiProps, siteId);
         setDebugOption(toolProps,LAUNCH_MEDIA);
         setWindowOption(toolProps);
@@ -574,6 +586,9 @@ public class KalturaLTIService {
      * @parm userId
      */
     private void setAuthCode(Properties ltiProps, String userId){
+        if (StringUtils.isBlank(userId)) {
+            userId = Constants.DEFAULT_ANONYMOUS_USER_ID;
+        }
 
         try{
             String authCode = authCodeService.createAuthCode(userId).getAuthCode();
