@@ -18,8 +18,12 @@
     <!-- Additional CSS -->
     <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
 
+    <!-- Additional javascript -->
+    <script src="/media-gallery-tool/js/kaltura-lti-display.js" type="text/javascript"></script>
+    
 </head>
-<body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
+<body onload="resizeBody(); <%=request.getAttribute("sakai.html.body.onload")%>; submitLtiLaunchForm()">
     ${returndata}
+    <div id="KalturaLtiContent" />
 </body>
 </html>
