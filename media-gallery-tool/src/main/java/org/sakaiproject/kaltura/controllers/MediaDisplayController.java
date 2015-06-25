@@ -59,7 +59,7 @@ public class MediaDisplayController extends AbstractController {
 	        String retval[] = kalturaLTIService.launchLTIDisplayRequest(decodedMediaItemUrl, userId, siteId);
 	        model.put("returndata", retval[0]);
         }
-        return new ModelAndView("mediagallery", model);
+        return new ModelAndView("mediadisplay", model);
     }
 
 }
