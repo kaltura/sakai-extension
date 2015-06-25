@@ -27,6 +27,10 @@
                 $(this).parent().parent().append(iframe); 
         	});
             $(doc).contents().find(".kaltura-lti-media").remove();
+            
+            $(doc).attr("allowfullscreen", "");
+            $(doc).attr("webkitallowfullscreen", "");
+            $(doc).attr("mozAllowFullScreen", "");
         },
         
         // converts a <span with an embedded kaltura non-LTI image to an iframe for LTI rendering
