@@ -228,36 +228,40 @@ public class KalturaEntityProducer implements EntityProducer {
                     log.debug("Kaltura Merge() - Json string for site copy request from kaltura :" + line);
                     JSONObject copyStatus = new JSONObject(line);
                     if(copyStatus!=null){
-                        int resultCode = copyStatus.getInt("resultCode");
-                        log.debug("Kaltura Merge() - Site Copy Json Response from Kaltura : resultcode on site copy request :"+ resultCode);
-                        String message = copyStatus.getString("message");
-                        if(message!=null){
+                        if(!copyStatus.isNull("resultCode")){
+                            int resultCode = copyStatus.getInt("resultCode");
+                            log.debug("Kaltura Merge() - Site Copy Json Response from Kaltura : resultcode on site copy request :"+ resultCode);
+                        }
+                        if(!copyStatus.isNull("message")){
+                            String message = copyStatus.getString("message");
                             log.debug("Kaltura Merge() - Site copy Json response from Kaltura: message from site copy request :"+ message);
 
                         }
-                        JSONArray jobs = copyStatus.getJSONArray("jobs");
-                        ArrayList<Long> jobids = new ArrayList<Long>();
-                        for(int i=0;i < jobs.length(); i++){
-                            long jobId = jobs.getLong(i);
-                            jobids.add(new Long(jobId));
-                        }
-                        if(jobids.size()>0){
-                            //create a batch job first with source site id, target site ids
-                            KalturaSiteCopyBatch siteCopyBatch = new KalturaSiteCopyBatch(fromSiteId, siteId,KalturaSiteCopyBatch.NEW_STATUS);
-                            Long batchId = kalturaSiteCopyBatchDao.save(siteCopyBatch, false);
-                            if(batchId!=null){
-                                log.debug("Kaltura Merge() - Added record to Kaltura_site_copy_batch_details:"+ batchId.toString());
-                                // now insert kaltura jobs for each batch
-                                for(Long kalturajobid:jobids){
-                                    KalturaSiteCopyJob kalturajob = new KalturaSiteCopyJob(batchId,kalturajobid, KalturaSiteCopyJob.NEW_STATUS);
-                                    Long kalturaJobId = kalturaSiteCopyJobDao.save(kalturajob, false);
-                                    if(kalturaJobId!=null){
-                                        log.debug("Kaltura Merge() - Added record to kaltura_site_copy_job:"+ kalturaJobId.toString());
-                                    }
-                                }// end for
+                        if(!copyStatus.isNull("jobs")){
+                            JSONArray jobs = copyStatus.getJSONArray("jobs");
+                            ArrayList<Long> jobids = new ArrayList<Long>();
+                            for(int i=0;i < jobs.length(); i++){
+                                long jobId = jobs.getLong(i);
+                                jobids.add(new Long(jobId));
+                            }
+                            if(jobids.size()>0){
+                                //create a batch job first with source site id, target site ids
+                                KalturaSiteCopyBatch siteCopyBatch = new KalturaSiteCopyBatch(fromSiteId, siteId,KalturaSiteCopyBatch.NEW_STATUS);
+                                Long batchId = kalturaSiteCopyBatchDao.save(siteCopyBatch, false);
+                                if(batchId!=null){
+                                    log.debug("Kaltura Merge() - Added record to Kaltura_site_copy_batch_details:"+ batchId.toString());
+                                    // now insert kaltura jobs for each batch
+                                    for(Long kalturajobid:jobids){
+                                        KalturaSiteCopyJob kalturajob = new KalturaSiteCopyJob(batchId,kalturajobid, KalturaSiteCopyJob.NEW_STATUS);
+                                        Long kalturaJobId = kalturaSiteCopyJobDao.save(kalturajob, false);
+                                        if(kalturaJobId!=null){
+                                            log.debug("Kaltura Merge() - Added record to kaltura_site_copy_job:"+ kalturaJobId.toString());
+                                        }
+                                    }// end for
 
-                            }// end if
-                        } // end if 
+                                }// end if
+                            } // end if 
+                        }
                     }
                 }catch(Exception e){
                     log.error("Kaltura Merge() - Exception occured processing merge for Kaltura items");
