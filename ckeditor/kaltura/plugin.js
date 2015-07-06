@@ -23,7 +23,7 @@ var ckeditorId;
 
                 ckeditorId = editor.name;
                 var height = 480;
-                var width = 750;
+                var width = 770;
                 CKEDITOR.dialog.addIframe(pluginName,
                     'Kaltura',
                     '/media-gallery-tool/ckeditor.htm?userid=' + parent.portal.user.id + '&siteid=' + parent.portal.siteId,
