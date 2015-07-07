@@ -1,8 +1,8 @@
 (function() {
 
     var PI = {
-    	BORDER_WIDTH: 20,
-    	BORDER_HEIGHT: 20,
+    	BORDER_WIDTH: 0,
+    	BORDER_HEIGHT: 0,
     	DOMAIN_NAME: "http://166762-2.qakmstest.dev.kaltura.com",
 
         onReady: function() {
@@ -16,8 +16,8 @@
         // converts a <span with an embedded kaltura LTI image to an iframe for LTI rendering
         insertLTIFrame: function(doc) {
         	$(doc).contents().find(".kaltura-lti-media > img").each(function() {
-                var height = $(this).height() + PI.BORDER_HEIGHT + 100;
-                var width = $(this).width() + PI.BORDER_WIDTH + 100;
+                var height = $(this).height() + PI.BORDER_HEIGHT;
+                var width = $(this).width() + PI.BORDER_WIDTH;
                 var userId = portal.user.id;
                 var siteId = portal.siteId;
                 var mediaUrl = $(this).attr("kaltura-lti-url");
