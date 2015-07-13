@@ -133,7 +133,7 @@ public class KalturaLTIService {
         setProperty(toolProps, LTI_SECRET, secret );
         setProperty(toolProps, "key", key );
         
-        String launch_url = serverConfigurationService.getString("kaltura.launch.url");
+        String launch_url = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
         if(!module.isEmpty()){
             launch_url=launch_url+"/"+ module;
         }
@@ -214,7 +214,7 @@ public class KalturaLTIService {
         setProperty(toolProps, "key", key );
 
         // TODO handle null result
-        String ckeditorUrl = serverConfigurationService.getString("kaltura.ckeditor.url");
+        String ckeditorUrl = serverConfigurationService.getString("kaltura.host") + "/browseandembed/index/browseandembed";
         String serverUrl = serverConfigurationService.getServerUrl();
         String ckeditorCallbackUrl = serverUrl + "/media-gallery-tool/ckeditorcallback.htm";
         LOG.info("ckeditorCallbackUrl: [" + ckeditorCallbackUrl + "]");
@@ -263,6 +263,7 @@ public class KalturaLTIService {
         return retval;
 
     }
+    
     public String[] launchLTIDisplayRequest(String module, String userId, String siteId) {
         User user = null;
         try {
@@ -277,12 +278,46 @@ public class KalturaLTIService {
         return launchLTIDisplayRequest(module, user, siteId, placementId);
     }
     
+    public String[] launchLTIDisplayStaticRequest(String entryId, String userId, String siteId) {
+        User user = null;
+        try {
+            if (StringUtils.isNotBlank(userId)) {
+                user = userDirectoryService.getUser(userId);
+            }
+        } catch (UserNotDefinedException e1) {
+            LOG.error("User not found with ID: " + userId, e1);
+        }
+
+        String placementId = "placementId123";
+        String kalturaHost = serverConfigurationService.getString("kaltura.host");
+        String playerSize = serverConfigurationService.getString("kaltura.media.static.playersize");
+        String playerSkin = serverConfigurationService.getString("kaltura.media.static.playerskin");
+        String entryUrl = kalturaHost + "/browseamdembed/index/media" +
+                "/entryid/" + entryId +
+                "/showDescription/false" +
+                "/showTitle/false" +
+                "/showTags/false" +
+                "/showDuration/false" +
+                "/showOwner/false" +
+                "/showUploadDate/false" +
+                "/playerSize/" + playerSize +
+                "/playerSkin/" + playerSkin;
+        
+        return launchLTIDisplayRequest(entryUrl, user, siteId, placementId);
+    	
+    }
+    
     /**
      * given a media item URL, initiates an LTI call to begin a session (if necessary) and return the 
      * html to render the media item in an iFrame
      * @return
      */
     public String[] launchLTIDisplayRequest(String launch_url, User user, String siteId, String placementId) {
+    	LOG.debug("launch_url: [" + launch_url + "]");
+    	LOG.debug("user: [" + (user != null ? user.getEid() : "user is null") + "]");
+    	LOG.debug("siteId: [" + siteId + "]");
+    	LOG.debug("placementId: [" + placementId + "]");
+    	
         String userId = Constants.DEFAULT_ANONYMOUS_USER_ID;
         if (user != null) {
             userId = user.getId();
@@ -424,7 +459,7 @@ public class KalturaLTIService {
         setProperty(toolProps, LTI_SECRET, secret );
         setProperty(toolProps, "key", key );
 
-        String launch_url = serverConfigurationService.getString("kaltura.launch.url");
+        String launch_url = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
        
         if(!module.isEmpty()){
             launch_url=launch_url+"/"+ module;
@@ -528,7 +563,7 @@ public class KalturaLTIService {
         setProperty(toolProps, LTI_SECRET, secret );
         setProperty(toolProps, "key", key );
 
-        String launch_url = serverConfigurationService.getString("kaltura.launch.url");
+        String launch_url = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
 
         if(!module.isEmpty()){
             launch_url=launch_url+"/"+ module;

@@ -198,7 +198,7 @@ public class KalturaEntityProducer implements EntityProducer {
                 String module ="copy-course";
                 Properties ltiProps = service.prepareSiteCopyRequest(module,fromSiteId,siteId);
                 try{
-                    String launch_url = serverConfigurationService.getString("kaltura.launch.url");
+                    String launch_url = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
                     launch_url=launch_url+"/"+ module;
                     log.debug("Kaltura Merge() - Sending a POST request to "+ launch_url + " to initiate copy of kaltura media items from "+ fromSiteId + " to "+ siteId);
                     HttpClient client = new DefaultHttpClient();
