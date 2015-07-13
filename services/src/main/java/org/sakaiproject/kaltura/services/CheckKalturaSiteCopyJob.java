@@ -115,7 +115,7 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob
             String module ="check-job";
             Properties ltiProps = service.prepareJobStatusRequest(module,sourceSiteId,job.getKalturaJobId().toString());
             try{
-                String launch_url = serverConfigurationService.getString("kaltura.launch.url");
+                String launch_url = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
                 launch_url=launch_url+"/"+ module;
                 HttpClient client = new DefaultHttpClient();
                 HttpPost post = new HttpPost(launch_url);

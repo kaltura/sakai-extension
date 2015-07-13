@@ -26,6 +26,10 @@
     <bean id="mediadisplayController" class="org.sakaiproject.kaltura.controllers.MediaDisplayController">
         <property name="kalturaLTIService" ref="kalturaLTIService" />
     </bean>    
+    
+    <bean id="mediadisplayStaticController" class="org.sakaiproject.kaltura.controllers.MediaDisplayStaticController">
+        <property name="kalturaLTIService" ref="kalturaLTIService" />
+    </bean>
 
     <bean id="ckeditorController" class="org.sakaiproject.kaltura.controllers.CKEditorController">
         <property name="kalturaLTIService" ref="kalturaLTIService" />
@@ -43,6 +47,7 @@
                 <prop key="/ckeditorcallback.htm">ckeditorCallbackController</prop>
                 <prop key="/mediagallery.htm">mediagalleryController</prop>
                 <prop key="/mediadisplay.htm">mediadisplayController</prop>
+                <prop key="/mediadisplaystatic.htm">mediadisplayStaticController</prop>
             </props>
         </property>
     </bean>
