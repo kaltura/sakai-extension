@@ -17,6 +17,8 @@ package org.sakaiproject.kaltura.services;
 import java.util.Properties;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -104,17 +106,22 @@ public class KalturaLTIService {
     public String[] launchLTIRequest(String module, String userId, String siteId) {
         User user = null;
         try {
-			user = userDirectoryService.getUser(userId);
-		} catch (UserNotDefinedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+            if (StringUtils.isNotBlank(userId)) {
+                user = userDirectoryService.getUser(userId);
+            }
+        } catch (UserNotDefinedException e1) {
+            LOG.error("User not found with ID: " + userId, e1);
+        }
 
         String placementId = "placementId123";
     	return launchLTIRequest(module, user, placementId, siteId);
     }
     
     public String[] launchLTIRequest(String module, User user, String placementId, String siteId){
+        String userId = Constants.DEFAULT_ANONYMOUS_USER_ID;
+        if (user != null) {
+            userId = user.getId();
+        }
 
         // Start building up the properties
     	Properties ltiProps = initLTIProps(user, siteId);
@@ -126,7 +133,7 @@ public class KalturaLTIService {
         setProperty(toolProps, LTI_SECRET, secret );
         setProperty(toolProps, "key", key );
         
-        String launch_url = serverConfigurationService.getString("kaltura.launch.url");
+        String launch_url = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
         if(!module.isEmpty()){
             launch_url=launch_url+"/"+ module;
         }
@@ -139,7 +146,7 @@ public class KalturaLTIService {
         if ( rb != null ) setProperty(ltiProps,BasicLTIConstants.LAUNCH_PRESENTATION_LOCALE,rb.getLocale().toString());
 
         setRole(ltiProps, siteId);
-        setAuthCode(ltiProps, user.getId());
+        setAuthCode(ltiProps, userId);
         setDebugOption(toolProps,module);
         setWindowOption(toolProps);
         
@@ -171,7 +178,7 @@ public class KalturaLTIService {
         
         boolean dodebug = StringUtils.equals("on",debugProperty) || StringUtils.equals("1",debugProperty);
 
-        String postData = BasicLTIUtil.postLaunchHTML(ltiProps, launch_url, dodebug, extra);
+        String postData = postLaunchHTML(ltiProps, launch_url, dodebug, extra);
 
         String [] retval = { postData, launch_url };
         
@@ -183,10 +190,11 @@ public class KalturaLTIService {
     public String[] launchCKEditorRequest(String module, String userId, String siteId) {
         User user = null;
         try {
-            user = userDirectoryService.getUser(userId);
-		} catch (UserNotDefinedException e1) {
-		    // TODO Auto-generated catch block
-            e1.printStackTrace();
+            if (StringUtils.isNotBlank(userId)) {
+                user = userDirectoryService.getUser(userId);
+            }
+        } catch (UserNotDefinedException e1) {
+            LOG.error("User not found with ID: " + userId, e1);
         }
 
         String placementId = "placementId123";
@@ -206,7 +214,7 @@ public class KalturaLTIService {
         setProperty(toolProps, "key", key );
 
         // TODO handle null result
-        String ckeditorUrl = serverConfigurationService.getString("kaltura.ckeditor.url");
+        String ckeditorUrl = serverConfigurationService.getString("kaltura.host") + "/browseandembed/index/browseandembed";
         String serverUrl = serverConfigurationService.getServerUrl();
         String ckeditorCallbackUrl = serverUrl + "/media-gallery-tool/ckeditorcallback.htm";
         LOG.info("ckeditorCallbackUrl: [" + ckeditorCallbackUrl + "]");
@@ -249,23 +257,54 @@ public class KalturaLTIService {
         String debugProperty = toolProps.getProperty(LTI_DEBUG);
         boolean dodebug = "on".equals(debugProperty) || "1".equals(debugProperty);
         
-        String postData = BasicLTIUtil.postLaunchHTML(ltiProps, ckeditorUrl, dodebug, extra);
+        String postData = postLaunchHTML(ltiProps, ckeditorUrl, dodebug, extra);
 
         String [] retval = { postData, ckeditorUrl };
         return retval;
 
     }
+    
     public String[] launchLTIDisplayRequest(String module, String userId, String siteId) {
         User user = null;
         try {
-            user = userDirectoryService.getUser(userId);
-		} catch (UserNotDefinedException e1) {
-		    // TODO Auto-generated catch block
-            e1.printStackTrace();
+            if (StringUtils.isNotBlank(userId)) {
+                user = userDirectoryService.getUser(userId);
+            }
+        } catch (UserNotDefinedException e1) {
+            LOG.error("User not found with ID: " + userId, e1);
         }
 
         String placementId = "placementId123";
         return launchLTIDisplayRequest(module, user, siteId, placementId);
+    }
+    
+    public String[] launchLTIDisplayStaticRequest(String entryId, String userId, String siteId) {
+        User user = null;
+        try {
+            if (StringUtils.isNotBlank(userId)) {
+                user = userDirectoryService.getUser(userId);
+            }
+        } catch (UserNotDefinedException e1) {
+            LOG.error("User not found with ID: " + userId, e1);
+        }
+
+        String placementId = "placementId123";
+        String kalturaHost = serverConfigurationService.getString("kaltura.host");
+        String playerSize = serverConfigurationService.getString("kaltura.media.static.playersize");
+        String playerSkin = serverConfigurationService.getString("kaltura.media.static.playerskin");
+        String entryUrl = kalturaHost + "/browseamdembed/index/media" +
+                "/entryid/" + entryId +
+                "/showDescription/false" +
+                "/showTitle/false" +
+                "/showTags/false" +
+                "/showDuration/false" +
+                "/showOwner/false" +
+                "/showUploadDate/false" +
+                "/playerSize/" + playerSize +
+                "/playerSkin/" + playerSkin;
+        
+        return launchLTIDisplayRequest(entryUrl, user, siteId, placementId);
+    	
     }
     
     /**
@@ -274,8 +313,18 @@ public class KalturaLTIService {
      * @return
      */
     public String[] launchLTIDisplayRequest(String launch_url, User user, String siteId, String placementId) {
+    	LOG.debug("launch_url: [" + launch_url + "]");
+    	LOG.debug("user: [" + (user != null ? user.getEid() : "user is null") + "]");
+    	LOG.debug("siteId: [" + siteId + "]");
+    	LOG.debug("placementId: [" + placementId + "]");
+    	
+        String userId = Constants.DEFAULT_ANONYMOUS_USER_ID;
+        if (user != null) {
+            userId = user.getId();
+        }
+
         // Start building up the properties
-    	Properties ltiProps = initLTIProps(user, siteId);
+        Properties ltiProps = initLTIProps(user, siteId);
         Properties toolProps = new Properties();
 
         // Add key and secret
@@ -290,7 +339,7 @@ public class KalturaLTIService {
 
         if ( rb != null ) setProperty(ltiProps,BasicLTIConstants.LAUNCH_PRESENTATION_LOCALE,rb.getLocale().toString());
 
-        setAuthCode(ltiProps,user.getId());
+        setAuthCode(ltiProps, userId);
         setRole(ltiProps, siteId);
         setDebugOption(toolProps,LAUNCH_MEDIA);
         setWindowOption(toolProps);
@@ -322,7 +371,7 @@ public class KalturaLTIService {
         String debugProperty = toolProps.getProperty(LTI_DEBUG);
         boolean dodebug = "on".equals(debugProperty) || "1".equals(debugProperty);
 
-        String postData = BasicLTIUtil.postLaunchHTML(ltiProps, launch_url, dodebug, extra);
+        String postData = postLaunchHTML(ltiProps, launch_url, dodebug, extra);
 
         String [] retval = { postData, launch_url };
         return retval;    	
@@ -350,6 +399,7 @@ public class KalturaLTIService {
             setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_FAMILY,user.getLastName());
             setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_FULL,user.getDisplayName());
             setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_CONTACT_EMAIL_PRIMARY,user.getEmail());
+            setProperty(ltiProps,BasicLTIConstants.EXT_SAKAI_PROVIDER_EID, user.getEid());
             // Only send the display ID if it's different to the EID.
             LOG.error("eid:displayId: [" + user.getEid() + ":" + user.getDisplayId() + "]");
             if (!user.getEid().equals(user.getDisplayId())) {
@@ -410,7 +460,7 @@ public class KalturaLTIService {
         setProperty(toolProps, LTI_SECRET, secret );
         setProperty(toolProps, "key", key );
 
-        String launch_url = serverConfigurationService.getString("kaltura.launch.url");
+        String launch_url = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
        
         if(!module.isEmpty()){
             launch_url=launch_url+"/"+ module;
@@ -514,7 +564,7 @@ public class KalturaLTIService {
         setProperty(toolProps, LTI_SECRET, secret );
         setProperty(toolProps, "key", key );
 
-        String launch_url = serverConfigurationService.getString("kaltura.launch.url");
+        String launch_url = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
 
         if(!module.isEmpty()){
             launch_url=launch_url+"/"+ module;
@@ -574,6 +624,9 @@ public class KalturaLTIService {
      * @parm userId
      */
     private void setAuthCode(Properties ltiProps, String userId){
+        if (StringUtils.isBlank(userId)) {
+            userId = Constants.DEFAULT_ANONYMOUS_USER_ID;
+        }
 
         try{
             String authCode = authCodeService.createAuthCode(userId).getAuthCode();
@@ -668,4 +721,151 @@ public class KalturaLTIService {
         if ( verbosePrint ) System.out.println(str);
     }
 
+	/**
+	 * Create the HTML to render a POST form and then automatically submit it.
+	 * Make sure to call {@link #cleanupProperties(Properties)} before signing.
+	 * 
+	 * @param cleanProperties
+	 *		  Assumes you have called {@link #cleanupProperties(Properties)}
+	 *		  beforehand.
+	 * @param endpoint
+	 *		  The LTI launch url.
+	 * @param debug
+	 *		  Useful for viewing the HTML before posting to end point.
+	 * @param extra
+	 * @return the HTML ready for IFRAME src = inclusion.
+	 */
+	public static String postLaunchHTML(final Properties cleanProperties,
+			String endpoint, boolean debug, Map<String,String> extra) {
+		Map<String, String> map = BasicLTIUtil.convertToMap(cleanProperties);
+		return postLaunchHTML(map, endpoint, debug, extra);
+	}
+
+	/**
+	 * Create the HTML to render a POST form and then automatically submit it.
+	 * Make sure to call {@link #cleanupProperties(Properties)} before signing.
+	 * This is a virtually identical copy of BasicLTIUtil.postLauchHTML,
+	 * except it does not submit the form automatically.  Instead the form
+	 * submit needs to be called as part of another script.
+	 * 
+	 * @param cleanProperties
+	 *		  Assumes you have called {@link #cleanupProperties(Properties)}
+	 *		  beforehand.
+	 * @param endpoint
+	 *		  The LTI launch url.
+	 * @param debug
+	 *		  Useful for viewing the HTML before posting to end point.
+	 * @param extra
+	 *		  Useful for viewing the HTML before posting to end point.
+	 * @return the HTML ready for IFRAME src = inclusion.
+	 */
+	public static String postLaunchHTML(
+			final Map<String, String> cleanProperties, String endpoint, 
+			boolean debug, Map<String,String> extra) {
+
+		if (cleanProperties == null || cleanProperties.isEmpty()) {
+			throw new IllegalArgumentException(
+					"cleanProperties == null || cleanProperties.isEmpty()");
+		}
+		if (endpoint == null) {
+			throw new IllegalArgumentException("endpoint == null");
+		}
+		Map<String, String> newMap = null;
+		if (debug) {
+			// sort the properties for readability
+			newMap = new TreeMap<String, String>(cleanProperties);
+		} else {
+			newMap = cleanProperties;
+		}
+		StringBuilder text = new StringBuilder();
+		// paint form
+		text.append("<div id=\"ltiLaunchFormSubmitArea\">\n");
+		text.append("<form action=\"");
+		text.append(endpoint);
+		text.append("\" name=\"ltiLaunchForm\" id=\"ltiLaunchForm\" method=\"post\" ");
+		text.append(" encType=\"application/x-www-form-urlencoded\" accept-charset=\"utf-8\">\n");
+		for (Entry<String, String> entry : newMap.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+			if (value == null)
+				continue;
+			// This will escape the contents pretty much - at least
+			// we will be safe and not generate dangerous HTML
+			key = BasicLTIUtil.htmlspecialchars(key);
+			value = BasicLTIUtil.htmlspecialchars(value);
+			if (key.equals(BasicLTIUtil.BASICLTI_SUBMIT)) {
+				text.append("<input type=\"submit\" name=\"");
+			} else {
+				text.append("<input type=\"hidden\" name=\"");
+			}
+			text.append(key);
+			text.append("\" value=\"");
+			text.append(value);
+			text.append("\"/>\n");
+		}
+		text.append("</form>\n");
+		text.append("</div>\n");
+
+		// Paint the auto-pop up if we are transitioning from https: to http:
+		// and are not already the top frame...
+		text.append("<script type=\"text/javascript\">\n");
+		text.append("if (window.top!=window.self) {\n");
+    		text.append("  theform = document.getElementById('ltiLaunchForm');\n");
+		text.append("  if ( theform && theform.action ) {\n");
+		text.append("   formAction = theform.action;\n");
+		text.append("   ourUrl = window.location.href;\n");
+		text.append("   if ( formAction.indexOf('http://') == 0 && ourUrl.indexOf('https://') == 0 ) {\n");
+		text.append("      theform.target = '_blank';\n");
+		text.append("      window.console && console.log('Launching http from https in new window!');\n");
+		text.append("    }\n");
+		text.append("  }\n");
+		text.append("}\n");
+		text.append("</script>\n");
+
+		// paint debug output
+		if (debug) {
+			text.append("<pre>\n");
+			text.append("<b>BasicLTI Endpoint</b>\n");
+			text.append(endpoint);
+			text.append("\n\n");
+			text.append("<b>BasicLTI Parameters:</b>\n");
+			for (Entry<String, String> entry : newMap.entrySet()) {
+				String key = entry.getKey();
+				String value = entry.getValue();
+				if (value == null)
+					continue;
+				text.append(BasicLTIUtil.htmlspecialchars(key));
+				text.append("=");
+				text.append(BasicLTIUtil.htmlspecialchars(value));
+				text.append("\n");
+			}
+			text.append("</pre>\n");
+			if ( extra != null ) {
+				String base_string = extra.get("BaseString");
+				if ( base_string != null ) {
+					text.append("<!-- Base String\n");
+					text.append(base_string.replaceAll("-->","__>"));
+					text.append("\n-->\n");
+				}
+			}
+		} else {
+			// paint auto submit script
+			text
+				.append(" <script language=\"javascript\"> \n"
+						+ "	document.getElementById(\"ltiLaunchFormSubmitArea\").style.display = \"none\";\n"
+						+ "	nei = document.createElement('input');\n"
+						+ "	nei.setAttribute('type', 'hidden');\n"
+						+ "	nei.setAttribute('name', '"
+						+ BasicLTIUtil.BASICLTI_SUBMIT
+						+ "');\n"
+						+ "	nei.setAttribute('value', '"
+						+ newMap.get(BasicLTIUtil.BASICLTI_SUBMIT)
+						+ "');\n"
+						+ "	document.getElementById(\"ltiLaunchForm\").appendChild(nei);\n"
+						+ "</script>");
+		}
+
+		String htmltext = text.toString();
+		return htmltext;
+	}
 }

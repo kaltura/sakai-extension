@@ -28,13 +28,7 @@ import org.sakaiproject.kaltura.services.KalturaLTIService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-/**
- * Controller handles LTI requests to render Kaltura LTI stored media, after
- * media has been added to Kaltura Media Gallery
- * @author mgillian
- *
- */
-public class MediaDisplayController extends AbstractController {
+public class MediaDisplayStaticController extends AbstractController {
     final protected Log log = LogFactory.getLog(getClass());
 
     private KalturaLTIService kalturaLTIService;
@@ -48,15 +42,15 @@ public class MediaDisplayController extends AbstractController {
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String,Object> model = new HashMap<String,Object>();
         
-        String mediaItemUrl = request.getParameter("mediaitemurl");
+        String entryId = request.getParameter("entryid");
         String userId = request.getParameter("userid");
         String siteId = request.getParameter("siteid");
-        log.error("request params: mediaitemurl:userid:siteid [" + mediaItemUrl + ":" + userId + ":" + siteId + "]");
-        if (StringUtils.isEmpty(mediaItemUrl)) {
+        
+        log.debug("request params: entryid:userid:siteid [" + entryId + ":" + userId + ":" + siteId + "]");
+        if (StringUtils.isEmpty(entryId)) {
         	model.put("returndata",  "NO MEDIA");
         } else {
-	        String decodedMediaItemUrl = URLDecoder.decode(mediaItemUrl);
-	        String retval[] = kalturaLTIService.launchLTIDisplayRequest(decodedMediaItemUrl, userId, siteId);
+	        String retval[] = kalturaLTIService.launchLTIDisplayStaticRequest(entryId, userId, siteId);
 	        model.put("returndata", retval[0]);
         }
         return new ModelAndView("mediadisplay", model);

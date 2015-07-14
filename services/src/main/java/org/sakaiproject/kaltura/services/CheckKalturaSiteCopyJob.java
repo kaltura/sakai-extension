@@ -115,7 +115,7 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob
             String module ="check-job";
             Properties ltiProps = service.prepareJobStatusRequest(module,sourceSiteId,job.getKalturaJobId().toString());
             try{
-                String launch_url = serverConfigurationService.getString("kaltura.launch.url");
+                String launch_url = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
                 launch_url=launch_url+"/"+ module;
                 HttpClient client = new DefaultHttpClient();
                 HttpPost post = new HttpPost(launch_url);
@@ -144,22 +144,25 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob
                 log.debug("Json Response from kaltura for job :" + job.getKalturaJobId() + " is :" + line);
                 JSONObject jobStatus = new JSONObject(line);
                 if(jobStatus!=null){
-                    int resultCode = jobStatus.getInt("resultCode");
-                    int status = jobStatus.getInt("status");
-                    String description = jobStatus.getString("description");
-                    log.debug("Resultcode on kaltura check job status is :"+ resultCode);
-                    log.debug("status on kaltura check job status is :"+ status);
-                    if(description!=null){
-                        log.debug("description on kaltura check job status is :" + description);
+                    if(!jobStatus.isNull("resultCode")){
+                        int resultCode = jobStatus.getInt("resultCode");
+                        log.debug("Resultcode on kaltura check job status is :"+ resultCode);
+                        if(resultCode==0){
+                            // it is still running on kaltura end so set our job status to new 
+                            job.setStatus(KalturaSiteCopyJob.NEW_STATUS);
+                        }else if(resultCode == 1){
+                            job.setStatus(KalturaSiteCopyJob.COMPLETE_STATUS);
+                        }else{
+                            job.setStatus(KalturaSiteCopyJob.NEW_STATUS);
+                        }
                     }
-                    if(resultCode==0){
-                        // it is still running on kaltura end so set our job status to new 
-                        job.setStatus(KalturaSiteCopyJob.NEW_STATUS);                        
-                    }else if(resultCode == 1){
-                        job.setStatus(KalturaSiteCopyJob.COMPLETE_STATUS);
-                    }else{
-                        job.setStatus(KalturaSiteCopyJob.NEW_STATUS);
-                        log.debug("Kaltura site copy job with id :" + job.getKalturaJobId() + " has failed on kaltura side. Here is the message from kaltura:"+ description);
+                    if(!jobStatus.isNull("status")){
+                        int status = jobStatus.getInt("status");
+                        log.debug("status on kaltura check job status is :"+ status);
+                    }
+                    if(!jobStatus.isNull("description")){
+                        String description = jobStatus.getString("description");
+                        log.debug("description on kaltura check job status is :" + description);
                     }
                 }
 

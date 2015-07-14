@@ -19,10 +19,10 @@
     <link media="all" href="<c:url value='/css/kaltura_ui.css'/>" rel="stylesheet" type="text/css" />
 
     <!-- Additional JavaScript -->
-    <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
-    <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
+    <script src="/media-gallery-tool/js/kaltura-lti-display.js" type="text/javascript"></script>
 </head>
-<body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
+<body onload="resizeBody(); <%=request.getAttribute("sakai.html.body.onload")%>; submitLtiLaunchForm()">
     ${returndata}
+    <div id="KalturaLtiContent" />
 </body>
 </html>
