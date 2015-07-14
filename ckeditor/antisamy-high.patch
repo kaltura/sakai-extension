@@ -1,0 +1,26 @@
+Index: high-security-policy.xml
+===================================================================
+--- high-security-policy.xml	(revision 319606)
++++ high-security-policy.xml	(working copy)
+@@ -164,6 +164,13 @@
+                 <regexp name="htmlClass"/>
+             </regexp-list>
+         </attribute>
++        
++                <!-- custom attribute to support Kaltura LTI -->
++        <attribute name="kaltura-lti-url" description="used by the IMG tag inside of CKEditor to support Kaltura LTI media embedding">
++            <regexp-list>
++                <regexp name="anything" />
++            </regexp-list>
++         </attribute>
+ 
+         <!-- https://jira.sakaiproject.org/browse/KNL-1071 -->
+         <attribute name="dir" description="The 'dir' of any HTML attribute specifies the base direction of directionally neutral text">
+@@ -1567,6 +1574,7 @@
+                     <regexp name="number"/>
+                 </regexp-list>
+             </attribute>
++            <attribute name="kaltura-lti-url"/>
+ 
+             <!-- https://jira.sakaiproject.org/browse/KNL-1061 -->
+             <attribute name="data-mathml">
