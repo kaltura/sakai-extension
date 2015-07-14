@@ -399,6 +399,7 @@ public class KalturaLTIService {
             setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_FAMILY,user.getLastName());
             setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_FULL,user.getDisplayName());
             setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_CONTACT_EMAIL_PRIMARY,user.getEmail());
+            setProperty(ltiProps,BasicLTIConstants.EXT_SAKAI_PROVIDER_EID, user.getEid());
             // Only send the display ID if it's different to the EID.
             LOG.error("eid:displayId: [" + user.getEid() + ":" + user.getDisplayId() + "]");
             if (!user.getEid().equals(user.getDisplayId())) {
