@@ -27,6 +27,9 @@ public class User {
     @Expose
     private String id;
 
+    @Expose
+    private String eid;
+
     /**
      * The Sakai {@link org.sakaiproject.kaltura.api.dao.models.user.api.User} object
      */
@@ -49,6 +52,7 @@ public class User {
 
         if (this.sakaiUser != null) {
             this.id = sakaiUser.getId();
+            this.eid = sakaiUser.getEid();
         }
     }
 
@@ -58,6 +62,14 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getEid() {
+        return eid;
+    }
+
+    public void setEid(String eid) {
+        this.eid = eid;
     }
 
     public org.sakaiproject.user.api.User getSakaiUser() {
