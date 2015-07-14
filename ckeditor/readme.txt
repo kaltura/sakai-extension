@@ -58,36 +58,47 @@ at about line 190, add the following additional line:
  
 6. Configure Anti-Samy
 
-3. Re-deploy the reference project.
+Anti-Samy validates potentially dangerous scripts and prevents them from being stored in the 
+datastore, according to the security policy of Sakai.  This is a Sakai 10 new feature.  You need to
+modify your antisamy policy files to allow CKEditor to use additional attributes.
 
-mvn clean install sakai:deploy -f reference/pom.xml
+To confirm if you have custom antisamy policy files, look for a file in {tomcat_home}/sakai/antisamy.
+If the antisamy folder doesn't exist, or if the folder exists but is empty, you are using default
+antisamy policies.
 
-4. Configure Anti-Samy
+If you are using default policies, you need to copy the default security policy into your 
+Tomcat directory structure.  The default Sakai antisamy policy file is "high-security-policy.xml".  
+Copy this file from Sakai into your {tomcat_home}/sakai/antisamy folder (you may need to create 
+the antisamy folder first:
 
-Anti-Samy validates potentially dangerous script code and prevents it from being stored in the 
-datastore according to the security policy of Sakai.  This is a Sakai 10 new feature.  There are
-at least two ways to address this.
+cd {tomcat_home}/sakai
+mkdir antisamy
+cd antisamy
+cp {sakai_home}/kernel/kernel_impl/src/main/resources/antisamy/high-security-profile.xml .
 
-a) if you are using default policies:
-* set the default security policy to low enforcement.  Enable low enforcement by 
-setting the following property in sakai.properties:
+Once you have an antisamy policy in {tomcat_home}/sakai/antisamy, check its name.  This file is 
+named either high-security-profile.xml for high security or low-security-profile.xml for 
+less restrictive security.  Refer to Sakai antisamy documentation for more details about the differences.
 
-content.cleaner.default.low.security=true
+Once you have a security profile in your {tomcat_home}/sakai/antisamy folder, modify the 
+security profile to add two pieces of information 
+(either high-security-profile.xml or low-security-profile.xml}:
 
-* copy the "antisamy" directory into your web container's sakai directory (same directory where
-sakai.properties lives.
-Example
-cp -R {KALTURA_LIT_ROOT/ckeditor/antisamy {CATALINA_HOME}/sakai
+Add this block into the <common-attributes> block in either file:
 
-The override low-security-policy.xml adds a new attribute, kaltura-lti-url, to the img tag.  This 
-allows the CKEditor to save the new media item inserted by the Kaltura LTI integration.
+<!-- custom attribute to support Kaltura LTI -->
+<attribute name="kaltura-lti-url" description="used by the IMG tag inside of CKEditor to support Kaltura LTI media embedding">
+    <regexp-list>
+        <regexp name="anything" />
+    </regexp-list>
+</attribute>
 
-b) if you are using custom policies:
-* open the file antisamy/low-security-policy.xml and search for "kaltura-lti-url".  You will
-find two references.  One is an attribute definition, and the second add the attribute to the img tag.
-You need to copy both configurations into your custom policy file (either low-security-policy.xml
- or high-security-policy.xml).
- 
-You can also apply antisamy.patch (in this directory) to your custom policy file to make these changes for you
- 
+Add this block into the <tag name="img" action="validate"> in either file:
+<attribute name="kaltura-lti-url"/>
+
+If you prefer to apply a patch rather than manually edit the policy files, 
+Sakai-extension includes antisamy patches for both security policy files.
+The patches are named antisamy-low.patch and antisamy-high.patch.  These files are located
+in {sakai-extension-home}/ckeditor
+
 Once you have made these configuration changes to Sakai, you will need to stop and restart Sakai.
