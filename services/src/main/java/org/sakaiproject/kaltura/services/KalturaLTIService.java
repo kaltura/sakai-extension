@@ -292,7 +292,7 @@ public class KalturaLTIService {
         String kalturaHost = serverConfigurationService.getString("kaltura.host");
         String playerSize = serverConfigurationService.getString("kaltura.media.static.playersize");
         String playerSkin = serverConfigurationService.getString("kaltura.media.static.playerskin");
-        String entryUrl = kalturaHost + "/browseamdembed/index/media" +
+        String entryUrl = kalturaHost + "/browseandembed/index/media" +
                 "/entryid/" + entryId +
                 "/showDescription/false" +
                 "/showTitle/false" +
