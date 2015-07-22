@@ -37,8 +37,9 @@
         upgradeStatic: function(doc) {
         	
             $(doc).contents().find("span.kaltura-media > img").each(function() {
-                var height = $(this).height() + PI.BORDER_HEIGHT;
-                var width = $(this).width() + PI.BORDER_WIDTH;
+                //set the iframe size to default to 400x285
+                var height = 400 + PI.BORDER_HEIGHT; 
+                var width = 285 + PI.BORDER_WIDTH;
                 var userId = portal.user.id;
                 var siteId = portal.siteId;
                 
@@ -60,7 +61,7 @@
             });
             // TODO - uncomment the line below to remove the original image, currently displays the original
             // image "as-is", next to the image retrieved through LTI call
-//            $(doc).contents().find("span.kaltura-media").remove();
+            $(doc).contents().find("span.kaltura-media").remove();
                 
         },
         

@@ -300,8 +300,8 @@ public class KalturaLTIService {
                 "/showDuration/false" +
                 "/showOwner/false" +
                 "/showUploadDate/false" +
-                "/playerSize/" + playerSize +
-                "/playerSkin/" + playerSkin;
+                "/playerSize/" + playerSize;
+                //"/playerSkin/" + playerSkin;
         
         return launchLTIDisplayRequest(entryUrl, user, siteId, placementId);
     	
