@@ -38,8 +38,8 @@
         	
             $(doc).contents().find("span.kaltura-media > img").each(function() {
                 //set the iframe size to default to 400x285
-                var height = 400 + PI.BORDER_HEIGHT; 
-                var width = 285 + PI.BORDER_WIDTH;
+                var height = 285 + PI.BORDER_HEIGHT; 
+                var width = 400 + PI.BORDER_WIDTH;
                 var userId = portal.user.id;
                 var siteId = portal.siteId;
                 
