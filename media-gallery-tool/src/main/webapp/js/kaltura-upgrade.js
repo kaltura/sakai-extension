@@ -6,11 +6,18 @@
         DOMAIN_NAME: "http://166762-2.qakmstest.dev.kaltura.com",
 
         onReady: function() {
-            $(document).find(".portletMainIframe").load(function() {
-                PI.insertLTIFrame(this);
-                PI.upgradeStatic(this);
-                // PI.upgradeEditor(this);
-            });
+            var frame = $(document).find(".portletMainIframe");
+            if (frame && frame.length === 0) {
+                frame =  $(document).find(".portletBody");
+            } 
+
+            PI.loadIframe(frame);
+        },
+
+        loadIframe: function(frame) {
+            PI.insertLTIFrame(frame);
+            PI.upgradeStatic(frame);
+            // PI.upgradeEditor(this);
         },
 
         // converts a <span with an embedded kaltura LTI image to an iframe for LTI rendering
