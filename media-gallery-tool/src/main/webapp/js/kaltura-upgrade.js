@@ -3,7 +3,6 @@
     var PI = {
         BORDER_WIDTH: 0,
         BORDER_HEIGHT: 0,
-        DOMAIN_NAME: "http://166762-2.qakmstest.dev.kaltura.com",
 
         onReady: function() {
             $(document).find(".portletMainIframe").load(function() {
@@ -11,6 +10,8 @@
                 PI.upgradeStatic(this);
                 // PI.upgradeEditor(this);
             });
+            PI.insertLTIFrame(document);
+            PI.upgradeStatis(document);
         },
 
         // converts a <span with an embedded kaltura LTI image to an iframe for LTI rendering
