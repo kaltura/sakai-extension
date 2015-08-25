@@ -848,22 +848,20 @@ public class KalturaLTIService {
 					text.append("\n-->\n");
 				}
 			}
-		} else {
-			// paint auto submit script
-			text
-				.append(" <script language=\"javascript\"> \n"
-						+ "	document.getElementById(\"ltiLaunchFormSubmitArea\").style.display = \"none\";\n"
-						+ "	nei = document.createElement('input');\n"
-						+ "	nei.setAttribute('type', 'hidden');\n"
-						+ "	nei.setAttribute('name', '"
-						+ BasicLTIUtil.BASICLTI_SUBMIT
-						+ "');\n"
-						+ "	nei.setAttribute('value', '"
-						+ newMap.get(BasicLTIUtil.BASICLTI_SUBMIT)
-						+ "');\n"
-						+ "	document.getElementById(\"ltiLaunchForm\").appendChild(nei);\n"
-						+ "</script>");
+
 		}
+		text.append(" <script language=\"javascript\"> \n"
+					+ "	document.getElementById(\"ltiLaunchFormSubmitArea\").style.display = \"none\";\n"
+					+ "	nei = document.createElement('input');\n"
+					+ "	nei.setAttribute('type', 'hidden');\n"
+					+ "	nei.setAttribute('name', '"
+					+ BasicLTIUtil.BASICLTI_SUBMIT
+					+ "');\n"
+					+ "	nei.setAttribute('value', '"
+					+ newMap.get(BasicLTIUtil.BASICLTI_SUBMIT)
+					+ "');\n"
+					+ "	document.getElementById(\"ltiLaunchForm\").appendChild(nei);\n"
+					+ "</script>");
 
 		String htmltext = text.toString();
 		return htmltext;
