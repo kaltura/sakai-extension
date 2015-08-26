@@ -9,6 +9,9 @@ var resizeBody = function() {
 	$("#KalturaLtiContent").css("height", iframeHeight);
 };
 
-var submitLtiLaunchForm = function() {
-	document.ltiLaunchForm.submit();
+var submitLtiLaunchForm = function(isDebug) {
+	isDebug = isDebug || "off";
+	if (isDebug != "on") {
+        document.ltiLaunchForm.submit();
+	}
 };

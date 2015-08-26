@@ -848,9 +848,8 @@ public class KalturaLTIService {
 					text.append("\n-->\n");
 				}
 			}
-
-		}
-		text.append(" <script language=\"javascript\"> \n"
+		} else {
+			text.append(" <script language=\"javascript\"> \n"
 					+ "	document.getElementById(\"ltiLaunchFormSubmitArea\").style.display = \"none\";\n"
 					+ "	nei = document.createElement('input');\n"
 					+ "	nei.setAttribute('type', 'hidden');\n"
@@ -861,8 +860,9 @@ public class KalturaLTIService {
 					+ newMap.get(BasicLTIUtil.BASICLTI_SUBMIT)
 					+ "');\n"
 					+ "	document.getElementById(\"ltiLaunchForm\").appendChild(nei);\n"
-					+ "</script>");
-
+					+ "</script>");						
+		}
+		
 		String htmltext = text.toString();
 		return htmltext;
 	}
