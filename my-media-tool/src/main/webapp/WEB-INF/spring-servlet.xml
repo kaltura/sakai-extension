@@ -21,6 +21,7 @@
     <!-- Sakai tool controllers -->
     <bean id="mymediaController" class="org.sakaiproject.kaltura.controllers.MyMediaController">
         <property name="kalturaLTIService" ref="kalturaLTIService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
     </bean>
 
     <!-- Spring controller mappings -->

@@ -21,7 +21,7 @@
     <!-- Additional JavaScript -->
     <script src="/media-gallery-tool/js/kaltura-lti-display.js" type="text/javascript"></script>
 </head>
-<body onload="resizeBody(); <%=request.getAttribute("sakai.html.body.onload")%>; submitLtiLaunchForm()">
+<body onload="resizeBody(); <%=request.getAttribute("sakai.html.body.onload")%>; submitLtiLaunchForm('${isDebug}')">
     ${returndata}
     <div id="KalturaLtiContent" />
 </body>

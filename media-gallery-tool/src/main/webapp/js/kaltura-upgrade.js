@@ -11,7 +11,7 @@
                 // PI.upgradeEditor(this);
             });
             PI.insertLTIFrame(document);
-            PI.upgradeStatis(document);
+            PI.upgradeStatic(document);
         },
 
         // converts a <span with an embedded kaltura LTI image to an iframe for LTI rendering
