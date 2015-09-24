@@ -56,7 +56,6 @@
     </bean>
 
     <bean id="kalturaLTIService" class="org.sakaiproject.kaltura.services.KalturaLTIService">
-        <property name="roleService" ref="roleService" />
         <property name="authCodeService" ref="authCodeService" />
         <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />

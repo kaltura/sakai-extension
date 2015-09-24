@@ -45,18 +45,12 @@ at about line 190, add the following additional line:
         ckconfig.extraPlugins+="movieplayer,wordcount,fmath_formula";
         ckconfig.extraPlugins+=",kaltura";
 
-3. Add the following script to the end of {SAKAI_ROOT}/portal/portal-render-engine-impl/pack/src/webapp/vm/neoskin/includeStandardHead.vm (around line 190):
-<script type="text/javascript" language="JavaScript" src="/media-gallery-tool/js/kaltura-upgrade.js"></script>
-
-4. Add the following script to the end of {SAKAI_ROOT}/portal/portal-render-engine-impl/pack/src/webapp/vm/morpheus/includeStandardHead.vm (around line 160):
-<script type="text/javascript" language="JavaScript" src="/media-gallery-tool/js/kaltura-upgrade.js"></script>
-
-5. Re-deploy the reference project.
+3. Re-deploy the reference project.
  
  mvn clean install sakai:deploy -f reference/pom.xml
  mvn clean install sakai:deploy -f portal/pom.xml
  
-6. Configure Anti-Samy
+4. Configure Anti-Samy
 
 Anti-Samy validates potentially dangerous scripts and prevents them from being stored in the 
 datastore, according to the security policy of Sakai.  This is a Sakai 10 new feature.  You need to
