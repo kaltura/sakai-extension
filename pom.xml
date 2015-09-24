@@ -12,7 +12,7 @@
   <name>Kaltura LTI Tool</name>
   <groupId>org.sakaiproject.kaltura</groupId>
   <artifactId>kaltura</artifactId>
-  <version>0.1</version>
+  <version>1.0</version>
   <organization>
     <name>Sakai Project</name>
     <url>http://sakaiproject.org/</url>

@@ -33,5 +33,5 @@ create table KALTURA_SITE_COPY_JOB (
     status varchar(99) not null,
     attempts int(11),
     created_on datetime not null,
-    primary_key(job_id)
+    primary key(job_id)
 ) ENGINE=InnoDB;

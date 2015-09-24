@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.sakaiproject.kaltura</groupId>
     <artifactId>kaltura</artifactId>
-    <version>0.1</version>
+    <version>1.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -82,9 +82,8 @@
       <artifactId>commons-logging</artifactId>
     </dependency>
     <dependency>
-        <groupId>org.opensymphony.quartz</groupId>
-        <artifactId>quartz</artifactId>
-        <version>1.6.6</version>
+      <groupId>org.quartz-scheduler</groupId>
+      <artifactId>quartz</artifactId>
     </dependency>
   </dependencies>
 

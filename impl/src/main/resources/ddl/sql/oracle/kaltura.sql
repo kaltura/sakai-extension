@@ -33,7 +33,7 @@ create table KALTURA_SITE_COPY_JOB (
     status varchar(99) not null,
     attempts number(11),
     created_on timestamp not null,
-    primary_key(job_id)
+    primary key(job_id)
 ); 
 
 create sequence KALTURA_LTI_ROLE_ID_SEQ;
