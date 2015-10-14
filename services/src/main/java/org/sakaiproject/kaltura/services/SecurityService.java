@@ -15,11 +15,15 @@
 package org.sakaiproject.kaltura.services;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.kaltura.Constants;
 
 public class SecurityService {
+
+    private final Log log = LogFactory.getLog(SecurityService.class);
 
     private AuthCodeService authCodeService;
     public void setAuthCodeService(AuthCodeService authCodeService) {
@@ -74,6 +78,7 @@ public class SecurityService {
             try {
                 isValid = authCodeService.isValid(authorizationCode, userId);
             } catch (Exception e) {
+                log.error("There was an error validating the authorization code: " + authorizationCode + " for user: " + userId, e);
             }
 
             if (!isValid) {
