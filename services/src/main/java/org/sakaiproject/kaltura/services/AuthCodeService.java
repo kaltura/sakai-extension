@@ -18,8 +18,10 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiAuthCodeDao;
+import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
 import org.sakaiproject.kaltura.utils.AuthCodeUtil;
+import org.sakaiproject.user.api.UserNotDefinedException;
 
 /**
  * A helper class for getting, updating, and calculating authorization code objects
@@ -31,6 +33,11 @@ public class AuthCodeService {
     private KalturaLtiAuthCodeDao kalturaLtiAuthCodeDao;
     public void setKalturaLtiAuthCodeDao(KalturaLtiAuthCodeDao kalturaLtiAuthCodeDao) {
         this.kalturaLtiAuthCodeDao = kalturaLtiAuthCodeDao;
+    }
+
+    private UserService userService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     /**
@@ -129,7 +136,7 @@ public class AuthCodeService {
      * Checks to see if the authorization code and user ID mapping is valid (i.e. not expired)
      * 
      * @param authorizationCode the authorization code
-     * @param userId the internal Sakai user ID
+     * @param userId the internal Sakai user ID or EID
      * @return true, if valid
      * @throws Exception
      */
@@ -141,7 +148,9 @@ public class AuthCodeService {
             throw new IllegalArgumentException("AuthCodeService :: authorization code cannot be null.");
         }
 
-        KalturaLtiAuthCode kalturaLtiAuthCode = kalturaLtiAuthCodeDao.getAuthCode(authorizationCode, userId);
+        User user = userService.getUser(userId);
+
+        KalturaLtiAuthCode kalturaLtiAuthCode = kalturaLtiAuthCodeDao.getAuthCode(authorizationCode, user.getId());
 
         if (kalturaLtiAuthCode == null) {
             // no auth code : user ID mapping is found, code is invalid

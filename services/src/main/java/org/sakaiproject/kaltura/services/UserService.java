@@ -80,7 +80,7 @@ public class UserService {
     /**
      * Get the {@link User} object associated with the given user ID
      * 
-     * @param userId the Sakai internal user ID
+     * @param userId the Sakai internal user ID or EID
      * @return the {@link User} object
      * @throws Exception
      */

@@ -31,6 +31,7 @@
 
     <bean id="authCodeService" class="org.sakaiproject.kaltura.services.AuthCodeService">
         <property name="kalturaLtiAuthCodeDao" ref="kalturaLtiAuthCodeDaoTarget" />
+        <property name="userService" ref="userService" />
     </bean>
 
     <bean id="restService" class="org.sakaiproject.kaltura.services.RestService">
