@@ -31,6 +31,7 @@ import org.sakaiproject.kaltura.models.UserSiteRole;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.user.api.UserNotDefinedException;
 
 public class UserService {
 
@@ -84,7 +85,22 @@ public class UserService {
      * @throws Exception
      */
     public User getUser(String userId) throws Exception {
-        return new User(userDirectoryService.getUser(userId));
+        org.sakaiproject.user.api.User sakaiUser = null;
+
+        try {
+            // try getting user by internal id
+            sakaiUser = userDirectoryService.getUser(userId);
+        } catch (UserNotDefinedException unde) {
+            // user not defined internally by userId given, try finding by eid
+            sakaiUser = userDirectoryService.getUserByEid(userId);
+        }
+
+        if (sakaiUser == null) {
+            log.error("User not ound with id/eid: " + userId);
+            throw new UserNotDefinedException(userId);
+        }
+
+        return new User(sakaiUser);
     }
 
     /**
