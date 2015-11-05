@@ -6,9 +6,10 @@
         var ckOk = ckDialog._.buttons['ok'];
 
         if( ckOk && ckOk !== "null" && ckOk !== "undefined" ) {
+            var thumbnailUrl = (mediaItem.thumbnailUrl && mediaItem.thumbnailUrl != "") ? mediaItem.thumbnailUrl : "/media-gallery-tool/img/kaltura-logo.png";
             var mediaElement = "<span class=\"kaltura-lti-media\">";
             mediaElement += "<img " +
-            "src=\"/media-gallery-tool/img/kaltura-logo.png\" " +
+            "src=\"" + thumbnailUrl + "\" " +
             "title=\"IFrame\" " +
             "kaltura-lti-url=\"" + mediaItem.url + "\" " +
             "height=\"" + mediaItem.height + "\" " +
