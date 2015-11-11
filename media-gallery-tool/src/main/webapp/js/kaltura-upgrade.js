@@ -1,8 +1,8 @@
 (function() {
 
     var PI = {
-        BORDER_WIDTH: 0,
-        BORDER_HEIGHT: 0,
+        BORDER_WIDTH: 400,
+        BORDER_HEIGHT: 285,
 
         onReady: function() {
             $(document).find(".portletMainIframe").load(function() {
@@ -41,8 +41,8 @@
 
             $(doc).contents().find("span.kaltura-media > img").each(function() {
                 //set the iframe size to default to 400x285
-                var height = 285 + PI.BORDER_HEIGHT; 
-                var width = 400 + PI.BORDER_WIDTH;
+                var height = PI.BORDER_HEIGHT; 
+                var width = PI.BORDER_WIDTH;
                 var userId = portal.user.id;
                 var siteId = portal.siteId;
 
