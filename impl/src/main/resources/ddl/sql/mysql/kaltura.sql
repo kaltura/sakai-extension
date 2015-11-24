@@ -16,7 +16,7 @@ create table KALTURA_LTI_AUTH_CODE (
     primary key (id)
 ) ENGINE=InnoDB;
 
-create table KALTURA_SITE_COPY_BATCH_DETAILS (
+create table KALTURA_SITE_COPY_BATCH (
     batch_id bigint not null auto_increment,
     source_site_id varchar(255) not null,
     target_site_id varchar(255) not null,
