@@ -1,6 +1,9 @@
 (function() {
 
     var PI = {
+        /**
+         * Default sizes for media iframe - 400x285 pixels
+         */
         BORDER_WIDTH: 400,
         BORDER_HEIGHT: 285,
 
@@ -40,7 +43,7 @@
         upgradeStatic: function(doc) {
 
             $(doc).contents().find("span.kaltura-media > img").each(function() {
-                //set the iframe size to default to 400x285
+                //set the iframe size to default values
                 var height = PI.BORDER_HEIGHT; 
                 var width = PI.BORDER_WIDTH;
                 var userId = portal.user.id;

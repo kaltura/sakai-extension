@@ -256,7 +256,7 @@ public class KalturaEntityProducer implements EntityProducer {
                                 Long batchId = kalturaSiteCopyBatchDao.save(siteCopyBatch, false);
 
                                 if (batchId!=null) {
-                                    log.debug("Kaltura Merge() - Added record to Kaltura_site_copy_batch_details:"+ batchId.toString());
+                                    log.debug("Kaltura Merge() - Added record to Kaltura_site_copy_batch:"+ batchId.toString());
                                     // now insert kaltura jobs for each batch
  
                                     for (Long kalturajobid : jobids) {

@@ -51,7 +51,7 @@ public class KalturaSiteCopyBatchJob extends AbstractConfigurableJob {
         }
 
         job = workOnJob(job);
-        if (!KalturaSiteCopyBatch.COMPLETE_STATUS.equals(job.getStatus())) {
+        if (!StringUtils.equalsIgnoreCase(KalturaSiteCopyBatch.COMPLETE_STATUS, job.getStatus())) {
             int jobMaxAttempt = serverConfigurationService.getInt("jobs.max.attempts",10);
 
             if (job.getAttempts() > jobMaxAttempt) {
