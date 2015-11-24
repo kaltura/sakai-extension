@@ -30,7 +30,7 @@ public class SiteCopyBatchSql {
                         "attempts, " +
                         "created_on " +
                      "FROM " +
-                        "kaltura_site_copy_batch_details " +
+                        "kaltura_site_copy_batch " +
                      "WHERE " +
                         "status = ? " +
                      "ORDER BY " +
@@ -49,7 +49,7 @@ public class SiteCopyBatchSql {
                         "attempts, " +
                         "created_on " +
                      "FROM " +
-                        "kaltura_site_copy_batch_details " +
+                        "kaltura_site_copy_batch " +
                      "WHERE " +
                         "batch_id = ?";
 
@@ -58,7 +58,7 @@ public class SiteCopyBatchSql {
 
     public static String getNewBatchSql() {
         String sql = "INSERT INTO " +
-                        "kaltura_site_copy_batch_details " +
+                        "kaltura_site_copy_batch " +
                         "(" +
                             "source_site_id, " +
                             "target_site_id, " +
@@ -73,7 +73,7 @@ public class SiteCopyBatchSql {
 
     public static String getUpdateBatchSql() {
         String sql = "UPDATE " +
-                        "kaltura_site_copy_batch_details " +
+                        "kaltura_site_copy_batch " +
                      "SET " +
                         "source_site_id = ?, " +
                         "target_site_id = ?, " +
