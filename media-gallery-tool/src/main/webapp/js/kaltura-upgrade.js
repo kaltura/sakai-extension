@@ -46,8 +46,8 @@
             $(doc).contents().find("span.kaltura-media > img").each(function() {
                 //set the iframe size to default values
                 console.log("upgradeStatic preset:: height: " + $(this).attr('height') + ", width: " + $(this).attr('width'));
-                var height = $(this).attr('height') ? $(this).attr('height') : PI.BORDER_HEIGHT;
-                var width = $(this).attr('width') ? $(this).attr('width') : PI.BORDER_WIDTH;
+                var height = $(this).attr("height") ? $(this).attr("height") : PI.BORDER_HEIGHT;
+                var width = $(this).attr("width") ? $(this).attr("width") : PI.BORDER_WIDTH;
                 console.log("upgradeStatic postset:: height: " + height + ", width: " + width);
                 var userId = portal.user.id;
                 var siteId = portal.siteId;
