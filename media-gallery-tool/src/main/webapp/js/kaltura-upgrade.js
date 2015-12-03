@@ -20,8 +20,10 @@
         // converts a <span with an embedded kaltura LTI image to an iframe for LTI rendering
         insertLTIFrame: function(doc) {
             $(doc).contents().find(".kaltura-lti-media > img").each(function() {
-                var height = $(this).height() + PI.BORDER_HEIGHT;
-                var width = $(this).width() + PI.BORDER_WIDTH;
+                console.log("insertLTIFrame preset:: height: " + $(this).attr('height') + ", width: " + $(this).attr('width'));
+                var height = $(this).attr("height") ? $(this).attr("height") : PI.BORDER_HEIGHT;
+                var width = $(this).attr("width") ? $(this).attr("width") : PI.BORDER_WIDTH;
+                console.log("insertLTIFrame postset:: height: " + height + ", width: " + width);
                 var userId = portal.user.id;
                 var siteId = portal.siteId;
                 var mediaUrl = $(this).attr("kaltura-lti-url");
@@ -30,7 +32,7 @@
 
                 iframe.css("border", "none");
 
-                $(this).parent().parent().append(iframe); 
+                $(this).parent().parent().append(iframe);
             });
             $(doc).contents().find(".kaltura-lti-media").remove();
 
@@ -41,11 +43,12 @@
 
         // converts a <span with an embedded kaltura non-LTI image to an iframe for LTI rendering
         upgradeStatic: function(doc) {
-
             $(doc).contents().find("span.kaltura-media > img").each(function() {
                 //set the iframe size to default values
-                var height = PI.BORDER_HEIGHT; 
-                var width = PI.BORDER_WIDTH;
+                console.log("upgradeStatic preset:: height: " + $(this).attr('height') + ", width: " + $(this).attr('width'));
+                var height = $(this).attr('height') ? $(this).attr('height') : PI.BORDER_HEIGHT;
+                var width = $(this).attr('width') ? $(this).attr('width') : PI.BORDER_WIDTH;
+                console.log("upgradeStatic postset:: height: " + height + ", width: " + width);
                 var userId = portal.user.id;
                 var siteId = portal.siteId;
 
@@ -65,10 +68,9 @@
 
                 iframe.css("border", "none");
 
-                $(this).parent().parent().append(iframe); 
+                $(this).parent().parent().append(iframe);
             });
-            // TODO - uncomment the line below to remove the original image, currently displays the original
-            // image "as-is", next to the image retrieved through LTI call
+
             $(doc).contents().find("span.kaltura-media").remove();
         },
 
