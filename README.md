@@ -29,6 +29,7 @@ Thank you for helping Kaltura grow! If you'd like to contribute please follow th
 # Get in touch
 You can learn more about Kaltura and start a free trial at: http://corp.kaltura.com    
 Contact us via Twitter [@Kaltura](https://twitter.com/Kaltura) or email: community@kaltura.com  
+Kaltura customers - contact customercare@kaltura.com for any inquiry related to the extension  
 We'd love to hear from you!
 
 # License and Copyright Information
