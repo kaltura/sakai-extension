@@ -7,11 +7,11 @@ This tool also exposes an enhanced LTI role-mapping capability to get better gra
 
 
 # Documentation and guides
-* [Release Notes](http://linktodoc.com) 
-* [Installation Guide](http://linktodoc.com)
-* [Setup Guide](http://linktodoc.com)
-* [User Guide](http://linktodoc.com)
-* [Key Highlights](http://linktodoc.com)
+* [Release Notes](http://knowledge.kaltura.com/node/1654) 
+* [Installation Guide](http://knowledge.kaltura.com/node/1643)
+* [Setup Guide](http://knowledge.kaltura.com/node/1658/attachment/field_media)
+* [User Guide](http://knowledge.kaltura.com/node/1657/attachment/field_media)
+* [Key Highlights](http://knowledge.kaltura.com/node/549)
 
 # Project Specific Sections and Information
 Installation of this version requires a Kaltura Application Framework instance. Please contact you Kaltura representative for additional information.
