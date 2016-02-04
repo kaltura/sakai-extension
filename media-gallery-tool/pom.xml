@@ -166,11 +166,6 @@
   </developers>
 
   <licenses>
-    <license>
-      <name>ECL 2.0</name>
-      <distribution>repo</distribution>
-      <url>http://www.osedu.org/licenses/ECL-2.0/</url>
-    </license>
   </licenses>
 
 </project>
