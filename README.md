@@ -1,6 +1,18 @@
 Upgrade notes:
 
 --------------------------
+05 February 2016
+--------------------------
+
+The tool "Kaltura My Media" titale was changed to "My Media" and will require a SQL script to be run.
+
+The script is located in:
+
+MySQL: impl/src/main/resources/ddl/sql/mysql/kaltura_upgrade_20160205.sql
+Oracle: impl/src/main/resources/ddl/sql/oracle/kaltura_upgrade_20160205.sql
+
+
+--------------------------
 24 November 2015
 --------------------------
 

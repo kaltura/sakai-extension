@@ -17,8 +17,8 @@ Unless required by applicable law or agreed to in writing,
 -->
 <registration>
     <tool id="kaltura.my.media"
-          title="Kaltura My Media"
-          description="Kaltura My Media tool">
+          title="My Media"
+          description="My Media tool">
         <category name="course" />
         <category name="project" />
         <category name="myworkspace" />
