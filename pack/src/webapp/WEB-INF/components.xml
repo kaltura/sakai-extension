@@ -10,6 +10,7 @@ Copyright ©2016 Kaltura, Inc.
     <bean id="kalturaAddMyMediaJobParent" class="org.sakaiproject.kaltura.services.AddMyMediaJob" abstract="true">
         <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
         <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
         <property name="adminEmail" value="${jobs.admin.email}" />

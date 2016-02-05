@@ -6,8 +6,8 @@ Copyright ©2016 Kaltura, Inc.
 
 <registration>
     <tool id="kaltura.my.media"
-          title="Kaltura My Media"
-          description="Kaltura My Media tool">
+          title="My Media"
+          description="My Media tool">
         <category name="course" />
         <category name="project" />
         <category name="myworkspace" />
