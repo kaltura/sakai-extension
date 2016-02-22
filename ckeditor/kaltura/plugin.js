@@ -15,15 +15,16 @@ var ckeditorId;
                 var width = 770;
                 CKEDITOR.dialog.addIframe(pluginName,
                     'Kaltura',
-                    '/media-gallery-tool/ckeditor.htm?userid=' + parent.portal.user.id + '&siteid=' + parent.portal.siteId,
+                    '/direct/kaltura/ckeditor/site/' + parent.portal.siteId,
                     width,
                     height,
                     function() {
                         var ckDialog = CKEDITOR.dialog.getCurrent();
-                        document.getElementById(ckDialog.getButton('ok').domId).style.display='none';
-                        document.getElementById(ckDialog.getButton('cancel').domId).style.display='none';
+                        if (ckDialog) {
+                            document.getElementById(ckDialog.getButton('ok').domId).style.display='none';
+                            document.getElementById(ckDialog.getButton('cancel').domId).style.display='none';
+                        }
                     },
-
                     {
                         onOk : function() {}
                     }

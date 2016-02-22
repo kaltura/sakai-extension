@@ -26,7 +26,7 @@ public class RoleProviderService {
 
     private final Log log = LogFactory.getLog(RoleProviderService.class);
 
-    private RestService restService;
+    protected RestService restService;
     public void setRestService(RestService restService) {
         this.restService = restService;
     }

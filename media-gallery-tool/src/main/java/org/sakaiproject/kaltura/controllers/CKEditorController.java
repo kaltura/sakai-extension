@@ -53,4 +53,5 @@ public class CKEditorController extends AbstractController {
         }
         return new ModelAndView(view, model);
     }
+
 }

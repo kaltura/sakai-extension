@@ -177,14 +177,26 @@ public class KalturaLTIService {
     }
 
     public String[] launchCKEditorRequest(String module, String userId, String siteId) {
+        if (StringUtils.isBlank(userId)) {
+            throw new IllegalArgumentException("User ID cannot be null.");
+        }
+        if (StringUtils.isBlank(siteId)) {
+            throw new IllegalArgumentException("Site ID cannot be null.");
+        }
+
         User user = null;
 
         try {
-            if (StringUtils.isNotBlank(userId)) {
-                user = userDirectoryService.getUser(userId);
+            user = userDirectoryService.getUser(userId);
+        } catch (Exception e) {
+            try {
+                user = userDirectoryService.getUserByEid(userId);
+            } catch (Exception e1) {
             }
-        } catch (UserNotDefinedException e1) {
-            LOG.error("User not found with ID: " + userId, e1);
+        }
+
+        if (user == null) {
+            throw new IllegalArgumentException("User not found with ID: " + userId);
         }
 
         String placementId = "placementId123";
@@ -210,7 +222,7 @@ public class KalturaLTIService {
         String ckeditorCallbackUrl = serverUrl + "/media-gallery-tool/ckeditorcallback.htm";
         LOG.info("ckeditorCallbackUrl: [" + ckeditorCallbackUrl + "]");
         
-        setProperty(ltiProps, BasicLTIConstants.LAUNCH_PRESENTATION_RETURN_URL, ckeditorCallbackUrl);        
+        setProperty(ltiProps, BasicLTIConstants.LAUNCH_PRESENTATION_RETURN_URL, ckeditorCallbackUrl);
         setProperty(toolProps, "launch_url", ckeditorUrl);
         setProperty(ltiProps,BasicLTIConstants.RESOURCE_LINK_ID,placementId);
 
@@ -254,7 +266,7 @@ public class KalturaLTIService {
         String debugProperty = toolProps.getProperty(LTI_DEBUG);
         boolean dodebug = Arrays.asList((new String[]{"on", "1"})).contains(debugProperty);
         String postData = postLaunchHTML(ltiProps, ckeditorUrl, dodebug, extra);
-        String [] retval = {postData, ckeditorUrl};
+        String[] retval = {postData, ckeditorUrl};
 
         return retval;
     }
@@ -873,7 +885,6 @@ public class KalturaLTIService {
             }
         } else {
             text.append(" <script language=\"javascript\"> \n"
-                    + "    document.getElementById(\"ltiLaunchFormSubmitArea\").style.display = \"none\";\n"
                     + "    nei = document.createElement('input');\n"
                     + "    nei.setAttribute('type', 'hidden');\n"
                     + "    nei.setAttribute('name', '"

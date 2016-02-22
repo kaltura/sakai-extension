@@ -16,9 +16,9 @@ public class CKEditorCallbackController extends AbstractController {
     final protected Log log = LogFactory.getLog(getClass());
     
     @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         EmbeddedMediaModel model = this.populateModel(request);
+
         return new ModelAndView("ckeditorcallback", "mediaitem", model);
     }
 
@@ -37,7 +37,7 @@ public class CKEditorCallbackController extends AbstractController {
         String createdAt = request.getParameter("createdAt");
         String tags = request.getParameter("tags");
         String thumbnailUrl = request.getParameter("thumbnailUrl");
-        
+
         EmbeddedMediaModel model = new EmbeddedMediaModel();
         model.setCreatedAt(createdAt);
         model.setDescription(description);
@@ -53,7 +53,7 @@ public class CKEditorCallbackController extends AbstractController {
         model.setTitle(title);
         model.setUrl(url);
         model.setWidth(width);
-        
+
         return model;
     }
 }
