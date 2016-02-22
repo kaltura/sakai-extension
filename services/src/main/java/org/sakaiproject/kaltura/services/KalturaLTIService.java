@@ -885,6 +885,7 @@ public class KalturaLTIService {
             }
         } else {
             text.append(" <script language=\"javascript\"> \n"
+                    + "    document.getElementById(\"ltiLaunchFormSubmitArea\").style.display = \"none\";\n"
                     + "    nei = document.createElement('input');\n"
                     + "    nei.setAttribute('type', 'hidden');\n"
                     + "    nei.setAttribute('name', '"
