@@ -10,22 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.kaltura.Constants;
-import org.sakaiproject.kaltura.services.KalturaLTIService;
 /**
  * Controller to handle the main.jsp view
  * 
  * @author Yegeneswari Nagappan (ynagappan @ unicon.net)
  *
  */
-public class MediaGalleryController extends AbstractController {
-
-    private KalturaLTIService kalturaLTIService;
-    public void setKalturaLTIService(KalturaLTIService kalturaLTIService) {
-        this.kalturaLTIService = kalturaLTIService;
-    }
+public class MediaGalleryController extends BaseController {
 
     private ServerConfigurationService serverConfigurationService;
     public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
