@@ -80,7 +80,7 @@ public class CKEditorController extends AbstractController {
         String returnData[] = kalturaLTIService.launchCKEditorRequest("", currentUser.getId(), currentSiteId);
         model.put("returndata", returnData[0]);
 
-        String view = StringUtils.isNotEmpty(serverConfigurationService.getString("kaltura.ckeditor.debug")) ? "ckeditor" : "ckeditordebug";
+        String view = serverConfigurationService.getBoolean("kaltura.ckeditor.debug", false) ? "ckeditordebug" : "ckeditor";
 
         return new ModelAndView(view, model);
     }
