@@ -15,10 +15,16 @@ Copyright ©2016 Kaltura, Inc.
     
     <bean id="mediadisplayController" class="org.sakaiproject.kaltura.controllers.MediaDisplayController">
         <property name="kalturaLTIService" ref="kalturaLTIService" />
-    </bean>    
-    
+        <property name="securityService" ref="securityService" />
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+        <property name="userService" ref="userService" />
+    </bean>
+
     <bean id="mediadisplayStaticController" class="org.sakaiproject.kaltura.controllers.MediaDisplayStaticController">
         <property name="kalturaLTIService" ref="kalturaLTIService" />
+        <property name="securityService" ref="securityService" />
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+        <property name="userService" ref="userService" />
     </bean>
 
     <bean id="ckeditorController" class="org.sakaiproject.kaltura.controllers.CKEditorController">
@@ -28,7 +34,7 @@ Copyright ©2016 Kaltura, Inc.
         <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
         <property name="userService" ref="userService" />
     </bean>
-    
+
     <bean id="ckeditorCallbackController" class="org.sakaiproject.kaltura.controllers.CKEditorCallbackController">
     </bean>
 

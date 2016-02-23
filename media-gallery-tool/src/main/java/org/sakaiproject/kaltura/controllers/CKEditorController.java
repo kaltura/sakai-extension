@@ -17,6 +17,7 @@ import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.services.KalturaLTIService;
 import org.sakaiproject.kaltura.services.SecurityService;
 import org.sakaiproject.kaltura.services.UserService;
+import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.api.ToolManager;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
@@ -59,7 +60,16 @@ public class CKEditorController extends AbstractController {
      * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String currentSiteId = request.getParameter("siteid");
+        String currentSiteId;
+
+        // attempt to get current site ID
+        Placement toolPlacement = toolManager.getCurrentPlacement();
+        if (toolPlacement != null) {
+            currentSiteId = toolPlacement.getContext();
+        } else {
+            currentSiteId = request.getParameter("siteid");
+        }
+
         if (StringUtils.isBlank(currentSiteId)) {
             throw new IllegalArgumentException("Site ID cannot be null.");
         }
