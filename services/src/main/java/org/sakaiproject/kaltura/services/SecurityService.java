@@ -8,7 +8,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.kaltura.Constants;
+import org.sakaiproject.site.api.Site;
+import org.sakaiproject.site.api.SiteService;
 
 public class SecurityService {
 
@@ -29,6 +32,11 @@ public class SecurityService {
     public void setServerConfigurationService(
             ServerConfigurationService serverConfigurationService) {
         this.serverConfigurationService = serverConfigurationService;
+    }
+
+    private SiteService siteService;
+    public void setSiteService(SiteService siteService) {
+        this.siteService = siteService;
     }
 
     /**
@@ -79,6 +87,51 @@ public class SecurityService {
             }
             developerHelperService.setCurrentUser("/user/admin");
         }
+    }
+
+    /**
+     * Is the current user allowed access to the site with the given ID?
+     * 
+     * @param the site's ID
+     * @return true, if the current user can access the site
+     */
+    public boolean isAllowedAccess(String siteId) {
+        if (StringUtils.isBlank(siteId)) {
+            throw new IllegalArgumentException("Site ID cannot be null");
+        }
+
+        String currentUserRef = developerHelperService.getCurrentUserReference();
+        if (StringUtils.isBlank(currentUserRef)) {
+            throw new IllegalArgumentException("There is no currently defined user.");
+        }
+
+        Site site;
+        try {
+            site = siteService.getSite(siteId);
+        } catch (IdUnusedException e) {
+            log.error("There is no site defined with ID: " + siteId);
+            return false;
+        }
+
+        return isAllowedAccess(currentUserRef, site.getReference());
+    }
+
+    /**
+     * Is the user allowed access into the site with the given ID?
+     * 
+     * @param userRef the user's ref (/user/{user_id}
+     * @param siteId the site's ref (/site/{site_id})
+     * @return true, if the user can access the site
+     */
+    public boolean isAllowedAccess(String userRef, String siteRef) {
+        if (StringUtils.isBlank(userRef)) {
+            throw new IllegalArgumentException("User ref ID cannot be null");
+        }
+        if (StringUtils.isBlank(siteRef)) {
+            throw new IllegalArgumentException("Site ref ID cannot be null");
+        }
+
+        return developerHelperService.isUserAllowedInEntityReference(userRef, SiteService.SITE_VISIT, siteRef);
     }
 
 }

@@ -11,10 +11,8 @@ Copyright ©2016 Kaltura, Inc.
     <bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider" class="org.sakaiproject.kaltura.providers.KalturaProvider">
         <property name="authCodeProviderService" ref="authCodeProviderService" />
         <property name="gitProviderService" ref="gitProviderService" />
-        <property name="ckEditorProviderService" ref="ckEditorProviderService" />
         <property name="roleProviderService" ref="roleProviderService" />
         <property name="securityService" ref="securityService" />
-        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
         <property name="userProviderService" ref="userProviderService" />
     </bean>
 
@@ -37,6 +35,7 @@ Copyright ©2016 Kaltura, Inc.
         <property name="authCodeService" ref="authCodeService" />
         <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
     </bean>
 
     <bean id="userService" class="org.sakaiproject.kaltura.services.UserService">
@@ -62,13 +61,6 @@ Copyright ©2016 Kaltura, Inc.
     <bean id="authCodeProviderService" class="org.sakaiproject.kaltura.services.provider.AuthCodeProviderService">
         <property name="authCodeService" ref="authCodeService" />
         <property name="restService" ref="restService" />
-    </bean>
-
-    <bean id="ckEditorProviderService" class="org.sakaiproject.kaltura.services.provider.CKEditorProviderService">
-        <property name="kalturaLTIService" ref="kalturaLTIService" />
-        <property name="restService" ref="restService" />
-        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
-        <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     </bean>
 
     <bean name="gitProviderService" class="org.sakaiproject.kaltura.services.provider.GitProviderService">

@@ -3,14 +3,12 @@
  */
 package org.sakaiproject.kaltura.providers;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.EntityView;
 import org.sakaiproject.entitybroker.entityprovider.annotations.EntityCustomAction;
@@ -20,12 +18,10 @@ import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 import org.sakaiproject.kaltura.services.provider.AuthCodeProviderService;
-import org.sakaiproject.kaltura.services.provider.CKEditorProviderService;
 import org.sakaiproject.kaltura.services.provider.GitProviderService;
 import org.sakaiproject.kaltura.services.provider.RoleProviderService;
 import org.sakaiproject.kaltura.services.provider.UserProviderService;
 import org.sakaiproject.kaltura.services.SecurityService;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * The provider for the REST API
@@ -39,11 +35,6 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     private AuthCodeProviderService authCodeProviderService;
     public void setAuthCodeProviderService(AuthCodeProviderService authCodeProviderService) {
         this.authCodeProviderService = authCodeProviderService;
-    }
-
-    private CKEditorProviderService ckEditorProviderService;
-    public void setCkEditorProviderService(CKEditorProviderService ckEditorProviderService) {
-        this.ckEditorProviderService = ckEditorProviderService;
     }
 
     private GitProviderService gitProviderService;
@@ -61,11 +52,6 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
         this.securityService = securityService;
     }
 
-    private ServerConfigurationService serverConfigurationService;
-    public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
-        this.serverConfigurationService = serverConfigurationService;
-    }
-
     private UserProviderService userProviderService;
     public void setUserProviderService(UserProviderService userProviderService) {
         this.userProviderService = userProviderService;
@@ -81,16 +67,11 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     }
 
     public String[] getHandledInputFormats() {
-        return new String[] {
-            Formats.JSON
-        };
+        return new String[] {Formats.JSON};
     }
 
     public String[] getHandledOutputFormats() {
-        return new String[] {
-            Formats.JSON,
-            Formats.HTML
-        };
+        return new String[] {Formats.JSON};
     }
 
     /*
@@ -225,26 +206,6 @@ public class KalturaProvider extends AbstractEntityProvider implements RESTful {
     public ActionReturn git(EntityView view, Map<String, Object> params) {
         // GET
         ActionReturn actionReturn = gitProviderService.get();
-
-        return actionReturn;
-    }
-
-    /**
-     * The ckeditor API
-     *
-     * GET kaltura/ckeditor/site/{siteId}
-     * @throws Exception 
-     */
-    @EntityCustomAction(action="ckeditor", viewKey=EntityView.VIEW_LIST)
-    public ActionReturn ckeditor(EntityView entityView, Map<String, Object> params) throws Exception {
-        // GET
-        String siteId = entityView.getPathSegment(3);
-
-        if (StringUtils.isBlank(siteId)) {
-            throw new IllegalArgumentException("No site ID defined in input");
-        }
-
-        ActionReturn actionReturn = ckEditorProviderService.launchLti(siteId);
 
         return actionReturn;
     }

@@ -23,12 +23,12 @@
 
 <script>
 var mediaItem = {
-	url: "${mediaitem.url}",
-	playerId: "${mediaitem.playerId}",
-	size: "${mediaitem.size}",
-	width: "${mediaitem.width}",
-	height: "${mediaitem.height}",
-	returnType: "${mediaitem.returnType}",
+    url: "${mediaitem.url}",
+    playerId: "${mediaitem.playerId}",
+    size: "${mediaitem.size}",
+    width: "${mediaitem.width}",
+    height: "${mediaitem.height}",
+    returnType: "${mediaitem.returnType}",
     entryId: "${mediaitem.entryId}",
     owner: "${mediaitem.owner}",
     title: "${mediaitem.title}",

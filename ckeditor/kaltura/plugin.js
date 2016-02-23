@@ -15,7 +15,7 @@ var ckeditorId;
                 var width = 770;
                 CKEDITOR.dialog.addIframe(pluginName,
                     'Kaltura',
-                    '/direct/kaltura/ckeditor/site/' + parent.portal.siteId,
+                    '/media-gallery-tool/ckeditor.htm?siteid=' + parent.portal.siteId,
                     width,
                     height,
                     function() {
