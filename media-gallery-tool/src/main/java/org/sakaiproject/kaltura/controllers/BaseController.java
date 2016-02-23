@@ -102,30 +102,30 @@ public class BaseController extends AbstractController {
             return userId;
         }
         public void setUserId(String userId) {
-            this.userId = userId;
+            this.userId = StringUtils.trimToEmpty(userId);
         }
         public String getSiteId() {
             return siteId;
         }
         public void setSiteId(String siteId) {
-            this.siteId = siteId;
+            this.siteId = StringUtils.trimToEmpty(siteId);
         }
         public String getMediaItemUrl() {
             return mediaItemUrl;
         }
         public void setMediaItemUrl(String mediaItemUrl) {
-            this.mediaItemUrl = mediaItemUrl;
+            this.mediaItemUrl = StringUtils.trimToEmpty(mediaItemUrl);
         }
         public String getEntryId() {
             return entryId;
         }
         public void setEntryId(String entryId) {
-            this.entryId = entryId;
+            this.entryId = StringUtils.trimToEmpty(entryId);
         }
 
         @Override
         public String toString() {
-            return "request parameters:: mediaitemurl:userid:siteid [" + this.mediaItemUrl + ":" + this.userId + ":" + this.siteId + "]";
+            return "request parameters:: mediaItemUrl:entryId:userId:siteId [" + this.mediaItemUrl + ":" + this.entryId + ":" + this.userId + ":" + this.siteId + "]";
         }
     }
 
