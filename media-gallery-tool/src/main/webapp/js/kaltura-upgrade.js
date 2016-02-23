@@ -61,7 +61,7 @@
                     entryId = entryIds[1];
                 }
                 console.log("entryId: [" + entryId + "]");
-                var embeddedSource = "/media-gallery-tool/mediadisplaystatic.htm?entryid=" + entryId + "&siteid=" + siteId;;
+                var embeddedSource = "/media-gallery-tool/mediadisplaystatic.htm?entryid=" + entryId + "&siteid=" + siteId;
 
                 console.log("embeddedSource: [" + embeddedSource + "]");
                 var iframe = $("<iframe height='" + height + "' width='" + width + "' src='" + embeddedSource + "'>");
