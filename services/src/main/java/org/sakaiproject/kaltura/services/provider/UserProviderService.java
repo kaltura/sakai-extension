@@ -9,9 +9,9 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.error.ErrorUser;
-import org.sakaiproject.kaltura.services.RestService;
 import org.sakaiproject.kaltura.services.UserService;
 import org.sakaiproject.kaltura.utils.JsonUtil;
+import org.sakaiproject.kaltura.services.RestService;
 import org.sakaiproject.kaltura.services.SecurityService;
 
 /**
@@ -23,7 +23,7 @@ public class UserProviderService {
 
     private final Log log = LogFactory.getLog(UserProviderService.class);
 
-    protected RestService restService;
+    private RestService restService;
     public void setRestService(RestService restService) {
         this.restService = restService;
     }

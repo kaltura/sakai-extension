@@ -11,8 +11,8 @@ import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.error.ErrorAuthCode;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
 import org.sakaiproject.kaltura.services.AuthCodeService;
-import org.sakaiproject.kaltura.services.RestService;
 import org.sakaiproject.kaltura.utils.JsonUtil;
+import org.sakaiproject.kaltura.services.RestService;
 
 /**
  * Service layer to support the kaltura/auth entities
@@ -28,7 +28,7 @@ public class AuthCodeProviderService {
         this.authCodeService = authCodeService;
     }
 
-    protected RestService restService;
+    private RestService restService;
     public void setRestService(RestService restService) {
         this.restService = restService;
     }
