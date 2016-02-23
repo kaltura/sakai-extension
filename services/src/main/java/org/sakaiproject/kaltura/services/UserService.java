@@ -98,7 +98,12 @@ public class UserService {
      * @return the {@link User} object
      */
     public User getCurrentUser() {
-        return new User(userDirectoryService.getCurrentUser());
+        org.sakaiproject.user.api.User currentSakaiUser = userDirectoryService.getCurrentUser();
+        if (currentSakaiUser == null) {
+            return null;
+        }
+
+        return new User(currentSakaiUser);
     }
 
     /**

@@ -13,41 +13,33 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.kaltura.services.KalturaLTIService;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
 
 /**
  * Controller handles LTI requests to render Kaltura LTI stored media, after
  * media has been added to Kaltura Media Gallery
- * @author mgillian
  *
  */
-public class MediaDisplayController extends AbstractController {
-    final protected Log log = LogFactory.getLog(getClass());
-
-    private KalturaLTIService kalturaLTIService;
-    public void setKalturaLTIService(KalturaLTIService kalturaLTIService) {
-        this.kalturaLTIService = kalturaLTIService;
-    }
+public class MediaDisplayController extends BaseController {
+    final private Log log = LogFactory.getLog(getClass());
 
     /* (non-Javadoc)
      * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ControllerRequestParameters parameters = processRequestParameters(request);
+        log.debug(parameters.toString());
+
         Map<String,Object> model = new HashMap<String,Object>();
-        
-        String mediaItemUrl = request.getParameter("mediaitemurl");
-        String userId = request.getParameter("userid");
-        String siteId = request.getParameter("siteid");
-        log.error("request params: mediaitemurl:userid:siteid [" + mediaItemUrl + ":" + userId + ":" + siteId + "]");
-        if (StringUtils.isEmpty(mediaItemUrl)) {
-        	model.put("returndata",  "NO MEDIA");
+
+        if (StringUtils.isEmpty(parameters.getMediaItemUrl())) {
+            model.put("returndata", "NO MEDIA");
         } else {
-	        String decodedMediaItemUrl = URLDecoder.decode(mediaItemUrl);
-	        String retval[] = kalturaLTIService.launchLTIDisplayRequest(decodedMediaItemUrl, userId, siteId);
-	        model.put("returndata", retval[0]);
+            String decodedMediaItemUrl = URLDecoder.decode(parameters.getMediaItemUrl());
+            String returnData[] = kalturaLTIService.launchLTIDisplayRequest(decodedMediaItemUrl, parameters.getUserId(), parameters.getSiteId());
+            model.put("returndata", returnData[0]);
         }
+
         return new ModelAndView("mediadisplay", model);
     }
 

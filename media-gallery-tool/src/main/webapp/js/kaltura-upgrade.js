@@ -27,7 +27,7 @@
                 var userId = portal.user.id;
                 var siteId = portal.siteId;
                 var mediaUrl = $(this).attr("kaltura-lti-url");
-                var iframeSource = "/media-gallery-tool/mediadisplay.htm?mediaitemurl=" + encodeURIComponent(mediaUrl) + "&userid=" + userId + "&siteid=" + siteId;
+                var iframeSource = "/media-gallery-tool/mediadisplay.htm?mediaitemurl=" + encodeURIComponent(mediaUrl) + "&siteid=" + siteId;
                 var iframe = $("<iframe height='" + height + "' width='" + width + "' src='" + iframeSource + "' allowfullscreen webkitallowfullscreen mozAllowFullScreen />");
 
                 iframe.css("border", "none");
@@ -61,7 +61,7 @@
                     entryId = entryIds[1];
                 }
                 console.log("entryId: [" + entryId + "]");
-                var embeddedSource = "/media-gallery-tool/mediadisplaystatic.htm?entryid=" + entryId + "&userid=" + userId + "&siteid=" + siteId;;
+                var embeddedSource = "/media-gallery-tool/mediadisplaystatic.htm?entryid=" + entryId + "&siteid=" + siteId;
 
                 console.log("embeddedSource: [" + embeddedSource + "]");
                 var iframe = $("<iframe height='" + height + "' width='" + width + "' src='" + embeddedSource + "'>");

@@ -6,19 +6,15 @@ package org.sakaiproject.kaltura.controllers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.kaltura.models.EmbeddedMediaModel;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
 
-public class CKEditorCallbackController extends AbstractController {
-    final protected Log log = LogFactory.getLog(getClass());
-    
+public class CKEditorCallbackController extends BaseController {
+
     @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         EmbeddedMediaModel model = this.populateModel(request);
+
         return new ModelAndView("ckeditorcallback", "mediaitem", model);
     }
 
@@ -37,7 +33,7 @@ public class CKEditorCallbackController extends AbstractController {
         String createdAt = request.getParameter("createdAt");
         String tags = request.getParameter("tags");
         String thumbnailUrl = request.getParameter("thumbnailUrl");
-        
+
         EmbeddedMediaModel model = new EmbeddedMediaModel();
         model.setCreatedAt(createdAt);
         model.setDescription(description);
@@ -53,7 +49,7 @@ public class CKEditorCallbackController extends AbstractController {
         model.setTitle(title);
         model.setUrl(url);
         model.setWidth(width);
-        
+
         return model;
     }
 }

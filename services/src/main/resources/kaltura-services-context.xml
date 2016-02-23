@@ -35,6 +35,7 @@ Copyright ©2016 Kaltura, Inc.
         <property name="authCodeService" ref="authCodeService" />
         <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
     </bean>
 
     <bean id="userService" class="org.sakaiproject.kaltura.services.UserService">
