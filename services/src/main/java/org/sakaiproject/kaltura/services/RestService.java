@@ -39,6 +39,18 @@ public class RestService {
      * @return the ActionReturn with the HTTP code and any errors or data
      */
     public ActionReturn processActionReturn(BaseError errors, String data) {
+        return processActionReturn(errors, data, Formats.JSON);
+    }
+
+    /**
+     * Calculates the return data and the response HTTP code
+     * 
+     * @param errors the BaseError object containing any errors
+     * @param data the data to be returned
+     * @param format the return mime type
+     * @return the ActionReturn with the HTTP code and any errors or data
+     */
+    public ActionReturn processActionReturn(BaseError errors, String data, String format) {
         String rv = null;
         int responseCode = -1;
 
@@ -55,10 +67,9 @@ public class RestService {
             responseCode = 400;
         }
 
-        ActionReturn actionReturn = new ActionReturn(Constants.REST_DEFAULT_ENCODING, Formats.JSON, rv);
+        ActionReturn actionReturn = new ActionReturn(Constants.REST_DEFAULT_ENCODING, format, rv);
         actionReturn.setResponseCode(responseCode);
 
         return actionReturn;
     }
-
 }

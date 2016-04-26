@@ -68,7 +68,7 @@ the antisamy folder first:
 cd {tomcat_home}/sakai
 mkdir antisamy
 cd antisamy
-cp {sakai_home}/kernel/kernel_impl/src/main/resources/antisamy/high-security-profile.xml .
+cp {sakai_home}/kernel/kernel-impl/src/main/resources/antisamy/high-security-profile.xml .
 
 Once you have an antisamy policy in {tomcat_home}/sakai/antisamy, check its name.  This file is 
 named either high-security-profile.xml for high security or low-security-profile.xml for 

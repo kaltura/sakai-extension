@@ -29,6 +29,13 @@ Copyright ©2016 Kaltura, Inc.
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
   </filter-mapping>
+  <filter-mapping>
+    <filter-name>sakai.request</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
 
   <!-- force utf8 encoding -->
   <filter>

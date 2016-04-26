@@ -8,25 +8,28 @@ Copyright ©2016 Kaltura, Inc.
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
     <!-- Sakai tool controllers -->
-    <bean id="mediagalleryController" class="org.sakaiproject.kaltura.controllers.MediaGalleryController">
+    <bean id="baseController" class="org.sakaiproject.kaltura.controllers.BaseController">
         <property name="kalturaLTIService" ref="kalturaLTIService" />
-        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
-    </bean>
-    
-    <bean id="mediadisplayController" class="org.sakaiproject.kaltura.controllers.MediaDisplayController">
-        <property name="kalturaLTIService" ref="kalturaLTIService" />
-    </bean>    
-    
-    <bean id="mediadisplayStaticController" class="org.sakaiproject.kaltura.controllers.MediaDisplayStaticController">
-        <property name="kalturaLTIService" ref="kalturaLTIService" />
+        <property name="securityService" ref="securityService" />
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+        <property name="userService" ref="userService" />
     </bean>
 
-    <bean id="ckeditorController" class="org.sakaiproject.kaltura.controllers.CKEditorController">
-        <property name="kalturaLTIService" ref="kalturaLTIService" />
+    <bean id="mediagalleryController" class="org.sakaiproject.kaltura.controllers.MediaGalleryController" parent="baseController">
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
     </bean>
     
-    <bean id="ckeditorCallbackController" class="org.sakaiproject.kaltura.controllers.CKEditorCallbackController">
+    <bean id="mediadisplayController" class="org.sakaiproject.kaltura.controllers.MediaDisplayController" parent="baseController">
+    </bean>
+
+    <bean id="mediadisplayStaticController" class="org.sakaiproject.kaltura.controllers.MediaDisplayStaticController" parent="baseController">
+    </bean>
+
+    <bean id="ckeditorController" class="org.sakaiproject.kaltura.controllers.CKEditorController" parent="baseController">
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+
+    <bean id="ckeditorCallbackController" class="org.sakaiproject.kaltura.controllers.CKEditorCallbackController" parent="baseController">
     </bean>
 
     <!-- Spring controller mappings -->
@@ -47,7 +50,7 @@ Copyright ©2016 Kaltura, Inc.
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
         <property name="prefix" value="/WEB-INF/jsp/" />
         <property name="suffix" value=".jsp" />
-        <property name="order" value="10" />
+        <property name="order" value="0" />
     </bean>
 
     <import resource="classpath*:kaltura-services-context.xml" />

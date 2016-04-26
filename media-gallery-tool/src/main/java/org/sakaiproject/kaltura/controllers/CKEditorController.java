@@ -9,27 +9,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.kaltura.services.KalturaLTIService;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
 
 /**
  * Controller to handle the ckeditor.jsp view
- * 
- * @author Yegeneswari Nagappan (ynagappan @ unicon.net)
  *
  */
-public class CKEditorController extends AbstractController {
-    final protected Log log = LogFactory.getLog(getClass());
-
-    private KalturaLTIService kalturaLTIService;
-    public void setKalturaLTIService(KalturaLTIService kalturaLTIService) {
-        this.kalturaLTIService = kalturaLTIService;
-    }
+public class CKEditorController extends BaseController {
+    final private Log log = LogFactory.getLog(getClass());
 
     private ServerConfigurationService serverConfigurationService;
     public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
@@ -40,17 +30,17 @@ public class CKEditorController extends AbstractController {
      * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String userId = request.getParameter("userid");
-        String siteId = request.getParameter("siteid");
-        
-        Map<String,Object> model = new HashMap<String,Object>();
-        String retval[] = kalturaLTIService.launchCKEditorRequest("", userId, siteId);
-        model.put("returndata", retval[0]);
+        ControllerRequestParameters parameters = processRequestParameters(request);
+        log.debug(parameters.toString());
 
-        String view = "ckeditor";
-        if (StringUtils.isNotEmpty(serverConfigurationService.getString("kaltura.ckeditor.debug"))) {
-            view = "ckeditordebug";
-        }
+        // get the source code HTML form the LTI request
+        Map<String,Object> model = new HashMap<String,Object>();
+        String returnData[] = kalturaLTIService.launchCKEditorRequest("", parameters.getUserId(), parameters.getSiteId());
+        model.put("returndata", returnData[0]);
+
+        String view = serverConfigurationService.getBoolean("kaltura.ckeditor.debug", false) ? "ckeditordebug" : "ckeditor";
+
         return new ModelAndView(view, model);
     }
+
 }
