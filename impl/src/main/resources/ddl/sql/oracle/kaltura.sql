@@ -12,7 +12,7 @@ create table KALTURA_LTI_AUTH_CODE (
     user_id varchar2(255 char) not null,
     auth_code varchar2(255 char) not null,
     created_on timestamp not null,
-    exipiration_date timestamp not null,
+    expiration_date timestamp not null,
     primary key (id)
 );
 

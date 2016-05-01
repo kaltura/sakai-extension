@@ -12,7 +12,7 @@ create table KALTURA_LTI_AUTH_CODE (
     user_id varchar(255) not null,
     auth_code varchar(255) not null,
     created_on datetime not null,
-    exipiration_date datetime not null,
+    expiration_date datetime not null,
     primary key (id)
 ) ENGINE=InnoDB;
 
