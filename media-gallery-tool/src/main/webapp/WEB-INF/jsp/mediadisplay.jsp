@@ -7,7 +7,6 @@
     <link media="all" href="/library/skin/tool_base.css" rel="stylesheet" type="text/css" />
 
     <script src="/library/js/headscripts.js" type="text/javascript"></script>
-    <script src="/library/js/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
 
     <!-- Twitter Bootstrap -->
     <script src="<c:url value='/bootstrap/js/bootstrap.min.js'/>" type="text/javascript"></script>

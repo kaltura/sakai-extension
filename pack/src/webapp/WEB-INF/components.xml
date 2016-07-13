@@ -1,10 +1,11 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 Copyright ©2016 Kaltura, Inc.
 
 -->
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <!-- Kaltura Jobs -->
 
     <bean id="kalturaAddMyMediaJobParent" class="org.sakaiproject.kaltura.services.AddMyMediaJob" abstract="true">
@@ -26,10 +27,7 @@ Copyright ©2016 Kaltura, Inc.
         <property name="siteCopyJobData" ref="siteCopyJobData" />
     </bean>
 
-    <bean id="kalturaAddToolJobWrapper"
-        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-
-        singleton="true" init-method="init">
+    <bean id="kalturaAddToolJobWrapper" class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper" init-method="init">
         <property name="beanId" value="kalturaAddMyMediaJob" />
         <property name="jobName" value="Add My Media For Existing Users Job" />
         <property name="schedulerManager">
@@ -47,9 +45,7 @@ Copyright ©2016 Kaltura, Inc.
 
     <bean id="kalturaSiteCopyBatchJob" parent="kalturaSiteCopyBatchJobParent"/>
 
-    <bean id="kalturaSiteCopyBatchJobWrapper"
-        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+    <bean id="kalturaSiteCopyBatchJobWrapper" class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper" init-method="init">
         <property name="beanId" value="kalturaSiteCopyBatchJob" />
         <property name="jobName" value="Add kaltura site copy batch details Job" />
         <property name="schedulerManager">
@@ -57,8 +53,7 @@ Copyright ©2016 Kaltura, Inc.
         </property>
     </bean>
 
-    <bean id="kalturaSiteCopyBatchScheduling" class="org.sakaiproject.component.app.scheduler.jobs.SpringInitialJobSchedule"
-        singleton="true">
+    <bean id="kalturaSiteCopyBatchScheduling" class="org.sakaiproject.component.app.scheduler.jobs.SpringInitialJobSchedule">
         <property name="jobBeanWrapper"><ref bean="kalturaSiteCopyBatchJobWrapper"/></property>
         <property name="jobName" value="Kaltura Site Copy Batch 0"/>
         <property name="triggerName" value="Every 10 minutes"/>
@@ -79,9 +74,7 @@ Copyright ©2016 Kaltura, Inc.
 
     <bean id="checkKalturaSiteCopyJob" parent="checkKalturaSiteCopyJobParent"/>
 
-    <bean id="checkKalturaSiteCopyJobWrapper"
-        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+    <bean id="checkKalturaSiteCopyJobWrapper" class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper" init-method="init">
         <property name="beanId" value="checkKalturaSiteCopyJob" />
         <property name="jobName" value="Add kaltura site copy job status details Job" />
         <property name="schedulerManager">

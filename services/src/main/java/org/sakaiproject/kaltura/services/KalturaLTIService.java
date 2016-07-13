@@ -13,8 +13,6 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.imsglobal.basiclti.BasicLTIUtil;
-import org.imsglobal.basiclti.BasicLTIConstants;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -28,7 +26,8 @@ import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Web;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.kaltura.Constants;
-import org.sakaiproject.kaltura.services.AuthCodeService;
+import org.tsugi.basiclti.BasicLTIConstants;
+import org.tsugi.basiclti.BasicLTIUtil;
 
 public class KalturaLTIService {
     private static final Log LOG = LogFactory.getLog(KalturaLTIService.class);
@@ -128,7 +127,7 @@ public class KalturaLTIService {
 
         setProperty(toolProps, "launch_url", launchUrl);
         setDefaultReturnUrl(ltiProps, siteId);
-        setProperty(ltiProps,BasicLTIConstants.RESOURCE_LINK_ID,placementId);
+        setProperty(ltiProps, BasicLTIConstants.RESOURCE_LINK_ID,placementId);
 
         if (rb != null) {
             setProperty(ltiProps, BasicLTIConstants.LAUNCH_PRESENTATION_LOCALE, rb.getLocale().toString());
@@ -170,7 +169,7 @@ public class KalturaLTIService {
 
         String debugProperty = toolProps.getProperty(LTI_DEBUG);
         boolean dodebug = Arrays.asList((new String[]{"on", "1"})).contains(debugProperty);
-        String postData = postLaunchHTML(ltiProps, launchUrl, dodebug, extra);
+        String postData = postLaunchHTML(ltiProps, launchUrl, "Press to Launch External Tool", dodebug, extra);
         String[] retval = {postData, launchUrl};
 
         return retval;
@@ -265,7 +264,7 @@ public class KalturaLTIService {
 
         String debugProperty = toolProps.getProperty(LTI_DEBUG);
         boolean dodebug = Arrays.asList((new String[]{"on", "1"})).contains(debugProperty);
-        String postData = postLaunchHTML(ltiProps, ckeditorUrl, dodebug, extra);
+        String postData = postLaunchHTML(ltiProps, ckeditorUrl, "Press to Launch External Tool", dodebug, extra);
         String[] retval = {postData, ckeditorUrl};
 
         return retval;
@@ -386,7 +385,7 @@ public class KalturaLTIService {
         String debugProperty = toolProps.getProperty(LTI_DEBUG);
         boolean dodebug = Arrays.asList((new String[]{"on", "1"})).contains(debugProperty);
 
-        String postData = postLaunchHTML(ltiProps, launchUrl, dodebug, extra);
+        String postData = postLaunchHTML(ltiProps, launchUrl, "Press to Launch External Tool", dodebug, extra);
 
         String[] retval = {postData, launchUrl};
 
@@ -442,7 +441,6 @@ public class KalturaLTIService {
         }
 
         setProperty(ltiProps, "oauth_callback", oauth_callback);
-        setProperty(ltiProps, BasicLTIUtil.BASICLTI_SUBMIT, "Press to Launch External Tool");
 
         return ltiProps;
     }
@@ -767,9 +765,9 @@ public class KalturaLTIService {
      * @return the HTML ready for IFRAME src = inclusion.
      */
     public static String postLaunchHTML(final Properties cleanProperties,
-            String endpoint, boolean debug, Map<String,String> extra) {
+            String endpoint, String launchtext, boolean debug, Map<String,String> extra) {
         Map<String, String> map = BasicLTIUtil.convertToMap(cleanProperties);
-        return postLaunchHTML(map, endpoint, debug, extra);
+        return postLaunchHTML(map, endpoint, launchtext, debug, extra);
     }
 
     /**
@@ -790,7 +788,7 @@ public class KalturaLTIService {
      *          Useful for viewing the HTML before posting to end point.
      * @return the HTML ready for IFRAME src = inclusion.
      */
-    public static String postLaunchHTML(final Map<String, String> cleanProperties, String endpoint, boolean debug, Map<String,String> extra) {
+    public static String postLaunchHTML(final Map<String, String> cleanProperties, String endpoint, String launchtext, boolean debug, Map<String,String> extra) {
         if (cleanProperties == null || cleanProperties.isEmpty()) {
             throw new IllegalArgumentException("cleanProperties == null || cleanProperties.isEmpty()");
         }
@@ -819,17 +817,18 @@ public class KalturaLTIService {
             // we will be safe and not generate dangerous HTML
             key = BasicLTIUtil.htmlspecialchars(key);
             value = BasicLTIUtil.htmlspecialchars(value);
-            if (StringUtils.equalsIgnoreCase(key, BasicLTIUtil.BASICLTI_SUBMIT)) {
-                text.append("<input type=\"submit\" name=\"");
-            } else {
-                text.append("<input type=\"hidden\" name=\"");
-            }
 
+            text.append("<input type=\"hidden\" name=\"");
             text.append(key);
             text.append("\" value=\"");
             text.append(value);
             text.append("\"/>\n");
         }
+
+        // Paint the submit button
+        text.append("<input type=\"submit\" value=\"");
+        text.append(BasicLTIUtil.htmlspecialchars(launchtext));
+        text.append("\">\n");
 
         text.append("</form>\n");
         text.append("</div>\n");
@@ -886,16 +885,7 @@ public class KalturaLTIService {
         } else {
             text.append(" <script language=\"javascript\"> \n"
                     + "    document.getElementById(\"ltiLaunchFormSubmitArea\").style.display = \"none\";\n"
-                    + "    nei = document.createElement('input');\n"
-                    + "    nei.setAttribute('type', 'hidden');\n"
-                    + "    nei.setAttribute('name', '"
-                    + BasicLTIUtil.BASICLTI_SUBMIT
-                    + "');\n"
-                    + "    nei.setAttribute('value', '"
-                    + newMap.get(BasicLTIUtil.BASICLTI_SUBMIT)
-                    + "');\n"
-                    + "    document.getElementById(\"ltiLaunchForm\").appendChild(nei);\n"
-                    + "</script>");                        
+                    + "    document.ltiLaunchForm.submit(); \n" + " </script> \n");
         }
 
         String htmltext = text.toString();
