@@ -32,8 +32,8 @@ public class MediaDisplayController extends BaseController {
 
         Map<String,Object> model = new HashMap<String,Object>();
 
-        if (StringUtils.isEmpty(parameters.getMediaItemUrl())) {
-            model.put("returndata", "NO MEDIA");
+        if (StringUtils.isBlank(parameters.getMediaItemUrl()) || StringUtils.equals("undefined", parameters.getMediaItemUrl())) {
+            model.put("returndata", "<span data-toggle=\"tooltip\" title=\"kaltura-lti-url attribute missing, check antisamy configuration\">NO MEDIA</span>");
         } else {
             String decodedMediaItemUrl = URLDecoder.decode(parameters.getMediaItemUrl());
             String returnData[] = kalturaLTIService.launchLTIDisplayRequest(decodedMediaItemUrl, parameters.getUserId(), parameters.getSiteId());
