@@ -71,7 +71,7 @@ public class Constants {
     /*
      * Authorization code configuration
      */
-    public static final int DEFAULT_AUTHORIZATION_CODE_TTL = 60000; // 1 minute
+    public static final int DEFAULT_AUTHORIZATION_CODE_TTL = (60 * 40); // 40 minutes
     public static final String AUTHORIZATION_OVERRIDE_CODE = "c48cb080-852b-11e4-80c2-0002a5d5c51b";
     public static final String AUTHORIZATION_CODE_KEY = "auth_code";
     public static final String DEFAULT_ANONYMOUS_USER_ID = ".anon";

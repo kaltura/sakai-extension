@@ -53,6 +53,10 @@ public class AuthCodeProviderService {
             log.error(e.toString(), e);
         }
 
+        if (kalturaLtiAuthCode.isExpired()) {
+            errorAuthCode.updateErrorList("expired", kalturaLtiAuthCode.getAuthCode(), kalturaLtiAuthCode.getUserId());
+        }
+
         return restService.processActionReturn(errorAuthCode, JsonUtil.parseToJson(kalturaLtiAuthCode));
     }
 

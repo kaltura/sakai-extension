@@ -27,7 +27,7 @@ public class AuthCodeUtil {
         ServerConfigurationService serverConfigurationService = (ServerConfigurationService) ComponentManager.get(ServerConfigurationService.class);
         int codeTtl = serverConfigurationService.getInt("kaltura.rest.authorization.ttl", Constants.DEFAULT_AUTHORIZATION_CODE_TTL);
 
-        return new Date(createdDate.getTime() + codeTtl);
+        return new Date(createdDate.getTime() + (codeTtl * 1000L));
     }
 
     /**
