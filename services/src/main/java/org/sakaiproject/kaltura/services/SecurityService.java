@@ -79,13 +79,19 @@ public class SecurityService {
             }
 
             if (!isValid) {
-                String authCodeOverride = serverConfigurationService.getString("kaltura.authorization.override.code", Constants.AUTHORIZATION_OVERRIDE_CODE);
-                if (!StringUtils.equalsIgnoreCase(authorizationCode, authCodeOverride)) {
-                    // the authorization code is invalid and the override does not match, don't allow access
-                    throw new SecurityException("This endpoint is not accessible to non-administrators and this user is not an administrator or the authorization code is incorrect / has expired.");
+                // if authorization is not valid lets try the override code
+                String authCodeOverride = serverConfigurationService.getString("kaltura.authorization.override.code");
+                if (StringUtils.isNotBlank(authCodeOverride) && StringUtils.equalsIgnoreCase(authorizationCode, authCodeOverride)) {
+                    isValid = true;
                 }
             }
-            developerHelperService.setCurrentUser("/user/admin");
+
+            if (isValid) {
+                developerHelperService.setCurrentUser("/user/admin");
+            } else {
+                // the authorization code is invalid and the override does not match, don't allow access
+                throw new SecurityException("This endpoint is not accessible to non-administrators and this user is not an administrator or the authorization code is incorrect / has expired.");
+            }
         }
     }
 

@@ -1,9 +1,20 @@
-/target/
+**/target/
 *.project
 *.classpath
 *.settings
 
 # Created by https://www.gitignore.io
+
+### Intellij ###
+.idea/
+*.iml
+modules.xml
+
+## File-based project format:
+*.iws
+
+# JIRA plugin
+atlassian-ide-plugin.xml
 
 ### Eclipse ###
 *.pydevproject
