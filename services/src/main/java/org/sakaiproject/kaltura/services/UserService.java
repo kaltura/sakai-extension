@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.Role;
@@ -24,7 +24,7 @@ import org.sakaiproject.user.api.UserNotDefinedException;
 
 public class UserService {
 
-    private final Log log = LogFactory.getLog(UserService.class);
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     /**
      * {@link AuthzGroupService}

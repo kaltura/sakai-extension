@@ -5,8 +5,8 @@ package org.sakaiproject.kaltura.impl.dao;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.kaltura.api.dao.KalturaSiteCopyBatchDao;
 import org.sakaiproject.kaltura.impl.dao.jdbc.data.SiteCopyBatchData;
 import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch;
@@ -18,7 +18,7 @@ import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch;
  */
 public class KalturaSiteCopyBatchDaoImpl implements KalturaSiteCopyBatchDao {
 
-    private static final Log log = LogFactory.getLog(KalturaSiteCopyBatchDaoImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(KalturaSiteCopyBatchDaoImpl.class);
 
     private SiteCopyBatchData siteCopyBatchData;
     public void setSiteCopyBatchData(SiteCopyBatchData siteCopyBatchData) {

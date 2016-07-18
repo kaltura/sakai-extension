@@ -8,15 +8,15 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.kaltura.impl.dao.jdbc.Database;
 import org.sakaiproject.kaltura.impl.dao.jdbc.sql.SiteCopyJobSql;
 import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob;
 
 public class SiteCopyJobData  extends Database {
 
-    private final Log log = LogFactory.getLog(SiteCopyJobData.class);
+    private static final Logger log = LoggerFactory.getLogger(SiteCopyJobData.class);
 
     public List<KalturaSiteCopyJob> getJobs(String status) {
         List<KalturaSiteCopyJob> jobs = new ArrayList<KalturaSiteCopyJob>();

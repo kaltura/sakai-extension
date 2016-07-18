@@ -9,8 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
  *
  */
 public class CKEditorController extends BaseController {
-    final private Log log = LogFactory.getLog(getClass());
+    private static final Logger log = LoggerFactory.getLogger(CKEditorController.class);
 
     private ServerConfigurationService serverConfigurationService;
     public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {

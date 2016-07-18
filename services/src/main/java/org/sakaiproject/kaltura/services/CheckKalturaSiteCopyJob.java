@@ -4,8 +4,8 @@
 package org.sakaiproject.kaltura.services;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -31,7 +31,7 @@ import java.util.Properties;
 
 public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob {
 
-    private static final Log log = LogFactory.getLog(CheckKalturaSiteCopyJob.class);
+    private static final Logger log = LoggerFactory.getLogger(CheckKalturaSiteCopyJob.class);
 
     protected KalturaSiteCopyBatchDao kalturaSiteCopyBatchDao = null;
     protected KalturaSiteCopyJobDao kalturaSiteCopyJobDao = null;

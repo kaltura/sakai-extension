@@ -6,8 +6,8 @@ package org.sakaiproject.kaltura.services;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.quartz.JobExecutionException;
 import org.sakaiproject.component.app.scheduler.jobs.AbstractConfigurableJob;
 import org.sakaiproject.component.api.ServerConfigurationService;
@@ -19,7 +19,7 @@ import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob;
 
 public class KalturaSiteCopyBatchJob extends AbstractConfigurableJob {
 
-    private static final Log log = LogFactory.getLog(KalturaSiteCopyBatchJob.class);
+    private static final Logger log = LoggerFactory.getLogger(KalturaSiteCopyBatchJob.class);
 
     protected KalturaSiteCopyBatchDao kalturaSiteCopyBatchDao = null;
     protected KalturaSiteCopyJobDao kalturaSiteCopyJobDao = null;

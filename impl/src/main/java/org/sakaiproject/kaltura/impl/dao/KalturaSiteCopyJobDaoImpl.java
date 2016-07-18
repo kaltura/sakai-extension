@@ -5,8 +5,8 @@ package org.sakaiproject.kaltura.impl.dao;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.kaltura.api.dao.KalturaSiteCopyJobDao;
 import org.sakaiproject.kaltura.impl.dao.jdbc.data.SiteCopyJobData;
 import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob;
@@ -18,7 +18,7 @@ import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob;
  */
 public class KalturaSiteCopyJobDaoImpl implements KalturaSiteCopyJobDao {
 
-    private static final Log log = LogFactory.getLog(KalturaSiteCopyJobDaoImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(KalturaSiteCopyJobDaoImpl.class);
 
     private SiteCopyJobData siteCopyJobData;
     public void setSiteCopyJobData(SiteCopyJobData siteCopyJobData) {

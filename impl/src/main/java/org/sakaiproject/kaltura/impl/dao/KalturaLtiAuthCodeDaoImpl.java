@@ -5,8 +5,8 @@ package org.sakaiproject.kaltura.impl.dao;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sakaiproject.genericdao.api.search.Search;
@@ -22,7 +22,7 @@ import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
  */
 public class KalturaLtiAuthCodeDaoImpl extends HibernateGeneralGenericDao implements KalturaLtiAuthCodeDao {
 
-    private final Log log = LogFactory.getLog(KalturaLtiAuthCodeDaoImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(KalturaLtiAuthCodeDaoImpl.class);
 
     public void init(){
     }

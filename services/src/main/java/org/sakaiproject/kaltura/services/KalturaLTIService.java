@@ -11,8 +11,8 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -30,7 +30,7 @@ import org.tsugi.basiclti.BasicLTIConstants;
 import org.tsugi.basiclti.BasicLTIUtil;
 
 public class KalturaLTIService {
-    private static final Log LOG = LogFactory.getLog(KalturaLTIService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KalturaLTIService.class);
 
     private static ResourceLoader rb = new ResourceLoader("basiclti");
     public static final boolean verbosePrint = true;

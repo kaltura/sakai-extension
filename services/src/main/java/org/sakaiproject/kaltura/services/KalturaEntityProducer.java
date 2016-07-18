@@ -13,8 +13,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -51,7 +51,7 @@ import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class KalturaEntityProducer implements EntityProducer {
 
-    private static Log log = LogFactory.getLog(KalturaEntityProducer.class);
+    private static final Logger log = LoggerFactory.getLogger(KalturaEntityProducer.class);
     /**
      * The XML root of the archive MUST match the actual name of the entity producer service
      * for this content type. It will be fetched using: (EntityProducer) ComponentManager.get({xml_root_element});

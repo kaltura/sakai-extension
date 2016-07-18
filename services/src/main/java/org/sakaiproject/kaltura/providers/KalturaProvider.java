@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.EntityView;
 import org.sakaiproject.entitybroker.entityprovider.annotations.EntityCustomAction;
@@ -30,7 +30,7 @@ import org.sakaiproject.kaltura.services.SecurityService;
  */
 public class KalturaProvider extends AbstractEntityProvider implements RESTful {
 
-    private final Log log = LogFactory.getLog(KalturaProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(KalturaProvider.class);
 
     private AuthCodeProviderService authCodeProviderService;
     public void setAuthCodeProviderService(AuthCodeProviderService authCodeProviderService) {
