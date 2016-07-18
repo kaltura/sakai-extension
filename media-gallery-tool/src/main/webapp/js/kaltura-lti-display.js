@@ -12,6 +12,8 @@ var resizeBody = function() {
 var submitLtiLaunchForm = function(isDebug) {
     isDebug = isDebug || "off";
     if (isDebug != "on") {
-        document.ltiLaunchForm.submit();
+        if ( $('#ltiLaunchForm').length ) {
+            document.ltiLaunchForm.submit();
+        }
     }
 };
