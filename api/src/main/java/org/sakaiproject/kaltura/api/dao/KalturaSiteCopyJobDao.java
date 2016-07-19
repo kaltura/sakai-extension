@@ -4,9 +4,8 @@
 package org.sakaiproject.kaltura.api.dao;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.hibernate.Transaction;
-import org.sakaiproject.genericdao.api.GeneralGenericDao;
 import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob;
 
 /**
@@ -19,10 +18,10 @@ public interface KalturaSiteCopyJobDao{
     /**
      * Check the work queue for any kaltura site copy job with the given status
      *
-     * @param status - job status to check  
+     * @param status - job status to check
      * @return KalturaSiteCopyJob {@link KalturaSiteCopyJob} object
      */
-    public KalturaSiteCopyJob checkWorkQueue(String status);
+    public Optional<KalturaSiteCopyJob> checkWorkQueue(String status);
 
     /**
      * Get the kaltura site copy job associated with the job Id

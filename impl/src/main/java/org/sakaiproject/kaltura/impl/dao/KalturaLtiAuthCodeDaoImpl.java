@@ -3,17 +3,16 @@
  */
 package org.sakaiproject.kaltura.impl.dao;
 
-import java.util.Date;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiAuthCodeDao;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
-import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 /**
  * Implementation of DAO Interface for authorization codes allowing access to RESTful APIs

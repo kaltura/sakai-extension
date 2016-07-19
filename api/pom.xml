@@ -10,10 +10,6 @@
 
   <name>Kaltura API</name>
   <artifactId>kaltura-api</artifactId>
-  <organization>
-    <name>Unicon, Inc.</name>
-    <url>http://www.unicon.net</url>
-  </organization>
   <packaging>jar</packaging>
 
   <dependencies>

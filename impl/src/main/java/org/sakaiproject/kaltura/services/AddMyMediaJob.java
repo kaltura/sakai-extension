@@ -33,7 +33,6 @@ public class AddMyMediaJob extends AbstractConfigurableJob {
     protected ToolManager toolManager;
     protected String adminEmail = "";
     private static final String TOOL_ID="kaltura.my.media";
-    private static final String TOOL_TITLE="My Media";
     private static final String PAGE_TITLE="My Media";
 
     @Override

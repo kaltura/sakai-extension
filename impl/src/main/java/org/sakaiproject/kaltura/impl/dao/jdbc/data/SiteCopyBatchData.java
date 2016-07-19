@@ -88,7 +88,7 @@ public class SiteCopyBatchData  extends Database {
         PreparedStatement preparedStatement = null;
 
         try {
-            String query = (update) ? SiteCopyBatchSql.getUpdateBatchSql() : SiteCopyBatchSql.getNewBatchSql();
+            String query = update ? SiteCopyBatchSql.getUpdateBatchSql() : SiteCopyBatchSql.getNewBatchSql();
             preparedStatement = createPreparedStatement(preparedStatement, query);
 
             preparedStatement.setString(1, batch.getSourceSiteId());

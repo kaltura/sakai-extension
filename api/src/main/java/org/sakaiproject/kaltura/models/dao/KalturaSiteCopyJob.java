@@ -84,18 +84,22 @@ public class KalturaSiteCopyJob implements Serializable{
      */
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof KalturaSiteCopyJob))
+            return false;
         if (this == obj)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+
         KalturaSiteCopyJob other = (KalturaSiteCopyJob) obj;
-        if (jobId == null || other.jobId == null)  {
+        if (this.jobId == null || other.jobId == null)  {
             return false;
         } else {
-            return jobId.equals(other.jobId); // use id only if set
+            return this.jobId.equals(other.jobId); // use id only if set
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return jobId.intValue();
     }
 
     /**

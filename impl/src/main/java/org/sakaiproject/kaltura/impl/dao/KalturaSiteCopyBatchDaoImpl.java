@@ -4,6 +4,7 @@
 package org.sakaiproject.kaltura.impl.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,17 +31,12 @@ public class KalturaSiteCopyBatchDaoImpl implements KalturaSiteCopyBatchDao {
      * 
      * @return {@link KalturaSiteCopyBatch) object
      */
-    public KalturaSiteCopyBatch checkWorkQueue(String status){
+    public Optional<KalturaSiteCopyBatch> checkWorkQueue(String status){
         List<KalturaSiteCopyBatch> jobs = siteCopyBatchData.getJobs(status);
 
-        log.debug("Checked Kaltura Site Copy Batch work queue. Found rows: " + jobs.size());
+        log.debug("Checked Kaltura Site Copy Batch work queue. Found rows: {}", jobs.size());
 
-        for (KalturaSiteCopyBatch job : jobs) {
-            // will return the first job
-            return job;
-        }
-
-        return null;
+        return jobs.stream().findFirst();
     }
 
     /**

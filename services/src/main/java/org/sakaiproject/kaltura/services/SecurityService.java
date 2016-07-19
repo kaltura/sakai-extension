@@ -4,14 +4,13 @@
 package org.sakaiproject.kaltura.services;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.exception.IdUnusedException;
-import org.sakaiproject.kaltura.Constants;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SecurityService {
 

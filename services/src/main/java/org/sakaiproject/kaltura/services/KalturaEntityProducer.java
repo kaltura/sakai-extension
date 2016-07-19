@@ -3,21 +3,6 @@
  */
 package org.sakaiproject.kaltura.services;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.Properties;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -25,23 +10,23 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import org.sakaiproject.component.cover.ComponentManager;
-import org.sakaiproject.entity.api.Entity;
-import org.sakaiproject.entity.api.EntityManager;
-import org.sakaiproject.entity.api.EntityProducer;
-import org.sakaiproject.entity.api.HttpAccess;
-import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.kaltura.services.KalturaLTIService;
 import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.entity.api.*;
 import org.sakaiproject.kaltura.api.dao.KalturaSiteCopyBatchDao;
-import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch;
 import org.sakaiproject.kaltura.api.dao.KalturaSiteCopyJobDao;
+import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch;
 import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
 
 /**
  * Implemented to support Site Copy Logic on kaltura side
@@ -206,13 +191,18 @@ public class KalturaEntityProducer implements EntityProducer {
                     post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
                     HttpResponse response = client.execute(post);
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                    StringBuffer result = new StringBuffer();
                     String line = "";
-                    while ((line = rd.readLine()) != null) {
-                        result.append(line);
-                        break;
+                    try (BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"))) {
+                        StringBuilder sb = new StringBuilder();
+                        String nextLine;
+                        while ((nextLine = rd.readLine()) != null) {
+                            sb.append(nextLine);
+                            break;
+                        }
+                        if (sb.length() != 0) {
+                            line = sb.toString();
+                        }
                     }
 
                     //first line contains required JSON string
@@ -236,7 +226,7 @@ public class KalturaEntityProducer implements EntityProducer {
 
                             for (int i=0;i < jobs.length(); i++) {
                                 long jobId = jobs.getLong(i);
-                                jobids.add(new Long(jobId));
+                                jobids.add(jobId);
                             }
 
                             if (jobids.size()>0) {
@@ -261,8 +251,7 @@ public class KalturaEntityProducer implements EntityProducer {
                         }
                     }
                 }catch(Exception e){
-                    log.error("Kaltura Merge() - Exception occured processing merge for Kaltura items");
-                    e.printStackTrace();
+                    log.error("Kaltura Merge() - Exception occured processing merge for Kaltura items", e);
                 }
             }
         }

@@ -11,10 +11,6 @@
 
   <name>Kaltura Impl</name>
   <artifactId>kaltura-impl</artifactId>
-  <organization>
-    <name>Unicon, Inc.</name>
-    <url>http://www.unicon.net</url>
-  </organization>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -98,21 +94,5 @@
       </resource>
     </resources>
   </build>
-
-  <developers>
-    <developer>
-      <id>rlong@unicon.net</id>
-      <name>Robert E. Long</name>
-      <email>rlong@unicon.net</email>
-      <url>http://www.linkedin.com/in/relong</url>
-      <roles>
-        <role>Engineer</role>
-      </roles>
-      <timezone>-7</timezone>
-    </developer>
-  </developers>
-
-  <licenses>
-  </licenses>
 
 </project>

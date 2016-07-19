@@ -121,7 +121,7 @@ public class SiteCopyJobData  extends Database {
         PreparedStatement preparedStatement = null;
 
         try {
-            String query = (update) ? SiteCopyJobSql.getUpdateJobSql() : SiteCopyJobSql.getNewJobSql();
+            String query = update ? SiteCopyJobSql.getUpdateJobSql() : SiteCopyJobSql.getNewJobSql();
             preparedStatement = createPreparedStatement(preparedStatement, query);
 
             preparedStatement.setLong(1, job.getBatchId());

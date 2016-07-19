@@ -87,18 +87,22 @@ public class KalturaSiteCopyBatch implements Serializable{
      */
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof KalturaSiteCopyBatch))
+            return false;
         if (this == obj)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+
         KalturaSiteCopyBatch other = (KalturaSiteCopyBatch) obj;
-        if (batchId == null || other.batchId == null)  {
+        if (this.batchId == null || other.batchId == null)  {
             return false;
         } else {
-            return batchId.equals(other.batchId); // use id only if set
+            return this.batchId.equals(other.batchId); // use id only if set
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return batchId.intValue();
     }
 
     /**

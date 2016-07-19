@@ -212,7 +212,7 @@ public class RoleService {
         if (StringUtils.isBlank(ltiRoles)) {
             ltiRoles = Constants.DEFAULT_LTI_ROLE;
         } else {
-            StringUtils.chomp(ltiRoles, ",");
+            ltiRoles = StringUtils.chomp(ltiRoles, ",");
         }
 
         return ltiRoles;

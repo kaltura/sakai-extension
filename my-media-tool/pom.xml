@@ -11,10 +11,6 @@
 
   <name>Kaltura My Media Tool</name>
   <artifactId>my-media-tool</artifactId>
-  <organization>
-    <name>Unicon, Inc.</name>
-    <url>http://www.unicon.net</url>
-  </organization>
   <packaging>war</packaging>
 
   <dependencies>
@@ -106,21 +102,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <developers>
-    <developer>
-      <id>rlong@unicon.net</id>
-      <name>Robert E. Long</name>
-      <email>rlong@unicon.net</email>
-      <url>http://www.linkedin.com/in/relong</url>
-      <roles>
-        <role>Engineer</role>
-      </roles>
-      <timezone>-7</timezone>
-    </developer>
-  </developers>
-
-  <licenses>
-  </licenses>
 
 </project>

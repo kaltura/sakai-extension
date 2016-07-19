@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob {
@@ -51,28 +52,28 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob {
 
     @Override
     public void runJob() throws JobExecutionException {
-        KalturaSiteCopyJob job = kalturaSiteCopyJobDao.checkWorkQueue(jobStatusToWork);
+        Optional<KalturaSiteCopyJob> job = kalturaSiteCopyJobDao.checkWorkQueue(jobStatusToWork);
 
-        if (job == null) {
+        if (!job.isPresent()) {
             log.debug("No \"Kaltura Site copy job \" to work on.");
             return;
         }
 
-        job = workOnJob(job);
+        KalturaSiteCopyJob j = workOnJob(job.get());
 
-        if (StringUtils.equals(KalturaSiteCopyJob.COMPLETE_STATUS, job.getStatus())) {
-            log.debug("Kaltura job for site copy with kaltura job Id : "+ job.getKalturaJobId() + " is complete");
+        if (StringUtils.equals(KalturaSiteCopyJob.COMPLETE_STATUS, j.getStatus())) {
+            log.debug("Kaltura job for site copy with kaltura job Id : "+ j.getKalturaJobId() + " is complete");
         } else {
             // if max attempts is reached, then set the job to failed status and send a notification to admin email with message from kaltura
             int jobMaxAttempt = serverConfigurationService.getInt("jobs.max.attempt", 10);
 
-            if (job.getAttempts() > jobMaxAttempt) {
-                job.setStatus(KalturaSiteCopyJob.FAILED_STATUS);
-                log.error("Setting Kaltura Job status to failed after checking for max attempts :"+ job.toString());
+            if (j.getAttempts() > jobMaxAttempt) {
+                j.setStatus(KalturaSiteCopyJob.FAILED_STATUS);
+                log.error("Setting Kaltura Job status to failed after checking for max attempts :"+ j.toString());
             }
         }
 
-        kalturaSiteCopyJobDao.save(job,true);
+        kalturaSiteCopyJobDao.save(j, true);
     }
 
     protected KalturaSiteCopyJob workOnJob(KalturaSiteCopyJob job) {
@@ -90,7 +91,7 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob {
             String module ="check-job";
             Properties ltiProps = service.prepareJobStatusRequest(module,sourceSiteId,job.getKalturaJobId().toString());
 
-            try{
+            try {
                 String launch_url = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
                 launch_url=launch_url + "/" + module;
                 HttpClient client = new DefaultHttpClient();
@@ -108,13 +109,18 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob {
                 log.debug("Kaltura Job Status check - POST params sent are : " + nameValues.toString());
                 post.setEntity(new UrlEncodedFormEntity(urlParameters));
                 HttpResponse response = client.execute(post);
-                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                StringBuffer result = new StringBuffer();
-                String line = "";
 
-                while ((line = rd.readLine()) != null) {
-                    result.append(line);
-                    break;
+                String line = "";
+                try (BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"))) {
+                    StringBuilder sb = new StringBuilder();
+                    String nextLine;
+                    while ((nextLine = rd.readLine()) != null) {
+                        sb.append(nextLine);
+                        break;
+                    }
+                    if (sb.length() != 0) {
+                        line = sb.toString();
+                    }
                 }
 
                 //first line contains required JSON string
@@ -126,7 +132,7 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob {
                         log.debug("Resultcode on kaltura check job status is :" + resultCode);
 
                         if (resultCode == 0) {
-                            // it is still running on kaltura end so set our job status to new 
+                            // it is still running on kaltura end so set our job status to new
                             job.setStatus(KalturaSiteCopyJob.NEW_STATUS);
                         }else if (resultCode == 1) {
                             job.setStatus(KalturaSiteCopyJob.COMPLETE_STATUS);
@@ -146,9 +152,8 @@ public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob {
                     }
                 }
 
-            }catch(Exception e) {
-               log .error("Exception while sending post to kaltura to check site copy job status:" + job.getKalturaJobId());
-                e.printStackTrace();
+            } catch (Exception e) {
+                log.error("Exception while sending post to kaltura to check site copy job status:" + job.getKalturaJobId(), e);
             }
             //increment job attempts
             job.setAttempts(job.getAttempts() +1);

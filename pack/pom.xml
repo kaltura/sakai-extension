@@ -10,10 +10,6 @@
 
   <name>Kaltura Pack</name>
   <artifactId>kaltura-pack</artifactId>
-  <organization>
-    <name>Unicon, Inc.</name>
-    <url>http://www.unicon.net</url>
-  </organization>
   <packaging>sakai-component</packaging>
 
   <properties>

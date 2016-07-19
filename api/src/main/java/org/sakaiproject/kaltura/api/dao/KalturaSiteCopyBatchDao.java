@@ -5,6 +5,8 @@ package org.sakaiproject.kaltura.api.dao;
 
 import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch;
 
+import java.util.Optional;
+
 /**
  * DAO Interface for Kaltura Site Copy Details
  * 
@@ -17,7 +19,7 @@ public interface KalturaSiteCopyBatchDao {
      * 
      * @return {@link KalturaSiteCopyBatch) object
      */
-    public KalturaSiteCopyBatch checkWorkQueue(String status);
+    public Optional<KalturaSiteCopyBatch> checkWorkQueue(String status);
 
     /**
      * Get the kaltura site copy batch object related to batch id

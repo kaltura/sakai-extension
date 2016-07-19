@@ -4,6 +4,7 @@
 package org.sakaiproject.kaltura.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -32,24 +33,24 @@ public class KalturaSiteCopyBatchJob extends AbstractConfigurableJob {
 
     @Override
     public void runJob() throws JobExecutionException {
-        KalturaSiteCopyBatch job = kalturaSiteCopyBatchDao.checkWorkQueue(jobStatusToWork);
-        if (job == null) {
+        Optional<KalturaSiteCopyBatch> job = kalturaSiteCopyBatchDao.checkWorkQueue(jobStatusToWork);
+        if (!job.isPresent()) {
             log.debug("No \"Kaltura Site copy batch \" to work on.");
             return;
         }
 
-        job = workOnJob(job);
-        if (!StringUtils.equalsIgnoreCase(KalturaSiteCopyBatch.COMPLETE_STATUS, job.getStatus())) {
+        KalturaSiteCopyBatch j = workOnJob(job.get());
+        if (!StringUtils.equalsIgnoreCase(KalturaSiteCopyBatch.COMPLETE_STATUS, j.getStatus())) {
             int jobMaxAttempt = serverConfigurationService.getInt("jobs.max.attempts",10);
 
-            if (job.getAttempts() > jobMaxAttempt) {
-                job.setStatus(KalturaSiteCopyBatch.FAILED_STATUS);
-                log.error("kaltura jobs related to site copy from "+ job.getSourceSiteId() + " to "+ job.getTargetSiteId()+ "are still on pending status");
-                log.error("Max attempts to check job status reached. Setting the status to failed for kaltura site copy batchId : " + job.getBatchId());
+            if (j.getAttempts() > jobMaxAttempt) {
+                j.setStatus(KalturaSiteCopyBatch.FAILED_STATUS);
+                log.error("kaltura jobs related to site copy from "+ j.getSourceSiteId() + " to "+ j.getTargetSiteId()+ "are still on pending status");
+                log.error("Max attempts to check job status reached. Setting the status to failed for kaltura site copy batchId : " + j.getBatchId());
             }
         }
 
-        kalturaSiteCopyBatchDao.save(job, true);
+        kalturaSiteCopyBatchDao.save(j, true);
     }
 
     protected KalturaSiteCopyBatch workOnJob(KalturaSiteCopyBatch job) {
