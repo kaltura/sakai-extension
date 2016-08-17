@@ -13,9 +13,17 @@ var ckeditorId;
                 ckeditorId = editor.name;
                 var height = 480;
                 var width = 770;
+                var siteId = "";
+                if (typeof(parent.portal) != "undefined") {
+                    siteId = parent.portal.siteId;
+                }
+                else if (typeof(parent.parent.portal) != "undefined") {
+                    siteId = parent.parent.portal.siteId;
+                }
+
                 CKEDITOR.dialog.addIframe(pluginName,
                     'Kaltura',
-                    '/media-gallery-tool/ckeditor.htm?siteid=' + parent.portal.siteId,
+                    '/media-gallery-tool/ckeditor.htm?siteid=' + siteId,
                     width,
                     height,
                     function() {
