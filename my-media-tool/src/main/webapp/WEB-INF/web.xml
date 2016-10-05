@@ -77,7 +77,7 @@ Copyright ©2016 Kaltura, Inc.
     <listener-class>org.sakaiproject.util.ToolListener</listener-class>
   </listener>
   <listener>
-    <listener-class>org.sakaiproject.util.ContextLoaderListener</listener-class>
+    <listener-class>org.sakaiproject.util.SakaiContextLoaderListener</listener-class>
   </listener>
 
   <!-- define the starting page for this app -->

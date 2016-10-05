@@ -3,10 +3,9 @@
 Copyright ©2016 Kaltura, Inc.
 
 -->
-
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- a role mapping data preloading bean that has transaction protection -->
     <bean id="preloadLtiRoleData" class="org.sakaiproject.kaltura.impl.dao.PreloadLtiRoleDataImpl" init-method="init">

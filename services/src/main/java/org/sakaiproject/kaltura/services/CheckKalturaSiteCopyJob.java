@@ -3,12 +3,6 @@
  */
 package org.sakaiproject.kaltura.services;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,14 +15,19 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 import org.quartz.JobExecutionException;
-import org.sakaiproject.component.app.scheduler.jobs.AbstractConfigurableJob;
 import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.app.scheduler.jobs.AbstractConfigurableJob;
 import org.sakaiproject.email.api.EmailService;
 import org.sakaiproject.kaltura.api.dao.KalturaSiteCopyBatchDao;
-import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch;
 import org.sakaiproject.kaltura.api.dao.KalturaSiteCopyJobDao;
+import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyBatch;
 import org.sakaiproject.kaltura.models.dao.KalturaSiteCopyJob;
-import org.sakaiproject.kaltura.services.KalturaLTIService;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 public class CheckKalturaSiteCopyJob extends AbstractConfigurableJob {
 
