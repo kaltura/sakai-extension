@@ -5,12 +5,10 @@ Copyright ©2016 Kaltura, Inc.
 -->
 
 <registration>
-	<tool id="sakai.kaltura"
+	<tool id="kaltura.media"
 		title="Media Gallery"
 		description="For creating a media gallery using uploaded video, audio, and image content">
 		<category name="course" />
 		<category name="project" />
-		<category name="myworkspace" />
-		<!-- <category name="sakai.admin" /> -->
-	</tool>	
+	</tool>
 </registration>

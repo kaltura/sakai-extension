@@ -46,7 +46,7 @@ public class MyMediaController extends AbstractController {
         model.put("returndata", retval[0]);
         String isDebug = "kaltura." + Constants.MY_MEDIA + ".debug";
         model.put("isDebug", serverConfigurationService.getString(isDebug, "off"));
-        return new ModelAndView("mymedia", model);
+        return new ModelAndView("main", model);
     }
 
 }

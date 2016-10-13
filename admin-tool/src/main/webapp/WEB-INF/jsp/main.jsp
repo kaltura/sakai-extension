@@ -1,41 +1,19 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-    <link media="all" href="/library/skin/tool_base.css" rel="stylesheet" type="text/css" />
-
-    <script src="/library/js/headscripts.js" type="text/javascript"></script>
-
-    <!-- Twitter Bootstrap -->
-    <script src="<c:url value='/bootstrap/js/bootstrap.min.js'/>" type="text/javascript"></script>
-    <link media="all" href="<c:url value='/bootstrap/css/bootstrap.min.css'/>" rel="stylesheet" type="text/css" />
-    <link media="all" href="<c:url value='/bootstrap/css/bootstrap-theme.min.css'/>" rel="stylesheet" type="text/css" />
-
-    <!-- Additional CSS -->
-    <link media="all" href="<c:url value='/css/main.css'/>" rel="stylesheet" type="text/css" />
-
-    <!-- Additional JavaScript -->
-    <script src="<c:url value='/js/scripts.js'/>" type="text/javascript"></script>
-    <script src="<c:url value='/js/main.js'/>" type="text/javascript"></script>
+    <%@ include file="main-head.jsp" %>
+    <%@ include file="role-head.jsp" %>
 </head>
-<body onload="<%=request.getAttribute("sakai.html.body.onload")%>">
-    <div class="main-header">
-        <h3>Kaltura Administration</h3>
-    </div>
-    <div class="alerts">
-        <div class="alert">
-            <span id="alert-close" class="glyphicon"></span>
-            <span class="alert-text"></span>
-        </div>
-    </div>
-    <!-- Role mapping -->
-    <div class="panel-group content-section" id="accordion">
-        <%@include file="role.jsp"%>
-    </div>
-    <!-- Git versioning -->
-    <div class="git-versioning-hidden" hidden></div>
-    <div class="git-versioning-shown"></div>
+<body onload="<%= request.getAttribute("sakai.html.body.onload") %>">
+    <%@ include file="main-body.jsp" %>
+
+    <!-- JavaScript -->
+    <%= PortalUtils.includeLatestJQuery("kaltura.admin") %>
+    <script type="text/javascript" src="<%= PortalUtils.getScriptPath() %>headscripts.js<%= PortalUtils.getCDNQuery() %>"></script>
+    <script type="text/javascript" src="<c:url value='/js/scripts.js'/><%= PortalUtils.getCDNQuery() %>"></script>
+    <script type="text/javascript" src="<c:url value='/js/main.js'/><%= PortalUtils.getCDNQuery() %>"></script>
+    <script type="text/javascript" src="<c:url value='/js/role.js'/><%= PortalUtils.getCDNQuery() %>"></script>
 </body>
 </html>

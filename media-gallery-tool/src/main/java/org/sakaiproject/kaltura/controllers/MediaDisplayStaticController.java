@@ -17,9 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class MediaDisplayStaticController extends BaseController {
     private static final Logger log = LoggerFactory.getLogger(MediaDisplayStaticController.class);
 
-    /* (non-Javadoc)
-     * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
+    @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ControllerRequestParameters parameters = processRequestParameters(request);
         log.debug(parameters.toString());
