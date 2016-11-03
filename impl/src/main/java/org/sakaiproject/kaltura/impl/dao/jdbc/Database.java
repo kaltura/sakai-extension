@@ -17,7 +17,10 @@ import org.sakaiproject.db.api.SqlService;
  * Uses the SqlService class from Sakai
  * 
  * @author Robert E. Long (rlong @ unicon.net)
+ *
+ * This should be removed in the future once RoleData can be removed
  */
+@Deprecated
 public class Database {
 
     private static final Logger log = LoggerFactory.getLogger(Database.class);

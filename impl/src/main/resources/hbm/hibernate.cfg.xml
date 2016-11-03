@@ -10,7 +10,5 @@ Copyright ©2016 Kaltura, Inc.
     <session-factory>
         <mapping resource="hbm/KalturaLtiRole.hbm.xml" />
         <mapping resource="hbm/KalturaLtiAuthCode.hbm.xml" />
-         <mapping resource="hbm/KalturaSiteCopyBatch.hbm.xml" />
-          <mapping resource="hbm/KalturaSiteCopyJob.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

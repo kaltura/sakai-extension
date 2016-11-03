@@ -506,30 +506,15 @@ public class KalturaLTIService {
             setProperty(toolProps,"custom_copy_incontext", "true");
         }
 
-        // Pull in all of the custom parameters
-        for(Object okey : toolProps.keySet() ) {
-            String skey = (String) okey;
-            if ( ! skey.startsWith(BasicLTIConstants.CUSTOM_PREFIX) ) continue;
-            String value = toolProps.getProperty(skey);
-            if ( value == null ) continue;
-            setProperty(ltiProps, skey, value);
-        }
-
-        // Pull in all of the custom parameters
+        // Pull in all of the parameters
         for(Object okey : toolProps.keySet() ) {
             String skey = (String) okey;
 
-            if (!StringUtils.startsWith(skey, BasicLTIConstants.CUSTOM_PREFIX)) {
-                continue;
-            }
-
             String value = toolProps.getProperty(skey);
 
-            if (value == null) {
-                continue;
+            if (value != null) {
+                setProperty(ltiProps, skey, value);
             }
-
-            setProperty(ltiProps, skey, value);
         }
 
         Map<String,String> extra = new HashMap<String,String>();

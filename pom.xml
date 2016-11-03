@@ -11,16 +11,9 @@
   <name>Kaltura LTI Tool</name>
   <groupId>org.sakaiproject.kaltura</groupId>
   <artifactId>kaltura</artifactId>
-  <version>1.1</version>
-  <organization>
-    <name>Sakai Project</name>
-    <url>http://sakaiproject.org/</url>
-  </organization>
-  <inceptionYear>2014</inceptionYear>
   <packaging>pom</packaging>
 
   <properties>
-    <kaltura.version>${project.version}</kaltura.version>
     <gson.version>2.2.4</gson.version>
   </properties>
 
@@ -54,7 +47,35 @@
     </developer>
   </developers>
 
-  <licenses>
-  </licenses>
-
+  <dependencyManagement>
+    <!-- Kaltura libs -->
+    <dependencies>
+      <dependency>
+        <groupId>org.sakaiproject.kaltura</groupId>
+        <artifactId>kaltura-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.sakaiproject.kaltura</groupId>
+        <artifactId>kaltura-impl</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.sakaiproject.kaltura</groupId>
+        <artifactId>kaltura-services</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.sakaiproject.kaltura</groupId>
+        <artifactId>kaltura-utils</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <!-- Sakai libs -->
+      <dependency>
+        <groupId>org.sakaiproject.basiclti</groupId>
+        <artifactId>basiclti-common</artifactId>
+        <version>${sakai.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>

@@ -39,7 +39,7 @@ kaltura.main = kaltura.main || {
                     }
                 });
                 $(gitVersioningHiddenElement).html(displayString);
-                $(gitVersioningShownElement).html("kaltura-sakai-extension version: " + data.buildVersion);
+                $(gitVersioningShownElement).html(data.branch + " | " + data.commitIdAbbrev);
             } else {
                 $(gitVersioningHiddenElement).text("Error getting Git versioning data.");
                 $(gitVersioningShownElement).html("kaltura-sakai-extension version: N/A");

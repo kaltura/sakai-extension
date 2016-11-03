@@ -13,8 +13,6 @@ Copyright ©2016 Kaltura, Inc.
             <list>
                 <value>classpath*:hbm/KalturaLtiRole.hbm.xml</value>
                 <value>classpath*:hbm/KalturaLtiAuthCode.hbm.xml</value>
-                <value>classpath*:hbm/KalturaSiteCopyBatch.hbm.xml</value>
-                <value>classpath*:hbm/KalturaSiteCopyJob.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -87,12 +85,6 @@ Copyright ©2016 Kaltura, Inc.
     </bean>
 
     <bean id="roleData" class="org.sakaiproject.kaltura.impl.dao.jdbc.data.RoleData" parent="jdbcDatabase">
-    </bean>
-
-    <bean id="siteCopyBatchData" class="org.sakaiproject.kaltura.impl.dao.jdbc.data.SiteCopyBatchData" parent="jdbcDatabase">
-    </bean>
-
-    <bean id="siteCopyJobData" class="org.sakaiproject.kaltura.impl.dao.jdbc.data.SiteCopyJobData" parent="jdbcDatabase">
     </bean>
 
 </beans>

@@ -17,7 +17,10 @@ import org.sakaiproject.kaltura.impl.dao.jdbc.Database;
  * Processes app-specific role services dao needs
  * 
  * @author Robert Long (rlong @ unicon.net)
+ *
+ * This should be removed in the future once the sakai api implements this
  */
+@Deprecated
 public class RoleData extends Database {
 
     private static final Logger log = LoggerFactory.getLogger(RoleData.class);
