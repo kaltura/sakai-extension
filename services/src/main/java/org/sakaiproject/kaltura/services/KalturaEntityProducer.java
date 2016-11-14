@@ -181,7 +181,7 @@ public class KalturaEntityProducer implements EntityProducer, EntityTransferrer 
      */
     public void transferCopyEntities(String fromContext, String toContext, List ids, boolean cleanup) {
         log.debug("kaltura EP.transferCopyEntities(fromContext={}, toContext={}, ids={}, cleanup={}", fromContext, toContext, ids, cleanup);
-        if (serverConfigurationService.getBoolean("kaltura.site.import.enabled", false)) {
+        if (serverConfigurationService.getBoolean("kaltura.site.import.enabled", true)) {
             copySiteToSite(toContext, fromContext);
         } else {
             log.warn("kaltura EP.transferCopyEntities is disabled");
