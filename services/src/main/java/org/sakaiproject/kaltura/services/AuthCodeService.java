@@ -3,14 +3,13 @@
  */
 package org.sakaiproject.kaltura.services;
 
-import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.api.dao.KalturaLtiAuthCodeDao;
 import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
 import org.sakaiproject.kaltura.utils.AuthCodeUtil;
-import org.sakaiproject.user.api.UserNotDefinedException;
+
+import java.util.Date;
 
 /**
  * A helper class for getting, updating, and calculating authorization code objects
@@ -147,7 +146,7 @@ public class AuthCodeService {
         }
 
         // if current date is after the expiration date, code is invalid
-        return (new Date()).before(kalturaLtiAuthCode.getDateExpires());
+        return new Date().before(kalturaLtiAuthCode.getDateExpires());
     }
 
 }

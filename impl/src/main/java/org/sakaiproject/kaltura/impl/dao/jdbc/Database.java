@@ -8,8 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.db.api.SqlService;
 
 /**
@@ -17,10 +17,13 @@ import org.sakaiproject.db.api.SqlService;
  * Uses the SqlService class from Sakai
  * 
  * @author Robert E. Long (rlong @ unicon.net)
+ *
+ * This should be removed in the future once RoleData can be removed
  */
+@Deprecated
 public class Database {
 
-    private final Log log = LogFactory.getLog(Database.class);
+    private static final Logger log = LoggerFactory.getLogger(Database.class);
 
     private SqlService sqlService;
     public void setSqlService(SqlService sqlService) {

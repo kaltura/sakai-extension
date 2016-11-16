@@ -7,7 +7,10 @@ package org.sakaiproject.kaltura.impl.dao.jdbc.sql;
  * Supplies the SQL strings for role service queries
  * 
  * @author Robert Long (rlong @ unicon.net)
+ *
+ * This should be removed in the future once RoleData can be removed
  */
+@Deprecated
 public class RoleSql {
 
 
@@ -22,7 +25,7 @@ public class RoleSql {
                      "FROM " +
                         "SAKAI_REALM_ROLE " +
                      "WHERE " +
-                        "ROLE_NAME NOT IN ('.anon', '.auth') " +
+                        "ROLE_NAME NOT LIKE ('.%') " +
                      "ORDER BY " +
                         "ROLE_NAME ASC";
 

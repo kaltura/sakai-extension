@@ -6,8 +6,8 @@ package org.sakaiproject.kaltura.impl.dao;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sakaiproject.genericdao.api.search.Search;
@@ -22,7 +22,7 @@ import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
  */
 public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements KalturaLtiRoleDao {
 
-    private final Log log = LogFactory.getLog(KalturaLtiRoleDaoImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(KalturaLtiRoleDaoImpl.class);
 
     public void init() {
     }

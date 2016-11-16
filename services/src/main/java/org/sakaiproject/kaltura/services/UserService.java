@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.Role;
@@ -24,7 +24,7 @@ import org.sakaiproject.user.api.UserNotDefinedException;
 
 public class UserService {
 
-    private final Log log = LogFactory.getLog(UserService.class);
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     /**
      * {@link AuthzGroupService}
@@ -121,26 +121,24 @@ public class UserService {
         for (String userAuthzGroupId : userAuthzGroupIds) {
             try {
                 Reference reference = entityManager.newReference(userAuthzGroupId);
-                if(reference.isKnownType()) {
-                   if(StringUtils.equalsIgnoreCase(reference.getType(), SiteService.APPLICATION_ID)) {
-                       String siteId = reference.getId();
+                if(reference.isKnownType() && StringUtils.equalsIgnoreCase(reference.getType(), SiteService.APPLICATION_ID)) {
+                    String siteId = reference.getId();
 
-                       if (StringUtils.isNotBlank(siteId)) {
-                           UserSiteRole userSiteRole = new UserSiteRole(siteId);
+                    if (StringUtils.isNotBlank(siteId)) {
+                        UserSiteRole userSiteRole = new UserSiteRole(siteId);
 
-                           AuthzGroup authzGroup = authzGroupService.getAuthzGroup(userAuthzGroupId);
-                           Role role = authzGroup.getUserRole(user.getId());
-                           String ltiRole = roleService.calculateLtiRoles(role.getId());
-                           userSiteRole.setLtiRoles(ltiRole);
+                        AuthzGroup authzGroup = authzGroupService.getAuthzGroup(userAuthzGroupId);
+                        Role role = authzGroup.getUserRole(user.getId());
+                        String ltiRole = roleService.calculateLtiRoles(role.getId());
+                        userSiteRole.setLtiRoles(ltiRole);
 
-                           Site site = siteService.getSite(siteId);
-                           if (site != null) {
-                               String siteTitle = site.getTitle();
-                               userSiteRole.setContextTitle(siteTitle);
-                           }
-                           user.addUserSiteRole(userSiteRole);
-                       }
-                   }
+                        Site site = siteService.getSite(siteId);
+                        if (site != null) {
+                            String siteTitle = site.getTitle();
+                            userSiteRole.setContextTitle(siteTitle);
+                        }
+                        user.addUserSiteRole(userSiteRole);
+                    }
                 }
             } catch (Exception e) {
                 log.error("Error retrieving AuthzGroup: " + userAuthzGroupId + " for user: " + user.getSakaiUser().getId(), e);

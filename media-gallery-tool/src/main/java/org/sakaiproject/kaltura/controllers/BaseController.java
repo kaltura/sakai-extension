@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.services.KalturaLTIService;
 import org.sakaiproject.kaltura.services.SecurityService;
@@ -13,26 +14,32 @@ import org.sakaiproject.tool.api.ToolManager;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-public class BaseController extends AbstractController {
+abstract class BaseController extends AbstractController {
 
     protected KalturaLTIService kalturaLTIService;
+    protected SecurityService securityService;
+    protected ToolManager toolManager;
+    protected UserService userService;
+    protected ServerConfigurationService serverConfigurationService;
+
     public void setKalturaLTIService(KalturaLTIService kalturaLTIService) {
         this.kalturaLTIService = kalturaLTIService;
     }
 
-    protected SecurityService securityService;
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
     }
 
-    protected ToolManager toolManager;
     public void setToolManager(ToolManager toolManager) {
         this.toolManager = toolManager;
     }
 
-    protected UserService userService;
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
+        this.serverConfigurationService = serverConfigurationService;
     }
 
     protected ControllerRequestParameters processRequestParameters(HttpServletRequest request) throws Exception {
@@ -129,9 +136,9 @@ public class BaseController extends AbstractController {
         }
     }
 
+    /**
+     * @see AbstractController#handleRequestInternal(HttpServletRequest, HttpServletResponse)
+     */
     @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return null;
-    }
-
+    protected abstract ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

@@ -8,7 +8,7 @@ Copyright ©2016 Kaltura, Inc.
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee  http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     version="2.4">
-  <display-name>sakai.kaltura</display-name>
+  <display-name>kaltura.media</display-name>
   <description>Sakai Kaltura Media Gallery tool</description>
 
   <!-- Sakai request filter -->
@@ -24,7 +24,7 @@ Copyright ©2016 Kaltura, Inc.
 
   <filter-mapping>
     <filter-name>sakai.request</filter-name>
-    <servlet-name>sakai.kaltura</servlet-name>
+    <servlet-name>kaltura.media</servlet-name>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -53,7 +53,7 @@ Copyright ©2016 Kaltura, Inc.
 
   <filter-mapping>
     <filter-name>encodingFilter</filter-name>
-    <servlet-name>sakai.kaltura</servlet-name>
+    <servlet-name>kaltura.media</servlet-name>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -68,7 +68,7 @@ Copyright ©2016 Kaltura, Inc.
 
   <!-- Tool Servlet -->
   <servlet>
-    <servlet-name>sakai.kaltura</servlet-name>
+    <servlet-name>kaltura.media</servlet-name>
     <servlet-class>uk.ac.cam.caret.sakai.WebappToolServlet
     </servlet-class>
     <!-- use this to specify a starting page location if needed -->

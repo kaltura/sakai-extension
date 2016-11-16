@@ -11,8 +11,8 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -30,11 +30,9 @@ import org.tsugi.basiclti.BasicLTIConstants;
 import org.tsugi.basiclti.BasicLTIUtil;
 
 public class KalturaLTIService {
-    private static final Log LOG = LogFactory.getLog(KalturaLTIService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KalturaLTIService.class);
 
     private static ResourceLoader rb = new ResourceLoader("basiclti");
-    public static final boolean verbosePrint = true;
-
     public static final String LTI_SECRET =    "secret";
     public static final String LTI_NEWPAGE =   "newpage";
     public static final String LTI_DEBUG = "debug";
@@ -165,10 +163,10 @@ public class KalturaLTIService {
             return postError("<p>Error signing message.</p>");
         }
 
-        dPrint("LAUNCH III=" + ltiProps);
+        LOG.debug("LAUNCH III=" + ltiProps);
 
         String debugProperty = toolProps.getProperty(LTI_DEBUG);
-        boolean dodebug = Arrays.asList((new String[]{"on", "1"})).contains(debugProperty);
+        boolean dodebug = Arrays.asList(new String[]{"on", "1"}).contains(debugProperty);
         String postData = postLaunchHTML(ltiProps, launchUrl, "Press to Launch External Tool", dodebug, extra);
         String[] retval = {postData, launchUrl};
 
@@ -191,6 +189,7 @@ public class KalturaLTIService {
             try {
                 user = userDirectoryService.getUserByEid(userId);
             } catch (Exception e1) {
+                LOG.warn("User not found with ID: {}", userId);
             }
         }
 
@@ -260,10 +259,10 @@ public class KalturaLTIService {
             return postError("<p>Error signing message.</p>");
         }
 
-        dPrint("LAUNCH III=" + ltiProps);
+        LOG.debug("LAUNCH III=" + ltiProps);
 
         String debugProperty = toolProps.getProperty(LTI_DEBUG);
-        boolean dodebug = Arrays.asList((new String[]{"on", "1"})).contains(debugProperty);
+        boolean dodebug = Arrays.asList(new String[]{"on", "1"}).contains(debugProperty);
         String postData = postLaunchHTML(ltiProps, ckeditorUrl, "Press to Launch External Tool", dodebug, extra);
         String[] retval = {postData, ckeditorUrl};
 
@@ -380,10 +379,10 @@ public class KalturaLTIService {
             return postError("<p>Error signing message.</p>");
         }
 
-        dPrint("LAUNCH III="+ltiProps);
+        LOG.debug("LAUNCH III="+ltiProps);
 
         String debugProperty = toolProps.getProperty(LTI_DEBUG);
-        boolean dodebug = Arrays.asList((new String[]{"on", "1"})).contains(debugProperty);
+        boolean dodebug = Arrays.asList(new String[]{"on", "1"}).contains(debugProperty);
 
         String postData = postLaunchHTML(ltiProps, launchUrl, "Press to Launch External Tool", dodebug, extra);
 
@@ -411,8 +410,8 @@ public class KalturaLTIService {
             setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_CONTACT_EMAIL_PRIMARY,user.getEmail());
             setProperty(ltiProps,BasicLTIConstants.EXT_SAKAI_PROVIDER_EID, user.getEid());
             // Only send the display ID if it's different to the EID.
-            LOG.error("eid:displayId: [" + user.getEid() + ":" + user.getDisplayId() + "]");
             if (!StringUtils.equalsIgnoreCase(user.getEid(), user.getDisplayId())) {
+                LOG.info("eid:displayId: [" + user.getEid() + ":" + user.getDisplayId() + "]");
                 setProperty(ltiProps,BasicLTIConstants.EXT_SAKAI_PROVIDER_DISPLAYID,user.getDisplayId());
             }
         }
@@ -423,6 +422,7 @@ public class KalturaLTIService {
         try {
             site = siteService.getSite(siteId);
         } catch(Exception e) {
+            LOG.warn("Site not found: {}", siteId);
         }
 
         if (site != null) {
@@ -459,6 +459,7 @@ public class KalturaLTIService {
         try {
             user = userDirectoryService.getUser("admin");
         } catch (UserNotDefinedException e1) {
+            LOG.warn("admin user not found");
         }
 
         // Start building up the properties
@@ -492,6 +493,7 @@ public class KalturaLTIService {
             try{
                 targetSite = siteService.getSite(targetSiteId);
             }catch(Exception e){
+                LOG.warn("Site not found: {}", targetSiteId);
             }
 
             setProperty(toolProps, "custom_copy_source_course_id", fromSiteId);
@@ -504,30 +506,15 @@ public class KalturaLTIService {
             setProperty(toolProps,"custom_copy_incontext", "true");
         }
 
-        // Pull in all of the custom parameters
-        for(Object okey : toolProps.keySet() ) {
-            String skey = (String) okey;
-            if ( ! skey.startsWith(BasicLTIConstants.CUSTOM_PREFIX) ) continue;
-            String value = toolProps.getProperty(skey);
-            if ( value == null ) continue;
-            setProperty(ltiProps, skey, value);
-        }
-
-        // Pull in all of the custom parameters
+        // Pull in all of the parameters
         for(Object okey : toolProps.keySet() ) {
             String skey = (String) okey;
 
-            if (!StringUtils.startsWith(skey, BasicLTIConstants.CUSTOM_PREFIX)) {
-                continue;
-            }
-
             String value = toolProps.getProperty(skey);
 
-            if (value == null) {
-                continue;
+            if (value != null) {
+                setProperty(ltiProps, skey, value);
             }
-
-            setProperty(ltiProps, skey, value);
         }
 
         Map<String,String> extra = new HashMap<String,String>();
@@ -555,6 +542,7 @@ public class KalturaLTIService {
         try {
             user = userDirectoryService.getUser("admin");
         } catch (UserNotDefinedException e1) {
+            LOG.warn("admin user not found");
         }
 
         // Start building up the properties
@@ -744,19 +732,11 @@ public class KalturaLTIService {
         props.setProperty(key, value);
     }
 
-    public static void dPrint(String str) {
-        if (verbosePrint) {
-            System.out.println(str);
-        }
-    }
-
     /**
      * Create the HTML to render a POST form and then automatically submit it.
-     * Make sure to call {@link #cleanupProperties(Properties)} before signing.
-     * 
+     *
      * @param cleanProperties
-     *          Assumes you have called {@link #cleanupProperties(Properties)}
-     *          beforehand.
+     *          LTI properties
      * @param endpoint
      *          The LTI launch url.
      * @param debug
@@ -772,14 +752,12 @@ public class KalturaLTIService {
 
     /**
      * Create the HTML to render a POST form and then automatically submit it.
-     * Make sure to call {@link #cleanupProperties(Properties)} before signing.
      * This is a virtually identical copy of BasicLTIUtil.postLauchHTML,
      * except it does not submit the form automatically.  Instead the form
      * submit needs to be called as part of another script.
      * 
      * @param cleanProperties
-     *          Assumes you have called {@link #cleanupProperties(Properties)}
-     *          beforehand.
+     *          LTI properties
      * @param endpoint
      *          The LTI launch url.
      * @param debug
@@ -796,7 +774,7 @@ public class KalturaLTIService {
             throw new IllegalArgumentException("endpoint == null");
         }
 
-        Map<String, String> newMap = (debug) ? new TreeMap<String, String>(cleanProperties) : cleanProperties;
+        Map<String, String> newMap = debug ? new TreeMap<String, String>(cleanProperties) : cleanProperties;
 
         StringBuilder text = new StringBuilder();
         // paint form

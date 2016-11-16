@@ -17,7 +17,7 @@ Copyright ©2016 Kaltura, Inc.
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <prop key="/mymedia.htm">mymediaController</prop>
+                <prop key="/main.htm">mymediaController</prop>
             </props>
         </property>
     </bean>

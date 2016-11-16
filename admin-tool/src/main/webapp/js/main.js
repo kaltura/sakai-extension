@@ -39,10 +39,10 @@ kaltura.main = kaltura.main || {
                     }
                 });
                 $(gitVersioningHiddenElement).html(displayString);
-                $(gitVersioningShownElement).html("Build version: " + data.buildVersion);
+                $(gitVersioningShownElement).html(data.branch + " | " + data.commitIdAbbrev);
             } else {
                 $(gitVersioningHiddenElement).text("Error getting Git versioning data.");
-                $(gitVersioningShownElement).html("Build version: N/A");
+                $(gitVersioningShownElement).html("kaltura-sakai-extension version: N/A");
             }
         });
     }

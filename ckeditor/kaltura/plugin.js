@@ -34,7 +34,7 @@ var ckeditorId;
                 editor.ui.addButton(pluginName, {
                     label: pluginName,
                     command: pluginName,
-                    icon: this.path + 'images/kaltura.gif'
+                    icon: this.path + 'images/kaltura.png'
                 });
             }
         }

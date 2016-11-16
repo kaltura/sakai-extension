@@ -5,8 +5,8 @@ package org.sakaiproject.kaltura.services.provider;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.error.ErrorAuthCode;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
@@ -21,7 +21,7 @@ import org.sakaiproject.kaltura.services.RestService;
  */
 public class AuthCodeProviderService {
 
-    private final Log log = LogFactory.getLog(AuthCodeProviderService.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthCodeProviderService.class);
 
     private AuthCodeService authCodeService;
     public void setAuthCodeService(AuthCodeService authCodeService) {

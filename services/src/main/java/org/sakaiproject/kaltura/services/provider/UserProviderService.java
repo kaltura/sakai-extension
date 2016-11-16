@@ -4,8 +4,8 @@
 package org.sakaiproject.kaltura.services.provider;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.error.ErrorUser;
@@ -21,7 +21,7 @@ import org.sakaiproject.kaltura.services.SecurityService;
  */
 public class UserProviderService {
 
-    private final Log log = LogFactory.getLog(UserProviderService.class);
+    private static final Logger log = LoggerFactory.getLogger(UserProviderService.class);
 
     private RestService restService;
     public void setRestService(RestService restService) {
