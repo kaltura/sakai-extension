@@ -85,21 +85,6 @@ public class KalturaLTIService {
         return launchLTIRequest(module, user, placementId, siteId);
     }
 
-    public String[] launchLTIRequest(String module, String userId, String siteId) {
-        User user = null;
-
-        try {
-            if (StringUtils.isNotBlank(userId)) {
-                user = userDirectoryService.getUser(userId);
-            }
-        } catch (UserNotDefinedException e1) {
-            LOG.error("User not found with ID: " + userId, e1);
-        }
-
-        String placementId = "placementId123";
-        return launchLTIRequest(module, user, placementId, siteId);
-    }
-
     public String[] launchLTIRequest(String module, User user, String placementId, String siteId){
         String userId = Constants.DEFAULT_ANONYMOUS_USER_ID;
 
@@ -228,6 +213,7 @@ public class KalturaLTIService {
             setProperty(ltiProps, BasicLTIConstants.LAUNCH_PRESENTATION_LOCALE, rb.getLocale().toString());
         }
 
+        setAuthCode(ltiProps, (user != null ? user.getId() : Constants.DEFAULT_ANONYMOUS_USER_ID));
         setRole(ltiProps, siteId);
         setDebugOption(toolProps , CKEDITOR_REQUEST);
         setWindowOption(toolProps);
@@ -506,70 +492,6 @@ public class KalturaLTIService {
             setProperty(toolProps,"custom_copy_incontext", "true");
         }
 
-        // Pull in all of the parameters
-        for(Object okey : toolProps.keySet() ) {
-            String skey = (String) okey;
-
-            String value = toolProps.getProperty(skey);
-
-            if (value != null) {
-                setProperty(ltiProps, skey, value);
-            }
-        }
-
-        Map<String,String> extra = new HashMap<String,String>();
-
-        String orgGuid = serverConfigurationService.getString("basiclti.consumer_instance_guid", null);
-        String orgDesc = serverConfigurationService.getString("basiclti.consumer_instance_description", null);
-        String orgUrl = serverConfigurationService.getString("basiclti.consumer_instance_url", null);
-
-        ltiProps = BasicLTIUtil.signProperties(ltiProps, launchUrl, "POST", key, secret, orgGuid, orgDesc, orgUrl, extra);
-
-        return ltiProps;
-    }
-
-    /**
-     * Prepares LTI properties that need to be sent as POST parameters to initiate copy on kaltura server on sakai site import 
-     * @param module - string indicating which module in kaltura is using this service
-     * @param fromSiteId - sakai Site Id which is copied 
-     * @param jobId - kaltura job id 
-     * @return properties - Properties object holding LTI properties
-     */
-    public Properties prepareJobStatusRequest(String module,String fromSiteId, String jobId){
-        // get admin user 
-        User user = null;
-
-        try {
-            user = userDirectoryService.getUser("admin");
-        } catch (UserNotDefinedException e1) {
-            LOG.warn("admin user not found");
-        }
-
-        // Start building up the properties
-        Properties ltiProps = initLTIProps(user, fromSiteId);
-        Properties toolProps = new Properties();
-
-        // Add key and secret
-        String key = serverConfigurationService.getString("kaltura.launch.key");
-        String secret = serverConfigurationService.getString("kaltura.launch.secret");
-        setProperty(toolProps, LTI_SECRET, secret );
-        setProperty(toolProps, "key", key );
-
-        String launchUrl = serverConfigurationService.getString("kaltura.host") + "/hosted/index";
-
-        if (StringUtils.isNotBlank(module)) {
-            launchUrl += "/" + module;
-        }
-
-        setProperty(toolProps, "launch_url", launchUrl);
-        setDefaultReturnUrl(ltiProps, fromSiteId);
-        String theRole = "Instructor,Administrator,urn:lti:instrole:ims/lis/Administrator,urn:lti:sysrole:ims/lis/Administrator";
-        setProperty(ltiProps, BasicLTIConstants.ROLES, theRole);
-
-        String placementId = "copySitePlacement123";
-        setProperty(ltiProps, BasicLTIConstants.RESOURCE_LINK_ID, placementId);
-        setProperty(toolProps, "custom_jobid", jobId);
-
         // Pull in all of the custom parameters
         for(Object okey : toolProps.keySet()) {
             String skey = (String) okey;
@@ -587,7 +509,9 @@ public class KalturaLTIService {
             setProperty(ltiProps, skey, value);
         }
 
+
         Map<String,String> extra = new HashMap<String,String>();
+
         String orgGuid = serverConfigurationService.getString("basiclti.consumer_instance_guid", null);
         String orgDesc = serverConfigurationService.getString("basiclti.consumer_instance_description", null);
         String orgUrl = serverConfigurationService.getString("basiclti.consumer_instance_url", null);
@@ -627,9 +551,11 @@ public class KalturaLTIService {
         try{
             String authCode = authCodeService.createAuthCode(userId).getAuthCode();
             setProperty(ltiProps, Constants.AUTHORIZATION_CODE_KEY, authCode);
+            // Sakai 11 Basic LTI stopped adapting LTI properties with the CUSTOM_PREFIX
+            // so we do it here for compatibility
+            setProperty(ltiProps, BasicLTIConstants.CUSTOM_PREFIX + Constants.AUTHORIZATION_CODE_KEY, authCode);
         }catch(Exception e){
-            LOG.error("Error thrown generating auth code from user id : " + e);
-            e.printStackTrace();
+            LOG.error("Error thrown generating auth code from user id : {}", e.getMessage(), e);
         }
     }
 
