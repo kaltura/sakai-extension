@@ -464,7 +464,7 @@ public class KalturaLTIService {
             launchUrl += "/" + module;
         }
 
-        setProperty(toolProps, "launch_url", launchUrl);
+        setProperty(ltiProps, "launch_url", launchUrl);
 
         setDefaultReturnUrl(ltiProps, fromSiteId);
         String theRole = "Instructor,Administrator,urn:lti:instrole:ims/lis/Administrator,urn:lti:sysrole:ims/lis/Administrator";
