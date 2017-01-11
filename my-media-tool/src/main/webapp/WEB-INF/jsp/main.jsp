@@ -4,7 +4,7 @@
 <head>
     <%@ include file="head.jsp" %>
 </head>
-<body onload="resizeBody(); <%=request.getAttribute("sakai.html.body.onload")%>; submitLtiLaunchForm('${isDebug}')">
+<body onload="<%=request.getAttribute("sakai.html.body.onload")%>; submitLtiLaunchForm('${isDebug}')">
     ${returndata}
     <div id="KalturaLtiContent" />
 
