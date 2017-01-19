@@ -110,6 +110,10 @@ public class SecurityService {
             throw new IllegalArgumentException("There is no currently defined user.");
         }
 
+        if (StringUtils.startsWith(siteId,"~")) {
+            siteId = "~" + StringUtils.split(currentUserRef, '/')[1];
+        }
+
         Site site;
         try {
             site = siteService.getSite(siteId);
