@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright ©2016 Kaltura, Inc.
+
+-->
+
+<registration>
+	<tool id="kaltura.media"
+		title="Media Gallery"
+		description="For creating a media gallery using uploaded video, audio, and image content">
+		<category name="course" />
+		<category name="project" />
+	</tool>
+</registration>

@@ -5,28 +5,22 @@
   <parent>
     <groupId>org.sakaiproject.kaltura</groupId>
     <artifactId>kaltura</artifactId>
-    <version>1.0</version>
+    <version>11-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <name>Kaltura Impl</name>
   <artifactId>kaltura-impl</artifactId>
-  <organization>
-    <name>Unicon, Inc.</name>
-    <url>http://www.unicon.net</url>
-  </organization>
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
       <artifactId>kaltura-api</artifactId>
-      <version>${kaltura.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
       <artifactId>kaltura-utils</artifactId>
-      <version>${kaltura.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
@@ -49,27 +43,27 @@
     <artifactId>scheduler-component-shared</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
+      <groupId>${sakai.hibernate.groupId}</groupId>
+      <artifactId>${sakai.hibernate.artifactId}</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
+      <groupId>${sakai.spring.groupId}</groupId>
+      <artifactId>${sakai.spring.artifactId}</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
+      <groupId>${sakai.spring.groupId}</groupId>
       <artifactId>spring-orm</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
+      <groupId>${sakai.spring.groupId}</groupId>
       <artifactId>spring-tx</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
+      <groupId>${sakai.spring.groupId}</groupId>
       <artifactId>spring-beans</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
+      <groupId>${sakai.spring.groupId}</groupId>
       <artifactId>spring-webmvc</artifactId>
       <scope>compile</scope>
     </dependency>
@@ -78,8 +72,8 @@
       <artifactId>commons-lang</artifactId>
     </dependency>
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.quartz-scheduler</groupId>
@@ -98,21 +92,5 @@
       </resource>
     </resources>
   </build>
-
-  <developers>
-    <developer>
-      <id>rlong@unicon.net</id>
-      <name>Robert E. Long</name>
-      <email>rlong@unicon.net</email>
-      <url>http://www.linkedin.com/in/relong</url>
-      <roles>
-        <role>Engineer</role>
-      </roles>
-      <timezone>-7</timezone>
-    </developer>
-  </developers>
-
-  <licenses>
-  </licenses>
 
 </project>

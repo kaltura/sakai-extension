@@ -5,16 +5,12 @@
   <parent>
     <groupId>org.sakaiproject.kaltura</groupId>
     <artifactId>kaltura</artifactId>
-    <version>1.0</version>
+    <version>11-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <name>Kaltura Admin Tool</name>
   <artifactId>kaltura-admin-tool</artifactId>
-  <organization>
-    <name>Unicon, Inc.</name>
-    <url>http://www.unicon.net</url>
-  </organization>
   <packaging>war</packaging>
 
   <dependencies>
@@ -39,15 +35,19 @@
       <artifactId>sakai-kernel-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
+      <groupId>org.sakaiproject.portal</groupId>
+      <artifactId>sakai-portal-util</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
+      <groupId>${sakai.spring.groupId}</groupId>
+      <artifactId>${sakai.spring.artifactId}</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${sakai.spring.groupId}</groupId>
       <artifactId>spring-beans</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
+      <groupId>${sakai.spring.groupId}</groupId>
       <artifactId>spring-webmvc</artifactId>
       <scope>compile</scope>
     </dependency>
@@ -71,8 +71,8 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
   </dependencies>
 
@@ -97,21 +97,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <developers>
-    <developer>
-      <id>rlong@unicon.net</id>
-      <name>Robert E. Long</name>
-      <email>rlong@unicon.net</email>
-      <url>http://www.linkedin.com/in/relong</url>
-      <roles>
-        <role>Engineer</role>
-      </roles>
-      <timezone>-7</timezone>
-    </developer>
-  </developers>
-
-  <licenses>
-  </licenses>
 
 </project>

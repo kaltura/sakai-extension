@@ -13,21 +13,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.kaltura.Constants;
 /**
- * Controller to handle the main.jsp view
+ * Controller to handle the mediagallery.jsp view
  * 
  * @author Yegeneswari Nagappan (ynagappan @ unicon.net)
  *
  */
 public class MediaGalleryController extends BaseController {
 
-    private ServerConfigurationService serverConfigurationService;
-    public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
-        this.serverConfigurationService = serverConfigurationService;
-    }
-
-    /* (non-Javadoc)
-     * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
+    @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String,Object> model = new HashMap<String,Object>();
 

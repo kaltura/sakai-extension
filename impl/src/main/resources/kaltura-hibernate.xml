@@ -3,10 +3,9 @@
 Copyright ©2016 Kaltura, Inc.
 
 -->
-
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- Session Factory -->
     <bean id="kalturaSessionFactory" parent="org.sakaiproject.springframework.orm.hibernate.SessionFactoryBase">
@@ -14,8 +13,6 @@ Copyright ©2016 Kaltura, Inc.
             <list>
                 <value>classpath*:hbm/KalturaLtiRole.hbm.xml</value>
                 <value>classpath*:hbm/KalturaLtiAuthCode.hbm.xml</value>
-                <value>classpath*:hbm/KalturaSiteCopyBatch.hbm.xml</value>
-                <value>classpath*:hbm/KalturaSiteCopyJob.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -28,7 +25,7 @@ Copyright ©2016 Kaltura, Inc.
     </bean>
 
     <!-- Role DAO Target -->
-    <bean id="kalturaLtiRoleDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiRoleDaoImpl" init-method="init" singleton="true">
+    <bean id="kalturaLtiRoleDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiRoleDaoImpl" init-method="init">
         <property name="sessionFactory">
             <ref bean="kalturaSessionFactory" />
         </property>
@@ -55,7 +52,7 @@ Copyright ©2016 Kaltura, Inc.
     </bean>
 
     <!-- Auth Code DAO Target -->
-    <bean id="kalturaLtiAuthCodeDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiAuthCodeDaoImpl" init-method="init" singleton="true">
+    <bean id="kalturaLtiAuthCodeDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiAuthCodeDaoImpl" init-method="init">
         <property name="sessionFactory">
             <ref bean="kalturaSessionFactory" />
         </property>
@@ -88,12 +85,6 @@ Copyright ©2016 Kaltura, Inc.
     </bean>
 
     <bean id="roleData" class="org.sakaiproject.kaltura.impl.dao.jdbc.data.RoleData" parent="jdbcDatabase">
-    </bean>
-
-    <bean id="siteCopyBatchData" class="org.sakaiproject.kaltura.impl.dao.jdbc.data.SiteCopyBatchData" parent="jdbcDatabase">
-    </bean>
-
-    <bean id="siteCopyJobData" class="org.sakaiproject.kaltura.impl.dao.jdbc.data.SiteCopyJobData" parent="jdbcDatabase">
     </bean>
 
 </beans>

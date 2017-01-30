@@ -159,18 +159,22 @@ public class KalturaLtiRole implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (!(obj instanceof KalturaLtiRole))
+            return false;
+        if (obj == this)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+
         KalturaLtiRole other = (KalturaLtiRole) obj;
-        if (id == null || other.id == null)  {
+        if (this.id == null || other.id == null)  {
             return false;
         } else {
-            return id.equals(other.id); // use id only if set
+            return this.id.equals(other.id); // use id only if set
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return id.intValue();
     }
 
     /**

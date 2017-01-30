@@ -3,44 +3,28 @@
  */
 package org.sakaiproject.kaltura.services;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Arrays;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.quartz.JobExecutionException;
 import org.sakaiproject.component.app.scheduler.jobs.AbstractConfigurableJob;
-import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.email.api.EmailService;
-import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.id.api.IdManager;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.SiteService;
-import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
-import org.sakaiproject.user.api.UserNotDefinedException;
-import org.sakaiproject.exception.IdUnusedException;
-import org.sakaiproject.tool.api.Tool;
-import org.sakaiproject.tool.api.ToolManager;
+
+import java.util.*;
 
 public class AddMyMediaJob extends AbstractConfigurableJob {
 
-    private static final Log LOG = LogFactory.getLog(AddMyMediaJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AddMyMediaJob.class);
 
     protected SessionManager sessionManager;
     protected UserDirectoryService userDirectoryService;
@@ -49,7 +33,6 @@ public class AddMyMediaJob extends AbstractConfigurableJob {
     protected ToolManager toolManager;
     protected String adminEmail = "";
     private static final String TOOL_ID="kaltura.my.media";
-    private static final String TOOL_TITLE="My Media";
     private static final String PAGE_TITLE="My Media";
 
     @Override

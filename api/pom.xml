@@ -4,40 +4,35 @@
   <parent>
     <artifactId>kaltura</artifactId>
     <groupId>org.sakaiproject.kaltura</groupId>
-    <version>1.0</version>
+    <version>11-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <name>Kaltura API</name>
   <artifactId>kaltura-api</artifactId>
-  <organization>
-    <name>Unicon, Inc.</name>
-    <url>http://www.unicon.net</url>
-  </organization>
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
       <artifactId>kaltura-utils</artifactId>
-      <version>${kaltura.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-kernel-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject</groupId>
+      <groupId>org.sakaiproject.genericdao</groupId>
       <artifactId>generic-dao</artifactId>
-      <version>${generic-dao.version}</version>
+      <version>${sakai.genericdao.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
+      <groupId>${sakai.hibernate.groupId}</groupId>
+      <artifactId>${sakai.hibernate.artifactId}</artifactId>
     </dependency>
   </dependencies>
 

@@ -114,3 +114,18 @@
 
     $(document).ready(PI.onReady);
 })();
+
+window.addEventListener('message', function(e) {
+    try {
+        var message = JSON.parse(e.data);
+        if ( message.subject == 'kaltura.frameResize' ) {
+            var id = message.windowid;
+            var height = message.height;
+            document.getElementById(id).height = height;
+            console.log('Received kaltura.frameResize for ' + id + ' with height=' + height);
+        }
+    } catch (error) {
+        console.log('kaltura.frameResize for ' + id + ' failed with height=' + height);
+        console.log(e.data);
+    }
+});

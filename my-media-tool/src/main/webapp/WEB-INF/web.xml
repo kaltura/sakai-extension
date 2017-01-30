@@ -67,7 +67,7 @@ Copyright ©2016 Kaltura, Inc.
     <!-- use this to specify a starting page location if needed -->
     <init-param>
       <param-name>main-page</param-name>
-      <param-value>/mymedia.htm</param-value>
+      <param-value>/main.htm</param-value>
     </init-param>
     <load-on-startup>0</load-on-startup>
   </servlet>
@@ -77,12 +77,12 @@ Copyright ©2016 Kaltura, Inc.
     <listener-class>org.sakaiproject.util.ToolListener</listener-class>
   </listener>
   <listener>
-    <listener-class>org.sakaiproject.util.ContextLoaderListener</listener-class>
+    <listener-class>org.sakaiproject.util.SakaiContextLoaderListener</listener-class>
   </listener>
 
   <!-- define the starting page for this app -->
   <welcome-file-list>
-    <welcome-file>mymedia.jsp</welcome-file>
+    <welcome-file>main.jsp</welcome-file>
   </welcome-file-list>
 
   <!-- Spring MVC stuff below here -->

@@ -4,6 +4,7 @@
 package org.sakaiproject.kaltura;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -60,18 +61,12 @@ public class Constants {
         "ContentDeveloper",
         "Mentor"
     };
-    public static final List<String> INVALID_ROLE_IDS = new ArrayList<String>(1) {
-        private static final long serialVersionUID = 1L;
-
-        {
-            add("-1");
-        }
-    };
+    public static final List<String> INVALID_ROLE_IDS = Collections.singletonList("-1");
 
     /*
      * Authorization code configuration
      */
-    public static final int DEFAULT_AUTHORIZATION_CODE_TTL = (60 * 40); // 40 minutes
+    public static final int DEFAULT_AUTHORIZATION_CODE_TTL = 60 * 40; // 40 minutes
     public static final String AUTHORIZATION_CODE_KEY = "auth_code";
     public static final String DEFAULT_ANONYMOUS_USER_ID = ".anon";
 

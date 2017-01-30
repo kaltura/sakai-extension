@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -21,11 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
  *
  */
 public class MediaDisplayController extends BaseController {
-    final private Log log = LogFactory.getLog(getClass());
+    private static final Logger log = LoggerFactory.getLogger(MediaDisplayController.class);
 
-    /* (non-Javadoc)
-     * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
+    @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ControllerRequestParameters parameters = processRequestParameters(request);
         log.debug(parameters.toString());
