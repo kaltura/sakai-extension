@@ -60,6 +60,9 @@ function processKalturaLtiMedia() {
                     } else if (segments[3] == 'user') {
                         // viewing user
                         PI.processDocument(undefined, '~' + segments[4]);
+                    } else if (segments[3] == 'group-user') {
+                        // viewing dropbox
+                        PI.processDocument(undefined, segments[4])
                     } else {
                         console.log("Unknown path = " + segments[4] + ", cannot process page");
                     }
