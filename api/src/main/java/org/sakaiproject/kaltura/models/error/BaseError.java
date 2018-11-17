@@ -7,10 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.sakaiproject.kaltura.utils.JsonUtil;
-
-import com.google.gson.annotations.Expose;
-
+import org.sakaiproject.kaltura.util.JsonUtil;
 
 /**
  * The model for errors processing
@@ -19,7 +16,6 @@ import com.google.gson.annotations.Expose;
  */
 public class BaseError {
 
-    @Expose
     protected List<String> errors;
 
     public BaseError() {

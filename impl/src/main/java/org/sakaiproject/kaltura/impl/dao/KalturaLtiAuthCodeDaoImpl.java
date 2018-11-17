@@ -7,7 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
-import org.sakaiproject.kaltura.api.dao.KalturaLtiAuthCodeDao;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

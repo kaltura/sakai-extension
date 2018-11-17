@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright ©2016 Kaltura, Inc.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Session Factory -->
+    <bean id="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl.kaltura"
+          class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
+        <property name="mappingResources">
+            <list>
+                <value>KalturaLtiRole.hbm.xml</value>
+                <value>KalturaLtiAuthCode.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Role DAO Target -->
+    <bean id="kalturaLtiRoleDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiRoleDaoImpl" init-method="init">
+        <property name="sessionFactory">
+            <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory" />
+        </property>
+        <property name="persistentClasses">
+            <list>
+                <value>org.sakaiproject.kaltura.models.dao.KalturaLtiRole</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Role DAO -->
+    <bean id="kalturaLtiRoleDao" class="org.sakaiproject.genericdao.springutil.CurrentClassLoaderTxProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
+        </property>
+        <property name="target">
+            <ref bean="kalturaLtiRoleDaoTarget" />
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Auth Code DAO Target -->
+    <bean id="kalturaLtiAuthCodeDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiAuthCodeDaoImpl" init-method="init">
+        <property name="sessionFactory">
+            <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory" />
+        </property>
+        <property name="persistentClasses">
+            <list>
+                <value>org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Auth Code DAO -->
+    <bean id="kalturaLtiAuthCodeDao" class="org.sakaiproject.genericdao.springutil.CurrentClassLoaderTxProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
+        </property>
+        <property name="target">
+            <ref bean="kalturaLtiAuthCodeDaoTarget" />
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- dao services -->
+
+    <bean id="jdbcDatabase" class="org.sakaiproject.kaltura.impl.dao.jdbc.Database">
+        <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
+    </bean>
+
+    <bean id="roleData" class="org.sakaiproject.kaltura.impl.dao.jdbc.data.RoleData" parent="jdbcDatabase">
+    </bean>
+
+</beans>

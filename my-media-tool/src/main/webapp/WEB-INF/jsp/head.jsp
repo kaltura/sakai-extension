@@ -7,6 +7,6 @@
 
 <!-- CSS -->
 <link media="all" href="<%= CSSUtils.getCssToolBaseCDN() %>" rel="stylesheet" type="text/css" />
-<link media="all" href="<%= PortalUtils.getWebjarsPath() %>bootstrap/3.3.6/css/bootstrap.min.css<%= PortalUtils.getCDNQuery() %>" rel="stylesheet" type="text/css" />
-<link media="all" href="<%= PortalUtils.getWebjarsPath() %>bootstrap/3.3.6/css/bootstrap-theme.min.css<%= PortalUtils.getCDNQuery() %>" rel="stylesheet" type="text/css" />
+<link media="all" href="<%= PortalUtils.getWebjarsPath() %>bootstrap/3.3.7/css/bootstrap.min.css<%= PortalUtils.getCDNQuery() %>" rel="stylesheet" type="text/css" />
+<link media="all" href="<%= PortalUtils.getWebjarsPath() %>bootstrap/3.3.7/css/bootstrap-theme.min.css<%= PortalUtils.getCDNQuery() %>" rel="stylesheet" type="text/css" />
 <link media="all" href="<c:url value='/css/kaltura_ui.css'/><%= PortalUtils.getCDNQuery() %>" rel="stylesheet" type="text/css" />

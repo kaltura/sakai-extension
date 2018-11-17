@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.kaltura.Constants;
-import org.sakaiproject.kaltura.api.dao.KalturaLtiRoleDao;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
 
 /**

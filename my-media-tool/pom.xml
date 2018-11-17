@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.sakaiproject.kaltura</groupId>
     <artifactId>kaltura</artifactId>
-    <version>11-SNAPSHOT</version>
+    <version>12-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -15,8 +15,8 @@
 
   <dependencies>
     <dependency>
-        <groupId>org.sakaiproject.kaltura</groupId>
-        <artifactId>kaltura-services</artifactId>
+      <groupId>org.sakaiproject.kaltura</groupId>
+      <artifactId>kaltura-api</artifactId>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -47,13 +47,16 @@
       <artifactId>sakai-kernel-util</artifactId>
     </dependency>
     <dependency>
-      <groupId>${sakai.spring.groupId}</groupId>
+      <groupId>org.sakaiproject.portal</groupId>
+      <artifactId>sakai-portal-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
     </dependency>
     <dependency>
-      <groupId>${sakai.spring.groupId}</groupId>
+      <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
