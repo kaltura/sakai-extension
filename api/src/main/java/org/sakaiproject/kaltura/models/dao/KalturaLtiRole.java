@@ -8,34 +8,29 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.Constants;
-import org.sakaiproject.kaltura.utils.JsonUtil;
+import org.sakaiproject.kaltura.util.JsonUtil;
 
-import com.google.gson.annotations.Expose;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * This is a Kaltura Sakai role to LTI role mapping, it represents a mapping object from the database
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
+@Data
+@EqualsAndHashCode(of = "id")
+@NoArgsConstructor
 public class KalturaLtiRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Expose
     private Long id;
-    @Expose
     private String sakaiRole;
-    @Expose
     private String ltiRole;
-    @Expose
     private Date dateCreated;
-    @Expose
     private Date dateModified;
-
-    /**
-     * Default constructor
-     */
-    public KalturaLtiRole(){};
 
     /**
      * Constructor using the Sakai role ID
@@ -111,70 +106,12 @@ public class KalturaLtiRole implements Serializable {
         }
     }
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSakaiRole() {
-        return sakaiRole;
-    }
-    public void setSakaiRole(String sakaiRole) {
-        this.sakaiRole = sakaiRole;
-    }
-
-    public String getLtiRole() {
-        return ltiRole;
-    }
-    public void setLtiRole(String ltiRole) {
-        this.ltiRole = ltiRole;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public Date getDateModified() {
-        return dateModified;
-    }
-    public void setDateModified(Date dateModified) {
-        this.dateModified = dateModified;
-    }
-
     /**
      * Override to show this model as a JSON string
      */
     @Override
     public String toString() {
         return JsonUtil.parseToJson(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof KalturaLtiRole))
-            return false;
-        if (obj == this)
-            return true;
-
-        KalturaLtiRole other = (KalturaLtiRole) obj;
-        if (this.id == null || other.id == null)  {
-            return false;
-        } else {
-            return this.id.equals(other.id); // use id only if set
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        return id.intValue();
     }
 
     /**

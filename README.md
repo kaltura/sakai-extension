@@ -12,6 +12,7 @@ This tool also exposes an enhanced LTI role-mapping capability to get better gra
 * [Release Notes](http://knowledge.kaltura.com/node/1654) 
 * [Installation Guide](http://knowledge.kaltura.com/node/1643)
 * [Setup Guide](http://knowledge.kaltura.com/node/1658/attachment/field_media)
+* [CKEditor Setup](ckeditor/README.md)
 * [User Guide](http://knowledge.kaltura.com/node/1657/attachment/field_media)
 * [Key Highlights](http://knowledge.kaltura.com/node/549)
 
@@ -39,6 +40,3 @@ All code in this project is released under the [AGPLv3 license](http://www.gnu.o
 
 Copyright © Kaltura Inc. All rights reserved.   
 Authors and contributors: See [GitHub contributors list](https://github.com/kaltura/sakai-extension/graphs/contributors).  
-
-### Open Source Libraries
-Review the [list of Open Source 3rd party libraries](open-source-libraries.md) used in this project.

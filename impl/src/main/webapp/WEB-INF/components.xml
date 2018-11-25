@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright ©2016 Kaltura, Inc.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="kaltura-hibernate.xml"/>
+
+    <bean id="preloadLtiRoleData" class="org.sakaiproject.kaltura.impl.dao.PreloadLtiRoleDataImpl" init-method="init">
+        <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDao" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+
+    <bean id="kalturaAddMyMediaJobParent" class="org.sakaiproject.kaltura.services.AddMyMediaJob" abstract="true">
+        <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
+        <property name="adminEmail" value="${jobs.admin.email}" />
+    </bean>
+
+    <bean id="kalturaAddMyMediaJob" parent="kalturaAddMyMediaJobParent"/>
+
+    <bean id="kalturaAddToolJobWrapper" class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper" init-method="init">
+        <property name="beanId" value="kalturaAddMyMediaJob" />
+        <property name="jobName" value="Add My Media For Existing Users Job" />
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <bean id="org.sakaiproject.kaltura.services.KalturaEntityProducer" class="org.sakaiproject.kaltura.services.KalturaEntityProducer" init-method="init">
+        <property name="service" ref="kalturaLTIService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="entityManager" ref="org.sakaiproject.entity.api.EntityManager" />
+    </bean>
+
+    <!-- entity provider -->
+
+    <bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider" class="org.sakaiproject.kaltura.providers.KalturaProvider">
+        <property name="authCodeProviderService" ref="authCodeProviderService" />
+        <property name="gitProviderService" ref="gitProviderService" />
+        <property name="roleProviderService" ref="roleProviderService" />
+        <property name="securityService" ref="securityService" />
+        <property name="userProviderService" ref="userProviderService" />
+    </bean>
+
+    <!-- services -->
+
+    <bean id="authCodeService" class="org.sakaiproject.kaltura.services.AuthCodeService">
+        <property name="kalturaLtiAuthCodeDao" ref="kalturaLtiAuthCodeDaoTarget" />
+        <property name="userService" ref="userService" />
+    </bean>
+
+    <bean id="restService" class="org.sakaiproject.kaltura.services.RestService">
+    </bean>
+
+    <bean id="roleService" class="org.sakaiproject.kaltura.services.RoleService">
+        <property name="kalturaLtiRoleDao" ref="kalturaLtiRoleDaoTarget" />
+        <property name="roleData" ref="roleData" />
+    </bean>
+
+    <bean id="securityService" class="org.sakaiproject.kaltura.services.SecurityServiceImpl">
+        <property name="authCodeService" ref="authCodeService" />
+        <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+    </bean>
+
+    <bean id="userService" class="org.sakaiproject.kaltura.services.UserServiceImpl">
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
+        <property name="entityManager" ref="org.sakaiproject.entity.api.EntityManager" />
+        <property name="roleService" ref="roleService" />
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+        <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
+    </bean>
+
+    <bean id="kalturaLTIService" class="org.sakaiproject.kaltura.services.KalturaLTIServiceImpl">
+        <property name="authCodeService" ref="authCodeService" />
+        <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+        <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
+    </bean>
+
+    <!-- provider services -->
+
+    <bean id="authCodeProviderService" class="org.sakaiproject.kaltura.services.provider.AuthCodeProviderService">
+        <property name="authCodeService" ref="authCodeService" />
+        <property name="restService" ref="restService" />
+    </bean>
+
+    <bean name="gitProviderService" class="org.sakaiproject.kaltura.services.provider.GitProviderService">
+        <property name="branch" value="${git.branch}"/>
+        <property name="buildHost" value="${git.build.host}"/>
+        <property name="buildTime" value="${git.build.time}"/>
+        <property name="buildUserName" value="${git.build.user.name}"/>
+        <property name="buildUserEmail" value="${git.build.user.email}"/>
+        <property name="buildVersion" value="${git.build.version}"/>
+        <property name="closestTagCommitCount" value="${git.closest.tag.commit.count}"/>
+        <property name="closestTagName" value="${git.closest.tag.name}"/>
+        <property name="commitId" value="${git.commit.id.full}"/>
+        <property name="commitIdAbbrev" value="${git.commit.id.abbrev}"/>
+        <property name="commitMessageFull" value="${git.commit.message.full}"/>
+        <property name="commitMessageShort" value="${git.commit.message.short}"/>
+        <property name="commitTime" value="${git.commit.time}"/>
+        <property name="commitUserName" value="${git.commit.user.name}"/>
+        <property name="commitUserEmail" value="${git.commit.user.email}"/>
+        <property name="describe" value="${git.commit.id.describe}"/>
+        <property name="describeShort"  value="${git.commit.id.describe-short}"/>
+        <property name="dirty" value="${git.dirty}"/>
+        <property name="remoteOriginUrl" value="${git.remote.origin.url}"/>
+        <property name="restService" ref="restService" />
+        <property name="tags" value="${git.tags}"/>
+    </bean>
+
+    <bean id="roleProviderService" class="org.sakaiproject.kaltura.services.provider.RoleProviderService">
+        <property name="restService" ref="restService" />
+        <property name="roleService" ref="roleService" />
+    </bean>
+
+    <bean id="userProviderService" class="org.sakaiproject.kaltura.services.provider.UserProviderService">
+        <property name="restService" ref="restService" />
+        <property name="securityService" ref="securityService" />
+        <property name="userService" ref="userService" />
+    </bean>
+
+</beans>

@@ -7,11 +7,7 @@ Copyright ©2016 Kaltura, Inc.
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="classpath*:kaltura-services-context.xml" />
-    <import resource="classpath*:kaltura-hibernate-preload.xml" />
-
     <!-- the i18n messages source -->
-
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames" value="Messages"/>
     </bean>

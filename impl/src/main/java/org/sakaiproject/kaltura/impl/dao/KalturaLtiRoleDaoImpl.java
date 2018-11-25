@@ -12,7 +12,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
-import org.sakaiproject.kaltura.api.dao.KalturaLtiRoleDao;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
 
 /**

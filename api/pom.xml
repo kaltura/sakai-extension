@@ -4,7 +4,7 @@
   <parent>
     <artifactId>kaltura</artifactId>
     <groupId>org.sakaiproject.kaltura</groupId>
-    <version>11-SNAPSHOT</version>
+    <version>12-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -12,32 +12,41 @@
   <artifactId>kaltura-api</artifactId>
   <packaging>jar</packaging>
 
+  <properties>
+    <deploy.target>shared</deploy.target>
+  </properties>
+
   <dependencies>
-    <dependency>
-      <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>kaltura-utils</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-kernel-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject.genericdao</groupId>
-      <artifactId>generic-dao</artifactId>
-      <version>${sakai.genericdao.version}</version>
+      <groupId>org.sakaiproject.kernel</groupId>
+      <artifactId>sakai-component-manager</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
     </dependency>
     <dependency>
-      <groupId>${sakai.hibernate.groupId}</groupId>
-      <artifactId>${sakai.hibernate.artifactId}</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
     </dependency>
   </dependencies>
 
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+
   </build>
 
 </project>

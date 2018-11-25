@@ -5,22 +5,18 @@
   <parent>
     <groupId>org.sakaiproject.kaltura</groupId>
     <artifactId>kaltura</artifactId>
-    <version>11-SNAPSHOT</version>
+    <version>12-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <name>Kaltura Impl</name>
   <artifactId>kaltura-impl</artifactId>
-  <packaging>jar</packaging>
+  <packaging>sakai-component</packaging>
 
   <dependencies>
     <dependency>
       <groupId>org.sakaiproject.kaltura</groupId>
       <artifactId>kaltura-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.sakaiproject.kaltura</groupId>
-      <artifactId>kaltura-utils</artifactId>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
@@ -35,41 +31,52 @@
       <artifactId>sakai-kernel-util</artifactId>
     </dependency>
     <dependency>
-    <groupId>org.sakaiproject.scheduler</groupId>
-    <artifactId>scheduler-api</artifactId>
+      <groupId>org.sakaiproject.scheduler</groupId>
+      <artifactId>scheduler-api</artifactId>
     </dependency>
     <dependency>
-    <groupId>org.sakaiproject.scheduler</groupId>
-    <artifactId>scheduler-component-shared</artifactId>
+      <groupId>org.sakaiproject.scheduler</groupId>
+      <artifactId>scheduler-component-shared</artifactId>
     </dependency>
     <dependency>
-      <groupId>${sakai.hibernate.groupId}</groupId>
-      <artifactId>${sakai.hibernate.artifactId}</artifactId>
+      <groupId>org.sakaiproject.entitybroker</groupId>
+      <artifactId>entitybroker-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>${sakai.spring.groupId}</groupId>
-      <artifactId>${sakai.spring.artifactId}</artifactId>
+      <groupId>org.sakaiproject.entitybroker</groupId>
+      <artifactId>entitybroker-utils</artifactId>
     </dependency>
     <dependency>
-      <groupId>${sakai.spring.groupId}</groupId>
-      <artifactId>spring-orm</artifactId>
+      <groupId>org.sakaiproject.basiclti</groupId>
+      <artifactId>basiclti-common</artifactId>
     </dependency>
     <dependency>
-      <groupId>${sakai.spring.groupId}</groupId>
-      <artifactId>spring-tx</artifactId>
+      <groupId>org.sakaiproject.basiclti</groupId>
+      <artifactId>basiclti-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>${sakai.spring.groupId}</groupId>
+      <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
     </dependency>
     <dependency>
-      <groupId>${sakai.spring.groupId}</groupId>
-      <artifactId>spring-webmvc</artifactId>
-      <scope>compile</scope>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -79,18 +86,103 @@
       <groupId>org.quartz-scheduler</groupId>
       <artifactId>quartz</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.sakaiproject.genericdao</groupId>
+      <artifactId>generic-dao</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>${sakai.org.json.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${sakai.mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/main/test</testSourceDirectory>
     <resources>
       <resource>
-        <directory>${basedir}/src/main/resources</directory>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
         <includes>
           <include>**/*</include>
         </includes>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <inherited>true</inherited>
+        <groupId>org.sakaiproject.maven.plugins</groupId>
+        <artifactId>sakai</artifactId>
+        <configuration>
+          <warSourceDirectory>src/main/webapp</warSourceDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>2.2.5</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+          <prefix>git</prefix>
+          <dateFormat>dd.MM.yyyy '@' HH:mm:ss z</dateFormat>
+          <verbose>false</verbose>
+          <generateGitPropertiesFile>false</generateGitPropertiesFile>
+          <generateGitPropertiesFilename>src/main/resources/git.properties</generateGitPropertiesFilename>
+          <format>properties</format>
+          <skipPoms>true</skipPoms>
+          <injectAllReactorProjects>false</injectAllReactorProjects>
+          <failOnNoGitDirectory>false</failOnNoGitDirectory>
+          <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+          <skip>false</skip>
+          <runOnlyOnce>false</runOnlyOnce>
+          <excludeProperties>
+            <!-- <excludeProperty>git.user.*</excludeProperty> -->
+          </excludeProperties>
+          <includeOnlyProperties>
+            <!-- <includeOnlyProperty>^git.commit.id.full$</includeOnlyProperty> -->
+          </includeOnlyProperties>
+          <useNativeGit>false</useNativeGit>
+          <abbrevLength>40</abbrevLength>
+          <gitDescribe>
+            <skip>false</skip>
+            <always>false</always>
+            <abbrev>40</abbrev>
+            <dirty>-dirty</dirty>
+            <match>*</match>
+            <forceLongFormat>false</forceLongFormat>
+          </gitDescribe>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
-
 </project>
