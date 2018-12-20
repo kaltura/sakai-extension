@@ -87,22 +87,26 @@ function processKalturaLtiMedia() {
 
         createIFrame: function(media, source) {
             var src = source(media);
-            console.log("createIFrame:: src: " + src);
             var iframe = $("<iframe src='" + src + "' allowfullscreen webkitallowfullscreen mozAllowFullScreen />");
             iframe.css("border", "none");
             iframe.css("position", "absolute");
             iframe.css("top", "0");
             iframe.css("left", "0");
-            iframe.css("height", $(media).attr("height"));
-            iframe.css("width", $(media).attr("width"));
+            iframe.css("height", "100%");
+            iframe.css("width", "100%");
 
-            var div = $("<div id='kaltura-video-container'/>");
-            div.css("position", "relative");
-            div.css("padding-top", "20px");
-            div.css("padding-bottom", "56.25%");
-            div.css("height", "0");
-            div.append(iframe);
-            return div; 
+            var kvdiv = $("<div id='kaltura-video'/>");
+            kvdiv.css("position", "relative");
+            kvdiv.css("padding-top", "30px");
+            kvdiv.css("padding-bottom", "56.25%");
+            kvdiv.css("height", "0");
+            kvdiv.append(iframe);
+
+            var kvcdiv = $("<div id='kaltura-video-container'/>");
+            kvcdiv.css("position", "relative");
+            kvcdiv.css("max-width", $(media).attr("width") + "px");
+            kvcdiv.append(kvdiv);
+            return kvcdiv;
         },
 
         // converts a <span with an embedded kaltura LTI image to an iframe for LTI rendering
