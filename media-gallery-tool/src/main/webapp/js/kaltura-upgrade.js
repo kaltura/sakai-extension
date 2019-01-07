@@ -42,6 +42,8 @@ function processKalturaLtiMedia() {
         /**
          * Default sizes for media iframe - 400x285 pixels
          */
+        BORDER_WIDTH: 400,
+        BORDER_HEIGHT: 285,
         MEDIA_DISPLAY_URL: '/media-gallery-tool/mediadisplay.htm',
         MEDIA_DISPLAY_STATIC_URL: '/media-gallery-tool/mediadisplaystatic.htm',
 
@@ -86,27 +88,17 @@ function processKalturaLtiMedia() {
         },
 
         createIFrame: function(media, source) {
+            var heightBefore = $(media).attr('height');
+            var widthBefore = $(media).attr('width');
+            var heightAfter = heightBefore ? heightBefore : PI.BORDER_HEIGHT;
+            var widthAfter = widthBefore ? widthBefore : PI.BORDER_WIDTH;
+            console.log("createIFrame:: height: " + heightAfter + ", width: " + widthAfter);
+
             var src = source(media);
-            var iframe = $("<iframe src='" + src + "' allowfullscreen webkitallowfullscreen mozAllowFullScreen />");
+            console.log("createIFrame:: src: " + src);
+            var iframe = $("<iframe height='" + heightAfter + "' width='" + widthAfter + "' src='" + src + "' allowfullscreen webkitallowfullscreen mozAllowFullScreen />");
             iframe.css("border", "none");
-            iframe.css("position", "absolute");
-            iframe.css("top", "0");
-            iframe.css("left", "0");
-            iframe.css("height", "100%");
-            iframe.css("width", "100%");
-
-            var kvdiv = $("<div id='kaltura-video'/>");
-            kvdiv.css("position", "relative");
-            kvdiv.css("padding-top", "30px");
-            kvdiv.css("padding-bottom", "56.25%");
-            kvdiv.css("height", "0");
-            kvdiv.append(iframe);
-
-            var kvcdiv = $("<div id='kaltura-video-container'/>");
-            kvcdiv.css("position", "relative");
-            kvcdiv.css("max-width", $(media).attr("width") + "px");
-            kvcdiv.append(kvdiv);
-            return kvcdiv;
+            return iframe;
         },
 
         // converts a <span with an embedded kaltura LTI image to an iframe for LTI rendering
