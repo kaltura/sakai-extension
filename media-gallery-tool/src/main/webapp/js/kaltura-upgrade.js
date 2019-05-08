@@ -87,7 +87,7 @@ function processKalturaLtiMedia() {
 
         createIFrame: function(media, source) {
             var src = source(media);
-            var iframe = $("<iframe src='" + src + "' allowfullscreen webkitallowfullscreen mozAllowFullScreen />");
+            var iframe = $("<iframe src='" + src + "' allowfullscreen webkitallowfullscreen mozAllowFullScreen allow='autoplay *; fullscreen *; encrypted-media *' />");
             iframe.css("border", "none");
             iframe.css("height", "100%");
             iframe.css("width", "100%");
