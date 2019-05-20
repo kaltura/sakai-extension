@@ -93,13 +93,19 @@ function processKalturaLtiMedia() {
             iframe.css("width", "100%");
 
             var kvdiv = $("<div id='kaltura-video'/>");
+            var height = ( ( $(media).attr("height") || 0 ) >= 285 ) ? $(media).attr("height") :
+                         ( ( $(media).height() || 0 ) >= 285 ) ? $(media).height() :
+                         285;
             kvdiv.css("position", "relative");
-            kvdiv.css("height", $(media).attr("height") + "px");
+            kvdiv.css("height", height + "px");
             kvdiv.append(iframe);
 
             var kvcdiv = $("<div id='kaltura-video-container'/>");
+            var width = ( ( $(media).attr("width") || 0 ) >= 400 ) ? $(media).attr("width") :
+                        ( ( $(media).width() || 0 ) >= 400 ) ? $(media).width() :
+                        400;
             kvcdiv.css("position", "relative");
-            kvcdiv.css("max-width", $(media).attr("width") + "px");
+            kvcdiv.css("max-width", width + "px");
             kvcdiv.append(kvdiv);
             return kvcdiv;
         },
