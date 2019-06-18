@@ -93,16 +93,16 @@ function processKalturaLtiMedia() {
             iframe.css("width", "100%");
 
             var kvdiv = $("<div id='kaltura-video'/>");
-            var height = ( ( $(media).attr("height") || 0 ) >= 285 ) ? $(media).attr("height") :
-                         ( ( $(media).height() || 0 ) >= 285 ) ? $(media).height() :
+            var height = ( ( $(media).attr("height") || 0 ) > 0 ) ? $(media).attr("height") :
+                         ( ( $(media).height() || 0 ) > 0 ) ? $(media).height() :
                          285;
             kvdiv.css("position", "relative");
             kvdiv.css("height", height + "px");
             kvdiv.append(iframe);
 
             var kvcdiv = $("<div id='kaltura-video-container'/>");
-            var width = ( ( $(media).attr("width") || 0 ) >= 400 ) ? $(media).attr("width") :
-                        ( ( $(media).width() || 0 ) >= 400 ) ? $(media).width() :
+            var width = ( ( $(media).attr("width") || 0 ) > 0 ) ? $(media).attr("width") :
+                        ( ( $(media).width() || 0 ) > 0 ) ? $(media).width() :
                         400;
             kvcdiv.css("position", "relative");
             kvcdiv.css("max-width", width + "px");
