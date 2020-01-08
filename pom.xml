@@ -5,13 +5,13 @@
   <parent>
     <groupId>org.sakaiproject</groupId>
     <artifactId>master</artifactId>
-    <version>12-SNAPSHOT</version>
+    <version>19-SNAPSHOT</version>
   </parent>
 
   <name>Kaltura LTI Tool</name>
   <groupId>org.sakaiproject.kaltura</groupId>
   <artifactId>kaltura</artifactId>
-  <version>12-SNAPSHOT</version>
+  <version>19-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
