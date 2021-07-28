@@ -6,6 +6,7 @@ package org.sakaiproject.kaltura.controllers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.sakaiproject.kaltura.models.EmbeddedMediaModel;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,20 +20,20 @@ public class CKEditorCallbackController extends BaseController {
     }
 
     private EmbeddedMediaModel populateModel(HttpServletRequest request) {
-        String url = request.getParameter("url");
-        String playerId = request.getParameter("playerId");
-        String size = request.getParameter("size");
-        String width = request.getParameter("width");
-        String height = request.getParameter("height");
-        String returnType = request.getParameter("return_type");
-        String entryId = request.getParameter("entry_id");
-        String owner = request.getParameter("owner");
-        String title = request.getParameter("title");
-        String duration = request.getParameter("duration");
-        String description = request.getParameter("description");
-        String createdAt = request.getParameter("createdAt");
-        String tags = request.getParameter("tags");
-        String thumbnailUrl = request.getParameter("thumbnailUrl");
+        String url = StringEscapeUtils.escapeJavaScript(request.getParameter("url"));
+        String playerId = StringEscapeUtils.escapeJavaScript(request.getParameter("playerId"));
+        String size = StringEscapeUtils.escapeJavaScript(request.getParameter("size"));
+        String width = StringEscapeUtils.escapeJavaScript(request.getParameter("width"));
+        String height = StringEscapeUtils.escapeJavaScript(request.getParameter("height"));
+        String returnType = StringEscapeUtils.escapeJavaScript(request.getParameter("return_type"));
+        String entryId = StringEscapeUtils.escapeJavaScript(request.getParameter("entry_id"));
+        String owner = StringEscapeUtils.escapeJavaScript(request.getParameter("owner"));
+        String title = StringEscapeUtils.escapeJavaScript(request.getParameter("title"));
+        String duration = StringEscapeUtils.escapeJavaScript(request.getParameter("duration"));
+        String description = StringEscapeUtils.escapeJavaScript(request.getParameter("description"));
+        String createdAt = StringEscapeUtils.escapeJavaScript(request.getParameter("createdAt"));
+        String tags = StringEscapeUtils.escapeJavaScript(request.getParameter("tags"));
+        String thumbnailUrl = StringEscapeUtils.escapeJavaScript(request.getParameter("thumbnailUrl"));
 
         EmbeddedMediaModel model = new EmbeddedMediaModel();
         model.setCreatedAt(createdAt);

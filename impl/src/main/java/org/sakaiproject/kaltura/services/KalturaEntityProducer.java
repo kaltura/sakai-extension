@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -167,25 +168,22 @@ public class KalturaEntityProducer implements EntityProducer, EntityTransferrer 
         return result;
     }
 
-
-    /* (non-Javadoc)
-     * @see org.sakaiproject.entity.api.EntityTransferrer#transferCopyEntities(java.lang.String, java.lang.String, java.util.List)
-     */
-    public void transferCopyEntities(String fromContext, String toContext, List ids) {
+    @Override
+    public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> transferOptions) {
         log.debug("kaltura EP.transferCopyEntities(fromContext={}, toContext={}, ids={})", fromContext, toContext, ids);
-        transferCopyEntities(fromContext, toContext, ids, false);
+        return transferCopyEntities(fromContext, toContext, ids, transferOptions,false);
     }
 
-    /* (non-Javadoc)
-     * @see org.sakaiproject.entity.api.EntityTransferrer#transferCopyEntities(java.lang.String, java.lang.String, java.util.List, boolean)
-     */
-    public void transferCopyEntities(String fromContext, String toContext, List ids, boolean cleanup) {
+    @Override
+    public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> transferOptions, boolean cleanup) {
         log.debug("kaltura EP.transferCopyEntities(fromContext={}, toContext={}, ids={}, cleanup={}", fromContext, toContext, ids, cleanup);
         if (serverConfigurationService.getBoolean("kaltura.site.import.enabled", true)) {
             copySiteToSite(toContext, fromContext);
         } else {
             log.warn("kaltura EP.transferCopyEntities is disabled");
         }
+        // a detail report of the content is not actually provided
+        return new HashMap<>();
     }
 
     /* (non-Javadoc)
