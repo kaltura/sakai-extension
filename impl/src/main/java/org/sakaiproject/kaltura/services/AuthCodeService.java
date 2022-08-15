@@ -6,7 +6,7 @@ package org.sakaiproject.kaltura.services;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.sakaiproject.kaltura.impl.dao.KalturaLtiAuthCodeDao;
+import org.sakaiproject.kaltura.dao.KalturaLtiAuthCodeDao;
 import org.sakaiproject.kaltura.models.User;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
 import org.sakaiproject.kaltura.util.AuthCodeUtil;
@@ -48,6 +48,14 @@ public class AuthCodeService {
         }
 
         return kalturaLtiAuthCodeDao.getAuthCode(id);
+    }
+
+    public KalturaLtiAuthCode getLastValidAuthCodeForUser(String userId) throws Exception {
+        if (StringUtils.isBlank(userId)) {
+            throw new IllegalArgumentException("AuthCodeService :: user id cannot be null.");
+        }
+
+        return kalturaLtiAuthCodeDao.getLastValidAuthCodeForUser(userId);
     }
 
     /**

@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.kaltura.Constants;
+import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.tool.api.Session;
@@ -532,7 +533,13 @@ public class KalturaLTIServiceImpl implements KalturaLTIService {
         }
 
         try{
-            String authCode = authCodeService.createAuthCode(userId).getAuthCode();
+            String authCode;
+            KalturaLtiAuthCode existingAuthCode = authCodeService.getLastValidAuthCodeForUser(userId);
+            if (existingAuthCode != null) {
+                authCode = existingAuthCode.getAuthCode();
+            } else {
+                authCode = authCodeService.createAuthCode(userId).getAuthCode();
+            }
             setProperty(ltiProps, Constants.AUTHORIZATION_CODE_KEY, authCode);
             // Sakai 11 Basic LTI stopped adapting LTI properties with the CUSTOM_PREFIX
             // so we do it here for compatibility
