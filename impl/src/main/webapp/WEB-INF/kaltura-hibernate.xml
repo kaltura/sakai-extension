@@ -4,8 +4,16 @@ Copyright ©2016 Kaltura, Inc.
 
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+	       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:annotation-config/>
+    <tx:annotation-driven transaction-manager="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
 
     <!-- Session Factory -->
     <bean id="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl.kaltura"
@@ -19,59 +27,24 @@ Copyright ©2016 Kaltura, Inc.
     </bean>
 
     <!-- Role DAO Target -->
-    <bean id="kalturaLtiRoleDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiRoleDaoImpl" init-method="init">
+    <bean id="kalturaLtiRoleDao" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiRoleDaoImpl" init-method="init">
         <property name="sessionFactory">
             <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory" />
         </property>
-        <property name="persistentClasses">
-            <list>
-                <value>org.sakaiproject.kaltura.models.dao.KalturaLtiRole</value>
-            </list>
+        <property name="transactionTemplate">
+            <bean class="org.springframework.transaction.support.TransactionTemplate">
+                <property name="transactionManager" ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
+            </bean>
         </property>
-    </bean>
-
-    <!-- Role DAO -->
-    <bean id="kalturaLtiRoleDao" class="org.sakaiproject.genericdao.springutil.CurrentClassLoaderTxProxyFactoryBean">
-        <property name="transactionManager">
-            <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
-        </property>
-        <property name="target">
-            <ref bean="kalturaLtiRoleDaoTarget" />
-        </property>
-        <property name="transactionAttributes">
-            <props>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
     </bean>
 
     <!-- Auth Code DAO Target -->
-    <bean id="kalturaLtiAuthCodeDaoTarget" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiAuthCodeDaoImpl" init-method="init">
+    <bean id="kalturaLtiAuthCodeDao" class="org.sakaiproject.kaltura.impl.dao.KalturaLtiAuthCodeDaoImpl">
         <property name="sessionFactory">
             <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory" />
         </property>
-        <property name="persistentClasses">
-            <list>
-                <value>org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode</value>
-            </list>
-        </property>
     </bean>
-
-    <!-- Auth Code DAO -->
-    <bean id="kalturaLtiAuthCodeDao" class="org.sakaiproject.genericdao.springutil.CurrentClassLoaderTxProxyFactoryBean">
-        <property name="transactionManager">
-            <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
-        </property>
-        <property name="target">
-            <ref bean="kalturaLtiAuthCodeDaoTarget" />
-        </property>
-        <property name="transactionAttributes">
-            <props>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>
-    </bean>
-
     <!-- dao services -->
 
     <bean id="jdbcDatabase" class="org.sakaiproject.kaltura.impl.dao.jdbc.Database">

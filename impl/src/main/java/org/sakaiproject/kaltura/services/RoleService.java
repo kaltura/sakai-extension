@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.kaltura.Constants;
-import org.sakaiproject.kaltura.impl.dao.KalturaLtiRoleDao;
+import org.sakaiproject.kaltura.dao.KalturaLtiRoleDao;
 import org.sakaiproject.kaltura.impl.dao.jdbc.data.RoleData;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
 
@@ -134,12 +134,7 @@ public class RoleService {
             throw new IllegalArgumentException("KalturaLtiRole cannot be null.");
         }
 
-        kalturaLtiRoleDao.save(kalturaLtiRole);
-
-        // get the new role mapping, with the ID
-        kalturaLtiRole = getRoleMapping(kalturaLtiRole.getSakaiRole(), kalturaLtiRole.getLtiRole());
-
-        return kalturaLtiRole;
+        return kalturaLtiRoleDao.save(kalturaLtiRole);
     }
 
     /**
@@ -180,13 +175,11 @@ public class RoleService {
         KalturaLtiRole toUpdate = kalturaLtiRoleDao.getRoleMapping(kalturaLtiRole.getId());
         if (toUpdate != null) {
             toUpdate.copy(kalturaLtiRole);
-            kalturaLtiRoleDao.save(toUpdate);
+            return kalturaLtiRoleDao.save(toUpdate);
         } else {
             // no object exists, add it instead
-            toUpdate = addRoleMapping(kalturaLtiRole);
+            return addRoleMapping(kalturaLtiRole);
         }
-
-        return toUpdate;
     }
 
     /**

@@ -1,11 +1,10 @@
 /*
  * Copyright ©2016 Kaltura, Inc.
  */
-package org.sakaiproject.kaltura.impl.dao;
+package org.sakaiproject.kaltura.dao;
 
 import java.util.Date;
 
-import org.sakaiproject.genericdao.api.GeneralGenericDao;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
 
 /**
@@ -13,7 +12,9 @@ import org.sakaiproject.kaltura.models.dao.KalturaLtiAuthCode;
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
+public interface KalturaLtiAuthCodeDao {
+
+    KalturaLtiAuthCode getLastValidAuthCodeForUser(String userId);
 
     /**
      * Gets a {@link KalturaLtiAuthCode} object that is associated with the given auth code ID
@@ -68,13 +69,6 @@ public interface KalturaLtiAuthCodeDao extends GeneralGenericDao {
      * 
      * @throws Exception 
      */
-    public void save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception;
-
-    /**
-     * Commit the transaction
-     * 
-     * @param kalturaLtiAuthCode the {@link KalturaLtiAuthCode} object
-     */
-    public void commit(KalturaLtiAuthCode kalturaLtiAuthCode);
+    public KalturaLtiAuthCode save(KalturaLtiAuthCode kalturaLtiAuthCode) throws Exception;
 
 }

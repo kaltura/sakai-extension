@@ -3,57 +3,73 @@
  */
 package org.sakaiproject.kaltura.impl.dao;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.sakaiproject.genericdao.api.search.Search;
-import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
+import org.hibernate.SessionFactory;
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.kaltura.Constants;
+import org.sakaiproject.kaltura.dao.KalturaLtiRoleDao;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Implementation of DAO Interface for Kaltura custom role mappings
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements KalturaLtiRoleDao {
+@Slf4j
+@Transactional
+public class KalturaLtiRoleDaoImpl implements KalturaLtiRoleDao {
 
-    private static final Logger log = LoggerFactory.getLogger(KalturaLtiRoleDaoImpl.class);
+    @Setter
+    private SessionFactory sessionFactory;
+
+    @Setter
+    private ServerConfigurationService serverConfigurationService;
+
+    @Setter
+    TransactionTemplate transactionTemplate;
 
     public void init() {
+        if (serverConfigurationService.getBoolean("kaltura.lti.roles.preload", true)) {
+            transactionTemplate.executeWithoutResult(action -> preloadDefaultLtiRoles());
+        } else {
+            log.info("Kaltura :: Pre-loading of default roles set to false. Nothing to do.");
+        }
     }
 
-    public void destroy(){
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<KalturaLtiRole> getAllRoleMappings() {
-        List<KalturaLtiRole> allRoleMappings = findAll(KalturaLtiRole.class);
+        CriteriaBuilder queryBuilder = sessionFactory.getCriteriaBuilder();
+        CriteriaQuery<KalturaLtiRole> query = queryBuilder.createQuery(KalturaLtiRole.class);
 
-        return allRoleMappings;
+        Root<KalturaLtiRole> root = query.from(KalturaLtiRole.class);
+
+        query.select(root);
+
+        return sessionFactory.getCurrentSession()
+                .createQuery(query)
+                .getResultList();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KalturaLtiRole getRoleMapping(long roleMappingId) {
-        Search search = new Search("id", roleMappingId);
-
-        KalturaLtiRole kalturaLtiRole = findOneBySearch(KalturaLtiRole.class, search);
-
-        return kalturaLtiRole;
+        return sessionFactory.getCurrentSession().get(KalturaLtiRole.class, roleMappingId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KalturaLtiRole getRoleMapping(String roleMappingId) {
         long id = Long.parseLong(roleMappingId);
@@ -61,69 +77,76 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
         return getRoleMapping(id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<KalturaLtiRole> getSakaiRoleMappings(String sakaiRole) {
-        Search search = new Search("sakaiRole", sakaiRole);
+        CriteriaBuilder queryBuilder = sessionFactory.getCriteriaBuilder();
+        CriteriaQuery<KalturaLtiRole> query = queryBuilder.createQuery(KalturaLtiRole.class);
 
-        List<KalturaLtiRole> kalturaLtiRoles = findBySearch(KalturaLtiRole.class, search);
+        Root<KalturaLtiRole> root = query.from(KalturaLtiRole.class);
 
-        return kalturaLtiRoles;
+        Predicate bySakaiRole = queryBuilder.equal(root.get("sakaiRole"), sakaiRole);
+        query.select(root).where(bySakaiRole);
+
+        return sessionFactory.getCurrentSession()
+                .createQuery(query)
+                .getResultList();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<KalturaLtiRole> getLtiRoleMappings(String ltiRole) {
-        Search search = new Search("ltiRole", ltiRole);
+        CriteriaBuilder queryBuilder = sessionFactory.getCriteriaBuilder();
+        CriteriaQuery<KalturaLtiRole> query = queryBuilder.createQuery(KalturaLtiRole.class);
 
-        List<KalturaLtiRole> ltiRoleMappings = findBySearch(KalturaLtiRole.class, search);
+        Root<KalturaLtiRole> root = query.from(KalturaLtiRole.class);
 
-        return ltiRoleMappings;
+        Predicate byLtiRole = queryBuilder.equal(root.get("ltiRole"), ltiRole);
+        query.select(root).where(byLtiRole);
+
+        return sessionFactory.getCurrentSession()
+                .createQuery(query)
+                .getResultList();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KalturaLtiRole getRoleMapping(String sakaiRole, String ltiRole) {
-        String[] properties = new String[] {"sakaiRole", "ltiRole"};
-        String[] values = new String[] {sakaiRole, ltiRole};
-        Search search = new Search(properties, values);
+        CriteriaBuilder queryBuilder = sessionFactory.getCriteriaBuilder();
+        CriteriaQuery<KalturaLtiRole> query = queryBuilder.createQuery(KalturaLtiRole.class);
 
-        KalturaLtiRole kalturaLtiRole = findOneBySearch(KalturaLtiRole.class, search);
+        Root<KalturaLtiRole> root = query.from(KalturaLtiRole.class);
 
-        return kalturaLtiRole;
+        Predicate bySakaiRole = queryBuilder.equal(root.get("sakaiRole"), sakaiRole);
+        Predicate byLtiRole = queryBuilder.equal(root.get("ltiRole"), ltiRole);
+        query.select(root).where(queryBuilder.and(bySakaiRole, byLtiRole));
+
+        Collection<KalturaLtiRole> results = sessionFactory.getCurrentSession()
+                .createQuery(query)
+                .getResultList();
+
+        if (results.isEmpty()) {
+            return null;
+        }
+        return results.toArray(new KalturaLtiRole[]{})[0];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void save(KalturaLtiRole kalturaLtiRole) {
+    public KalturaLtiRole save(KalturaLtiRole kalturaLtiRole) {
         if (!kalturaLtiRole.isValid()) {
             kalturaLtiRole = new KalturaLtiRole(kalturaLtiRole);
         }
 
         kalturaLtiRole.setDateModified(new Date());
 
-        commit(kalturaLtiRole, false);
+        return (KalturaLtiRole) sessionFactory.getCurrentSession().merge(kalturaLtiRole);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void delete(KalturaLtiRole kalturaLtiRole) {
-        delete(kalturaLtiRole.getId());
+        if (kalturaLtiRole.getId() != null) {
+            Session session = sessionFactory.getCurrentSession();
+            session.delete(session.merge(kalturaLtiRole));
+        }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void delete(String id) {
         long longId = Long.parseLong(id);
@@ -131,51 +154,46 @@ public class KalturaLtiRoleDaoImpl extends HibernateGeneralGenericDao implements
         delete(longId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void delete(long id) {
         KalturaLtiRole kalturaLtiRole = getRoleMapping(id);
 
         if (kalturaLtiRole != null) {
-            commit(kalturaLtiRole, true);
+            delete(kalturaLtiRole);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void commit(KalturaLtiRole kalturaLtiRole, boolean delete) {
-        getHibernateTemplate().flush();
-
-        Session session = getSessionFactory().openSession();
-        Transaction transaction = session.getTransaction();
-
+    private void preloadDefaultLtiRoles() {
         try {
-            transaction = session.beginTransaction();
+            List<KalturaLtiRole> existingRoles = getAllRoleMappings();
 
-            if (delete) {
-                session.delete(kalturaLtiRole);
+            // preload default roles if none exist
+            if (existingRoles.isEmpty()) {
+                String[] defaultRoleMapping = serverConfigurationService.getStrings("kaltura.lti.roles");
+                if (defaultRoleMapping == null) {
+                    // none configured in sakai.properties, use hard-coded defaults
+                    defaultRoleMapping = Constants.DEFAULT_ROLE_MAPPING;
+                }
+
+                for (String roleMapping : defaultRoleMapping) {
+                    String[] roleMap = roleMapping.split(":");
+                    String sakaiRole = roleMap[0];
+                    String ltiRole = roleMap[1];
+
+                    if (StringUtils.isNotBlank(sakaiRole) && StringUtils.isNotBlank(ltiRole)) {
+                        KalturaLtiRole role = new KalturaLtiRole(sakaiRole, ltiRole);
+                        save(role);
+
+                        log.info("Kaltura :: Created default role mapping of Sakai role: " + sakaiRole + " --> " + "LTI role: " + ltiRole);
+                    }
+                }
+
+                log.info("Kaltura :: Preloaded default role mappings.");
             } else {
-                session.saveOrUpdate(kalturaLtiRole);
+                log.info("Kaltura :: Role mappings exist. Skipping pre-loading.");
             }
-
-            transaction.commit();
-        } catch ( Exception e) {
-            if (delete) {
-                log.error("Kaltura :: deleteRoleMapping : An error occurred deleting the role mapping: " + kalturaLtiRole.toString() + ", error: " + e, e);
-            } else {
-                log.error("Kaltura :: addRoleMapping : An error occurred persisting the role mapping: " + kalturaLtiRole.toString() + ", error: " + e, e);
-            }
-
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        } finally {
-            session.close();
+        } catch (Exception e) {
+            log.error("Kaltura :: there was an error updating the default roles. " + e, e);
         }
     }
-
 }

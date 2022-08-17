@@ -1,11 +1,10 @@
 /*
  * Copyright ©2016 Kaltura, Inc.
  */
-package org.sakaiproject.kaltura.impl.dao;
+package org.sakaiproject.kaltura.dao;
 
 import java.util.List;
 
-import org.sakaiproject.genericdao.api.GeneralGenericDao;
 import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
 
 /**
@@ -13,7 +12,7 @@ import org.sakaiproject.kaltura.models.dao.KalturaLtiRole;
  * 
  * @author Robert Long (rlong @ unicon.net)
  */
-public interface KalturaLtiRoleDao extends GeneralGenericDao {
+public interface KalturaLtiRoleDao {
 
     /**
      * Get the entire list of role mappings
@@ -69,7 +68,7 @@ public interface KalturaLtiRoleDao extends GeneralGenericDao {
      * @param kalturaLtiRole the {@link KalturaLtiRole} object to add
      * @return true, if added/updated successfully
      */
-    public void save(KalturaLtiRole kalturaLtiRole);
+    public KalturaLtiRole save(KalturaLtiRole kalturaLtiRole);
 
     /**
      * Delete a role mapping
@@ -94,13 +93,5 @@ public interface KalturaLtiRoleDao extends GeneralGenericDao {
      * @return true, if marked inactive
      */
     public void delete(long id);
-
-    /**
-     * Commit the transaction
-     * 
-     * @param kalturaLtiRole the {@link KalturaLtiRole} object
-     * @param delete is this a delete operation?
-     */
-    public void commit(KalturaLtiRole kalturaLtiRole, boolean delete);
 
 }
