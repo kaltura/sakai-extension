@@ -20,6 +20,8 @@ Copyright ©2016 Kaltura, Inc.
             <props>
                 <prop key="/main.htm">mainController</prop>
                 <prop key="/role.htm">roleController</prop>
+                <prop key="/*/main.htm">mainController</prop>
+                <prop key="/*/role.htm">roleController</prop>
             </props>
         </property>
     </bean>

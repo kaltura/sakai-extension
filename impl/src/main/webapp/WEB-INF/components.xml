@@ -45,7 +45,7 @@ Copyright ©2016 Kaltura, Inc.
         <property name="authCodeProviderService" ref="authCodeProviderService" />
         <property name="gitProviderService" ref="gitProviderService" />
         <property name="roleProviderService" ref="roleProviderService" />
-        <property name="securityService" ref="securityService" />
+        <property name="securityService" ref="securityServiceForKaltura" />
         <property name="userProviderService" ref="userProviderService" />
     </bean>
 
@@ -64,7 +64,7 @@ Copyright ©2016 Kaltura, Inc.
         <property name="roleData" ref="roleData" />
     </bean>
 
-    <bean id="securityService" class="org.sakaiproject.kaltura.services.SecurityServiceImpl">
+    <bean id="securityServiceForKaltura" class="org.sakaiproject.kaltura.services.SecurityServiceImpl">
         <property name="authCodeService" ref="authCodeService" />
         <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
@@ -127,7 +127,7 @@ Copyright ©2016 Kaltura, Inc.
 
     <bean id="userProviderService" class="org.sakaiproject.kaltura.services.provider.UserProviderService">
         <property name="restService" ref="restService" />
-        <property name="securityService" ref="securityService" />
+        <property name="securityService" ref="securityServiceForKaltura" />
         <property name="userService" ref="userService" />
     </bean>
 
