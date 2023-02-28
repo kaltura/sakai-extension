@@ -10,7 +10,7 @@ Copyright ©2016 Kaltura, Inc.
     <!-- Sakai tool controllers -->
     <bean id="baseController" class="org.sakaiproject.kaltura.controllers.BaseController" abstract="true">
         <property name="kalturaLTIService" ref="kalturaLTIService" />
-        <property name="securityService" ref="securityService" />
+        <property name="securityService" ref="securityServiceForKaltura" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
         <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
         <property name="userService" ref="userService" />
@@ -41,6 +41,11 @@ Copyright ©2016 Kaltura, Inc.
                 <prop key="/mediagallery.htm">mediagalleryController</prop>
                 <prop key="/mediadisplay.htm">mediadisplayController</prop>
                 <prop key="/mediadisplaystatic.htm">mediadisplayStaticController</prop>
+                <prop key="/*/ckeditor.htm">ckeditorController</prop>
+                <prop key="/*/ckeditorcallback.htm">ckeditorCallbackController</prop>
+                <prop key="/*/mediagallery.htm">mediagalleryController</prop>
+                <prop key="/*/mediadisplay.htm">mediadisplayController</prop>
+                <prop key="/*/mediadisplaystatic.htm">mediadisplayStaticController</prop>
             </props>
         </property>
     </bean>
